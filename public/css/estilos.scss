@@ -1,9 +1,7 @@
-// Importa las variables y funciones base de Bootstrap (si necesitas modificarlas globalmente)
-// @import "node_modules/bootstrap/scss/functions";
-// @import "node_modules/bootstrap/scss/variables";
-// @import "node_modules/bootstrap/scss/mixins";
+// 1. MÓDULOS (¡DEBE SER LO PRIMERO!)
+@use "sass:color"; 
 
-// 1. Definición de Variables Personalizadas
+// 2. Definición de Variables Personalizadas
 // Colores base de GreenPoints
 $greenpoints-primary: #007f3f; // Un verde bosque para la acción principal
 $greenpoints-hover: #004d26; 
@@ -13,13 +11,13 @@ $greenpoints-success: #28a745; // Verde estándar de Bootstrap/Éxito
 // Tipografía
 $font-family-poppins: 'Poppins', sans-serif;
 
-// 2. Estilos Globales
+// 3. Estilos Globales
 body {
     font-family: $font-family-poppins;
     padding-top: 56px; // Para compensar la barra de navegación fija
 }
 
-// 3. Navbar (Barra de Navegación)
+// 4. Navbar (Barra de Navegación)
 #main-nav {
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
@@ -35,7 +33,7 @@ body {
     }
 }
 
-// 4. Sección Principal (Hero)
+// 5. Sección Principal (Hero)
 .hero {
     // Uso de mixins o propiedades CSS
     background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), 
@@ -65,7 +63,7 @@ body {
     }
 }
 
-// 5. Botonería Personalizada (Modificación de Bootstrap)
+// 6. Botonería Personalizada (Modificación de Bootstrap)
 .btn {
     transition: all 0.3s ease; // Transición para todos los botones
 
@@ -84,13 +82,14 @@ body {
         border-color: $greenpoints-success;
 
         &:hover {
-            background-color: darken($greenpoints-success, 10%); // Uso de función SCSS
-            border-color: darken($greenpoints-success, 10%);
+            // Sintaxis moderna, usando color.adjust para oscurecer (-10%)
+            background-color: color.adjust($greenpoints-success, $lightness: -10%); 
+            border-color: color.adjust($greenpoints-success, $lightness: -10%);
         }
     }
 }
 
-// 6. Sección de Servicios / Tarjetas
+// 7. Sección de Servicios / Tarjetas
 #servicios {
     .card {
         border-radius: 10px;
@@ -108,7 +107,7 @@ body {
     }
 }
 
-// 7. Sección de Impacto
+// 8. Sección de Impacto
 #impacto {
     .list-group-item {
         border: none;
@@ -121,7 +120,7 @@ body {
     }
 }
 
-// 8. Pie de Página (Footer)
+// 9. Pie de Página (Footer)
 footer {
     h5 {
         color: white;
