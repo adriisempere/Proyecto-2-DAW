@@ -1,0 +1,135 @@
+// Importa las variables y funciones base de Bootstrap (si necesitas modificarlas globalmente)
+// @import "node_modules/bootstrap/scss/functions";
+// @import "node_modules/bootstrap/scss/variables";
+// @import "node_modules/bootstrap/scss/mixins";
+
+// 1. Definición de Variables Personalizadas
+// Colores base de GreenPoints
+$greenpoints-primary: #007f3f; // Un verde bosque para la acción principal
+$greenpoints-hover: #004d26; 
+$greenpoints-secondary: #6c757d; // Gris para acciones secundarias
+$greenpoints-success: #28a745; // Verde estándar de Bootstrap/Éxito
+
+// Tipografía
+$font-family-poppins: 'Poppins', sans-serif;
+
+// 2. Estilos Globales
+body {
+    font-family: $font-family-poppins;
+    padding-top: 56px; // Para compensar la barra de navegación fija
+}
+
+// 3. Navbar (Barra de Navegación)
+#main-nav {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+
+    // Anidamiento para el brand
+    .navbar-brand {
+        font-weight: bold;
+    }
+
+    // Anidamiento para el botón de inicio de sesión
+    .btn-success {
+        // Estilos específicos para el botón en el navbar si es necesario
+    }
+}
+
+// 4. Sección Principal (Hero)
+.hero {
+    // Uso de mixins o propiedades CSS
+    background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), 
+                url('../img/fondo-reciclaje.jpg') no-repeat center center;
+    background-size: cover;
+    height: 70vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+
+    // Anidamiento para títulos en el Hero
+    h1 {
+        font-size: 3rem;
+
+        @media (max-width: 768px) {
+            font-size: 2.5rem;
+        }
+    }
+    
+    // Anidamiento para el texto lead
+    .lead {
+        font-size: 1.25rem;
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+        }
+    }
+}
+
+// 5. Botonería Personalizada (Modificación de Bootstrap)
+.btn {
+    transition: all 0.3s ease; // Transición para todos los botones
+
+    &.btn-primary { // Estilo para btn-primary
+        background-color: $greenpoints-primary;
+        border-color: $greenpoints-primary;
+
+        &:hover {
+            background-color: $greenpoints-hover;
+            border-color: $greenpoints-hover;
+        }
+    }
+
+    &.btn-success { // Estilo para btn-success
+        background-color: $greenpoints-success;
+        border-color: $greenpoints-success;
+
+        &:hover {
+            background-color: darken($greenpoints-success, 10%); // Uso de función SCSS
+            border-color: darken($greenpoints-success, 10%);
+        }
+    }
+}
+
+// 6. Sección de Servicios / Tarjetas
+#servicios {
+    .card {
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        // Estilo anidado para los íconos
+        .card-body i {
+            font-size: 3rem;
+        }
+    }
+}
+
+// 7. Sección de Impacto
+#impacto {
+    .list-group-item {
+        border: none;
+        padding-left: 0;
+        
+        // Estilo anidado para el ícono de check
+        i {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+// 8. Pie de Página (Footer)
+footer {
+    h5 {
+        color: white;
+    }
+    a {
+        // Uso de anidamiento para enlaces
+        &:hover {
+            color: $greenpoints-primary !important; // ¡El verde en el hover!
+        }
+    }
+}
