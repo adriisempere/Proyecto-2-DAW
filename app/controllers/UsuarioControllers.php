@@ -1,7 +1,4 @@
 <?php
-class UsuarioController {
-    public function index() {
-        echo "Controlador funcionando";
-    }
-}
+// Archivo renombrado a UsuarioController.php
+// Mantener este archivo vacío para compatibilidad temporal.
 ?>
