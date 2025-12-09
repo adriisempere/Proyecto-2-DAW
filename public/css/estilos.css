@@ -1,0 +1,12 @@
+body {
+    background-color: #f7f7f7;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    color: #2d7a32;
+}
+
+.btn-lg {
+    margin: 10px;
+}
