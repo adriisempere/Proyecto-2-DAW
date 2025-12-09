@@ -1,7 +1,7 @@
 <?php
-$conexion = new mysqli("localhost", "root", "", "greenpoints");
+$mysqli = new mysqli("localhost", "root", "", "greenpoints");
 
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+if ($mysqli->connect_error) {
+    die("Error de conexión: " . $mysqli->connect_error);
 }
 ?>
