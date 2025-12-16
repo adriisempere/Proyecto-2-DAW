@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
 
@@ -139,7 +139,7 @@
                             <span>Estadísticas detalladas de tu huella de carbono reducida.</span>
                         </li>
                     </ul>
-                    <a href="mision.php" class="btn btn-primary rounded-pill px-4 mt-3">Descubre nuestra misión</a>
+                    <a href="index.php?action=home" class="btn btn-primary rounded-pill px-4 mt-3">Descubre nuestra misión</a>
                 </div>
             </div>
         </div>
