@@ -1,42 +1,68 @@
-// 1. Definir variables personalizadas
-$primary: #2d6a4f;    // Verde bosque profundo
-$success: #52b788;    // Verde brillante para acentos
-$secondary: #b7e4c7;  // Verde pastel
-$dark: #1b4332;       // Fondo oscuro orgánico
-$body-bg: #f8f9fa;
-$font-family-sans-serif: 'Poppins', sans-serif;
+// 1. Definición de Variables de Marca
+$verde-oscuro: #2d6a4f;
+$verde-brillante: #52b788;
+$verde-menta: #b7e4c7;
+$blanco: #ffffff;
+$suave: #f8f9fa;
 
-// 2. Importar Bootstrap (solo las funciones y variables necesarias primero)
-@import "../node_modules/bootstrap/scss/functions";
-@import "../node_modules/bootstrap/scss/variables";
-@import "../node_modules/bootstrap/scss/mixins";
-
-// 3. Estilos personalizados adicionales
-.hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1350&q=80');
-    background-size: cover;
-    background-position: center;
-    height: 90vh;
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
+// 2. Estilos Globales
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: $suave;
 }
 
-.card {
-    transition: transform 0.3s ease;
-    border-radius: 15px;
-    &:hover {
-        transform: translateY(-10px);
-    }
-}
-
+// 3. Navbar Personalizada
 .navbar {
     transition: all 0.4s ease;
+    padding: 15px 0;
+    
     &.scrolled {
-        background-color: $primary !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        background-color: $verde-oscuro !important;
+        padding: 10px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 }
 
-// 4. Importar el resto de Bootstrap
-@import "../node_modules/bootstrap/scss/bootstrap";
+// 4. Hero Section
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; // Efecto Parallax
+    min-height: 90vh;
+    border-bottom-left-radius: 100px 20px;
+    border-bottom-right-radius: 100px 20px;
+}
+
+// 5. Botones Personalizados (Sobreescribiendo Bootstrap)
+.btn-success {
+    background-color: $verde-brillante !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    font-weight: 600;
+    transition: transform 0.2s;
+
+    &:hover {
+        background-color: $verde-oscuro !important;
+        transform: scale(1.05);
+    }
+}
+
+// 6. Tarjetas de servicios
+.card {
+    border: none !important;
+    border-radius: 20px !important;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+}
+
+// 7. Utilidades de texto
+.text-success {
+    color: $verde-brillante !important;
+}

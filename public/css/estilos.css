@@ -1,0 +1,51 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  transition: all 0.4s ease;
+  padding: 15px 0;
+}
+.navbar.scrolled {
+  background-color: #2d6a4f !important;
+  padding: 10px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 90vh;
+  border-bottom-left-radius: 100px 20px;
+  border-bottom-right-radius: 100px 20px;
+}
+
+.btn-success {
+  background-color: #52b788 !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: 12px 30px !important;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+.btn-success:hover {
+  background-color: #2d6a4f !important;
+  transform: scale(1.05);
+}
+
+.card {
+  border: none !important;
+  border-radius: 20px !important;
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.text-success {
+  color: #52b788 !important;
+}/*# sourceMappingURL=estilos.css.map */
