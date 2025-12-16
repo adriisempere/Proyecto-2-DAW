@@ -7,6 +7,7 @@ $verde-principal: #1b5e3f;
 $verde-brillante: #2ecc71;
 $verde-claro: #52c97c;
 $verde-suave: #d4edda;
+$texto-principal: #34495e;
 
 // Colores neutrales mejorados
 $blanco: #ffffff;
@@ -408,17 +409,16 @@ body {
 
     h6 {
         font-size: 0.85rem;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
         font-weight: 700;
         color: $verde-brillante;
         margin-bottom: 15px;
-        text-transform: uppercase;
     }
 
     h2 {
         font-size: clamp(2rem, 8vw, 3rem);
         font-weight: 700;
-        color: $gris-oscuro;
+        color: $texto-principal;
         margin-bottom: 50px;
     }
 
@@ -450,7 +450,7 @@ body {
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, $verde-principal, $verde-brillante);
+        background: linear-gradient(90deg, $verde-brillante, $verde-claro);
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.3s ease;
@@ -476,7 +476,7 @@ body {
 
         .bg-success {
             &.bg-opacity-10 {
-                background-color: rgba(46, 204, 113, 0.15) !important;
+                background-color: rgba(82, 183, 136, 0.15) !important;
                 padding: 20px !important;
                 border-radius: 15px !important;
 
@@ -495,14 +495,13 @@ body {
 
                 i {
                     font-size: 2rem;
-                    color: #ffc107;
                 }
             }
         }
 
         .bg-primary {
             &.bg-opacity-10 {
-                background-color: rgba(27, 94, 63, 0.15) !important;
+                background-color: rgba(45, 106, 79, 0.15) !important;
                 padding: 20px !important;
                 border-radius: 15px !important;
 
@@ -515,16 +514,15 @@ body {
 
         h4 {
             font-weight: 700;
-            color: $gris-oscuro;
+            color: $texto-principal;
             transition: color 0.3s ease;
             margin-bottom: 15px;
         }
 
         p {
-            color: $gris-texto;
+            color: #666;
             font-size: 0.95rem;
-            line-height: 1.7;
-            font-weight: 500;
+            line-height: 1.6;
         }
     }
 
@@ -540,7 +538,6 @@ body {
 // ===================================
 .impact-section {
     padding: 60px 0;
-    background: $blanco;
 
     img {
         border-radius: 30px;
@@ -556,15 +553,14 @@ body {
     h2 {
         font-size: clamp(1.8rem, 8vw, 2.8rem);
         font-weight: 700;
-        color: $gris-oscuro;
+        color: $texto-principal;
         margin-bottom: 20px;
     }
 
     .lead {
         font-size: 1.1rem;
         line-height: 1.8;
-        color: $gris-texto;
-        font-weight: 500;
+        color: #555;
     }
 
     .list-unstyled {
@@ -572,10 +568,9 @@ body {
 
         li {
             font-size: 1.05rem;
-            color: $gris-texto;
+            color: $texto-principal;
             margin-bottom: 20px;
             transition: transform 0.3s ease, color 0.3s ease;
-            font-weight: 500;
 
             i {
                 color: $verde-brillante;
@@ -607,7 +602,7 @@ body {
 // 11. FOOTER
 // ===================================
 .footer-section {
-    background: linear-gradient(135deg, $gris-oscuro 0%, #0f0f0f 100%);
+    background: linear-gradient(135deg, $gris-oscuro 0%, #1a1a1a 100%);
     color: $blanco;
     padding: 50px 0 20px;
     position: relative;
@@ -621,7 +616,7 @@ body {
         width: 400px;
         height: 400px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(46, 204, 113, 0.05), transparent);
+        background: radial-gradient(circle, rgba(82, 183, 136, 0.05), transparent);
     }
 
     h5, h6 {
@@ -636,9 +631,8 @@ body {
 
     p {
         font-size: 0.95rem;
-        line-height: 1.7;
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: 500;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.7);
     }
 
     ul {
@@ -649,10 +643,9 @@ body {
             margin-bottom: 12px;
 
             a {
-                color: rgba(255, 255, 255, 0.75);
+                color: rgba(255, 255, 255, 0.6);
                 text-decoration: none;
                 font-size: 0.9rem;
-                font-weight: 500;
                 transition: all 0.3s ease;
 
                 &:hover {
@@ -667,7 +660,7 @@ body {
         gap: 20px;
 
         a {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             transition: all 0.3s ease;
             font-size: 1.3rem;
 
@@ -695,7 +688,7 @@ body {
         text-align: center;
         margin-top: 20px;
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.5);
     }
 
     @media (max-width: 768px) {
@@ -717,17 +710,10 @@ body {
 // ===================================
 .text-success {
     color: $verde-brillante !important;
-    font-weight: 600;
 }
 
 .text-primary {
     color: $verde-principal !important;
-    font-weight: 600;
-}
-
-.text-muted {
-    color: $gris-texto !important;
-    font-weight: 500;
 }
 
 .bg-light {
@@ -736,19 +722,6 @@ body {
 
 .bg-dark {
     background-color: $gris-oscuro !important;
-}
-
-.bg-white {
-    background-color: $blanco !important;
-}
-
-.shadow-sm {
-    box-shadow: $sombra-suave !important;
-}
-
-.lead {
-    font-weight: 500;
-    color: $gris-texto;
 }
 
 // ===================================
