@@ -6,14 +6,14 @@
     <title>GreenPoints | Recicla y Gana</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../public/css/estilos.css">
+    <link rel="stylesheet" href="css/estilos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="main-nav">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="home.php">
+            <a class="navbar-brand fw-bold fs-3" href="index.php?action=home">
                 <i class="bi bi-leaf-fill text-success"></i> GreenPoints
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -23,10 +23,10 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3" href="#inicio">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="#servicios">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="ranking.php">Ranking</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="centros.php">Centros</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="index.php?action=ranking">Ranking</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="index.php?action=centros">Centros</a></li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-success rounded-pill px-4 shadow-sm" href="login.php">Iniciar Sesión</a>
+                        <a class="btn btn-success rounded-pill px-4 shadow-sm" href="index.php?action=login">Iniciar Sesión</a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +42,7 @@
                         Únete a la comunidad de <strong>GreenPoints</strong>. Registra tu reciclaje, compite con amigos y ayuda a salvar el planeta mientras ganas beneficios exclusivos.
                     </p>
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center animate__animated animate__zoomIn">
-                        <a href="registro.php" class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold">Empezar a Reciclar</a>
+                        <a href="index.php?action=register" class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold">Empezar a Reciclar</a>
                         <a href="#impacto" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">Ver Impacto</a>
                     </div>
                 </div>
