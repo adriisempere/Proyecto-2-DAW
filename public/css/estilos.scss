@@ -1,129 +1,42 @@
-// 1. MÓDULOS (¡DEBE SER LO PRIMERO!)
-@use "sass:color"; 
+// 1. Definir variables personalizadas
+$primary: #2d6a4f;    // Verde bosque profundo
+$success: #52b788;    // Verde brillante para acentos
+$secondary: #b7e4c7;  // Verde pastel
+$dark: #1b4332;       // Fondo oscuro orgánico
+$body-bg: #f8f9fa;
+$font-family-sans-serif: 'Poppins', sans-serif;
 
-// 2. Definición de Variables Personalizadas
-// Colores base de GreenPoints
-$greenpoints-primary: #007f3f; // Un verde bosque para la acción principal
-$greenpoints-hover: #004d26; 
-$greenpoints-secondary: #6c757d; // Gris para acciones secundarias
-$greenpoints-success: #28a745; // Verde estándar de Bootstrap/Éxito
+// 2. Importar Bootstrap (solo las funciones y variables necesarias primero)
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
 
-// Tipografía
-$font-family-poppins: 'Poppins', sans-serif;
-
-// 3. Estilos Globales
-body {
-    font-family: $font-family-poppins;
-    padding-top: 56px; // Para compensar la barra de navegación fija
-}
-
-// 4. Navbar (Barra de Navegación)
-#main-nav {
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-
-    // Anidamiento para el brand
-    .navbar-brand {
-        font-weight: bold;
-    }
-}
-
-// 5. Sección Principal (Hero)
+// 3. Estilos personalizados adicionales
 .hero {
-    // Uso de mixins o propiedades CSS
-    background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), 
-                url('../img/fondo-reciclaje.jpg') no-repeat center center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1350&q=80');
     background-size: cover;
-    height: 70vh;
-    min-height: 400px;
-    display: flex;
-    align-items: center;
+    background-position: center;
+    height: 90vh;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
 
-    // Anidamiento para títulos en el Hero
-    h1 {
-        font-size: 3rem;
-
-        @media (max-width: 768px) {
-            font-size: 2.5rem;
-        }
-    }
-    
-    // Anidamiento para el texto lead
-    .lead {
-        font-size: 1.25rem;
-
-        @media (max-width: 768px) {
-            font-size: 1rem;
-        }
+.card {
+    transition: transform 0.3s ease;
+    border-radius: 15px;
+    &:hover {
+        transform: translateY(-10px);
     }
 }
 
-// 6. Botonería Personalizada (Modificación de Bootstrap)
-.btn {
-    transition: all 0.3s ease; // Transición para todos los botones
-
-    &.btn-primary { // Estilo para btn-primary
-        background-color: $greenpoints-primary;
-        border-color: $greenpoints-primary;
-
-        &:hover {
-            background-color: $greenpoints-hover;
-            border-color: $greenpoints-hover;
-        }
-    }
-
-    &.btn-success { // Estilo para btn-success
-        background-color: $greenpoints-success;
-        border-color: $greenpoints-success;
-
-        &:hover {
-            // Sintaxis moderna, usando color.adjust para oscurecer (-10%)
-            background-color: color.adjust($greenpoints-success, $lightness: -10%); 
-            border-color: color.adjust($greenpoints-success, $lightness: -10%);
-        }
+.navbar {
+    transition: all 0.4s ease;
+    &.scrolled {
+        background-color: $primary !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 }
 
-// 7. Sección de Servicios / Tarjetas
-#servicios {
-    .card {
-        border-radius: 10px;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        
-        &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-        }
-        
-        // Estilo anidado para los íconos
-        .card-body i {
-            font-size: 3rem;
-        }
-    }
-}
-
-// 8. Sección de Impacto
-#impacto {
-    .list-group-item {
-        border: none;
-        padding-left: 0;
-        
-        // Estilo anidado para el ícono de check
-        i {
-            margin-right: 0.5rem;
-        }
-    }
-}
-
-// 9. Pie de Página (Footer)
-footer {
-    h5 {
-        color: white;
-    }
-    a {
-        // Uso de anidamiento para enlaces
-        &:hover {
-            color: $greenpoints-primary !important; // ¡El verde en el hover!
-        }
-    }
-}
+// 4. Importar el resto de Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
