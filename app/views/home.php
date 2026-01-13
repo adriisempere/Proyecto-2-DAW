@@ -58,7 +58,7 @@
     </nav>
 
     <header class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-auto mb-4" src="../public/img/LogoGreenPoints.png" alt="logo del hero">
+        <img class="d-block mx-auto mb-4" src="../public/img/LogoGreenPoints.png" alt="logo del hero" width="60px" height="60px">
         <h1 class="display-5 fw-bold">GreenPoints</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">
