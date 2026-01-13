@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="../css/estilos.css">
     
     <style>
-        /* Clases de utilidad personalizadas */
         .letter-spacing {
             letter-spacing: 2px;
         }
@@ -34,42 +33,11 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="main-nav">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" href="index.php?action=home">
-                <i class="bi bi-leaf-fill text-success"></i> GreenPoints
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link px-3" href="#inicio">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#servicios">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="index.php?action=ranking">Ranking</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="index.php?action=centros">Centros</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-success rounded-pill px-4 shadow-sm" href="index.php?action=login">Iniciar Sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        
     </nav>
 
     <header class="hero d-flex align-items-center text-center text-white" id="inicio">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h1 class="display-2 fw-bold mb-3 animate__animated animate__fadeInDown">Convierte tus residuos en <span class="text-success">premios</span></h1>
-                    <p class="lead mb-5 animate__animated animate__fadeInUp opacity-90">
-                        Únete a la comunidad de <strong>GreenPoints</strong>. Registra tu reciclaje, compite con amigos y ayuda a salvar el planeta mientras ganas beneficios exclusivos.
-                    </p>
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center animate__animated animate__zoomIn">
-                        <a href="index.php?action=register" class="btn btn-success btn-lg px-5 py-3 rounded-pill fw-bold">Empezar a Reciclar</a>
-                        <a href="#impacto" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">Ver Impacto</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </header>
 
     <section class="py-5 bg-white shadow-sm border-0 stats-section">
