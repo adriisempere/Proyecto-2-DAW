@@ -32,9 +32,9 @@
     </style>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">GreenPoints</a>
+            <a class="navbar-brand h4" href="./home.php">GreenPoints</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -57,8 +57,19 @@
         </div>
     </nav>
 
-    <header class="hero d-flex align-items-center text-center text-white" id="inicio">
-        
+    <header class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="../public/img/LogoGreenPoints.png" alt="logo del hero">
+        <h1 class="display-5 fw-bold">GreenPoints</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Nuestro proyecto trata de concienciar a las personas sobre la importancia de reciclar. Ésto lo hacemos mediante un sistema de puntos y recompensas, además de un ranking para incentivar a la competitividad. Cuantos más puntos tengas, más recompensas podrás obtener.
+            </p>
+            <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <button class="btn btn-primary btn-lg px-4 gap-3" type="button">Registro</button>
+                <button class="btn btn-outline-secondary btn-lg px-4" type="button">Login</button>
+            </div>
+        </div>
     </header>
 
     <section class="py-5 bg-white shadow-sm border-0 stats-section">
