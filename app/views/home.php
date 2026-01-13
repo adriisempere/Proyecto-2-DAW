@@ -58,14 +58,14 @@
     </nav>
 
     <header class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-lg-auto img-fluid" src="../public/img/LogoGreenPoints.png" alt="logo del hero" width="500px" height="500px" loading="lazy">
+        <img class="d-block mx-lg-auto img-fluid" src="../public/img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
         <h1 class="display-5 fw-bold">GreenPoints</h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">
                 Nuestro proyecto trata de concienciar a las personas sobre la importancia de reciclar. Ésto lo hacemos mediante un sistema de puntos y recompensas, además de un ranking para incentivar a la competitividad. Cuantos más puntos tengas, más recompensas podrás obtener.
             </p>
             <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-md-start">
+            <div class="d-grid gap-2 d-sm-flex justify-content-md-center">
                 <button class="btn btn-primary btn-lg px-4 gap-3" type="button">Registro</button>
                 <button class="btn btn-outline-secondary btn-lg px-4" type="button">Login</button>
             </div>
