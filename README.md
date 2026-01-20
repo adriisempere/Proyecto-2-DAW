@@ -78,11 +78,8 @@ Proyecto-2-DAW/
 │
 ├── public/                   # Archivos públicos
 │   ├── index.php            # Punto de entrada (Front Controller)
-│   ├── css/                 # Estilos
-│   │   ├── estilos.css
-│   │   └── estilos.scss
-│   ├── js/                  # JavaScript
-│   │   └── app.js
+│   ├── css/                 # Estilos (reservado para futuros CSS personalizados)
+│   ├── js/                  # JavaScript (reservado para futuros scripts)
 │   └── img/                 # Imágenes
 │       └── LogoGreenPoints.png
 │
@@ -168,10 +165,10 @@ Posiciones de usuarios en cada ranking.
 ### Frontend
 - **HTML5 / CSS3**: Estructura y estilos
 - **Bootstrap 5.3.3**: Framework CSS para diseño responsivo
-- **SCSS**: Preprocesador CSS
-- **JavaScript Vanilla**: Interactividad y animaciones
+- **JavaScript Vanilla**: Interactividad y animaciones integradas en partials
 - **Bootstrap Icons**: Iconografía
 - **Animate.css**: Librería de animaciones
+- **Google Fonts (Poppins)**: Tipografía moderna
 
 ### Otros
 - **Git**: Control de versiones
@@ -429,10 +426,12 @@ Para consultas o sugerencias sobre el proyecto:
 
 ## 📊 Estadísticas del Proyecto
 
-- **Líneas de código**: ~2,000+
-- **Archivos**: 20+
+- **Líneas de código**: ~2,500+
+- **Archivos PHP**: 15
+- **Archivos de documentación**: 4 (README, INSTALL, SECURITY, CHANGELOG)
 - **Commits**: En desarrollo
 - **Estado**: 🚧 En desarrollo activo
+- **Peso del proyecto**: ~50KB (sin dependencias externas)
 
 ---
 

@@ -76,6 +76,9 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - Archivo duplicado `UsuarioControllers.php` (con 's' final)
 - HTML redundante en vistas individuales
 - Estilos inline duplicados
+- **Archivos CSS/SCSS sin uso** (`estilos.css`, `estilos.scss`, `estilos.css.map`)
+- **JavaScript sin uso** (`app.js` - solo tenía console.log)
+- Archivos innecesarios que no se cargaban en ninguna vista
 
 ### 🔒 Seguridad
 - Password hashing con bcrypt
