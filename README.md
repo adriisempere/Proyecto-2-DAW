@@ -381,5 +381,5 @@ Para consultas o sugerencias sobre el proyecto:
 ---
 
 <p align="center">
-  <strong>💚 Hecho con ❤️ por el planeta 🌍</strong>
+  <strong>💚 Hecho por el planeta 🌍</strong>
 </p>
