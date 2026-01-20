@@ -1,1 +1,153 @@
-//Login
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - GreenPoints</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .login-body {
+            padding: 40px;
+        }
+        
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="login-card">
+                    <div class="login-header">
+                        <i class="bi bi-leaf-fill fs-1 mb-3"></i>
+                        <h2 class="fw-bold">GreenPoints</h2>
+                        <p class="mb-0">Inicia sesión para continuar</p>
+                    </div>
+                    
+                    <div class="login-body">
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <?= htmlspecialchars($_SESSION['error']); ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            <?php unset($_SESSION['error']); ?>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                <?= htmlspecialchars($_SESSION['success']); ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            <?php unset($_SESSION['success']); ?>
+                        <?php endif; ?>
+                        
+                        <form method="POST" action="index.php?action=login_post">
+                            <div class="mb-4">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-2"></i>Correo Electrónico
+                                </label>
+                                <input 
+                                    type="email" 
+                                    class="form-control form-control-lg" 
+                                    id="email" 
+                                    name="email" 
+                                    placeholder="tu@email.com"
+                                    required
+                                    autocomplete="email"
+                                >
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-semibold">
+                                    <i class="bi bi-lock me-2"></i>Contraseña
+                                </label>
+                                <input 
+                                    type="password" 
+                                    class="form-control form-control-lg" 
+                                    id="password" 
+                                    name="password" 
+                                    placeholder="••••••••"
+                                    required
+                                    autocomplete="current-password"
+                                >
+                            </div>
+                            
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <label class="form-check-label" for="remember">
+                                    Recordarme
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success btn-login w-100 btn-lg mb-3">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                            </button>
+                            
+                            <div class="text-center">
+                                <p class="text-muted mb-2">¿No tienes cuenta?</p>
+                                <a href="index.php?action=register" class="text-decoration-none fw-semibold">
+                                    Regístrate aquí
+                                </a>
+                            </div>
+                            
+                            <hr class="my-4">
+                            
+                            <div class="text-center">
+                                <a href="index.php?action=home" class="text-muted text-decoration-none">
+                                    <i class="bi bi-arrow-left me-2"></i>Volver al inicio
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

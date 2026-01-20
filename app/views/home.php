@@ -34,23 +34,33 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand h4" href="./home.php">GreenPoints</a>
+            <a class="navbar-brand h4" href="index.php?action=home">
+                <i class="bi bi-leaf-fill text-success me-2"></i>GreenPoints
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ranking</a>
+                        <a class="nav-link" href="index.php?action=ranking">
+                            <i class="bi bi-trophy me-1"></i>Ranking
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Puntos</a>
+                        <a class="nav-link" href="index.php?action=centros">
+                            <i class="bi bi-geo-alt me-1"></i>Centros
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tienda</a>
+                        <a class="nav-link" href="index.php?action=registro_create">
+                            <i class="bi bi-recycle me-1"></i>Registrar
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Mi Perfil</a>
+                        <a class="nav-link btn btn-outline-primary ms-2 px-3" href="index.php?action=login">
+                            <i class="bi bi-person-circle me-1"></i>Login
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -66,8 +76,12 @@
             </p>
             <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
             <div class="d-grid gap-2 d-sm-flex justify-content-md-center">
-                <button class="btn btn-primary btn-lg px-4 gap-3" type="button">Registro</button>
-                <button class="btn btn-outline-secondary btn-lg px-4" type="button">Login</button>
+                <a href="index.php?action=register" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="bi bi-person-plus me-2"></i>Registro
+                </a>
+                <a href="index.php?action=login" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </a>
             </div>
         </div>
     </header>

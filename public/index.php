@@ -39,16 +39,23 @@ switch ($action) {
     case 'centro_store':
         (new CentroController())->store();
         break;
-    // registros
+    // registros de reciclaje
     case 'registro_create':
         (new RegistroController())->showCreate();
         break;
     case 'registro_store':
         (new RegistroController())->store();
         break;
+    case 'mis_registros':
+        (new RegistroController())->misRegistros();
+        break;
     // ranking
     case 'ranking':
         (new RankingController())->index();
+        break;
+    // perfil de usuario
+    case 'perfil':
+        (new UsuarioController())->perfil();
         break;
     default:
         http_response_code(404);
