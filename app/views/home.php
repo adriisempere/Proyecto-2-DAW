@@ -1,305 +1,162 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenPoints | Recicla y Gana</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    
-    <link rel="stylesheet" href="../css/estilos.css">
-    
-    <style>
-        .letter-spacing {
-            letter-spacing: 2px;
-        }
-        
-        .fw-500 {
-            font-weight: 500;
-        }
-        
-        @media (max-width: 768px) {
-            .ps-lg-5 {
-                padding-left: 0 !important;
-                margin-top: 30px;
-            }
-        }
-    </style>
-<body>
+<?php
+$pageTitle = "GreenPoints | Recicla y Gana";
+include __DIR__ . '/partials/header.php';
+?>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand h4" href="index.php?action=home">
-                <i class="bi bi-leaf-fill text-success me-2"></i>GreenPoints
+<!-- Hero Section -->
+<header class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-lg-auto img-fluid" src="img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
+    <h1 class="display-5 fw-bold">GreenPoints</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">
+            Nuestro proyecto trata de concienciar a las personas sobre la importancia de reciclar. Ésto lo hacemos mediante un sistema de puntos y recompensas, además de un ranking para incentivar a la competitividad. Cuantos más puntos tengas, más recompensas podrás obtener.
+        </p>
+        <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-md-center">
+            <a href="index.php?action=register" class="btn btn-primary btn-lg px-4 gap-3">
+                <i class="bi bi-person-plus me-2"></i>Registro
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?action=ranking">
-                            <i class="bi bi-trophy me-1"></i>Ranking
-                        </a>
+            <a href="index.php?action=login" class="btn btn-outline-secondary btn-lg px-4">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+            </a>
+        </div>
+    </div>
+</header>
+
+<!-- Stats Section -->
+<section class="py-5 bg-white shadow-sm border-0">
+    <div class="container text-center">
+        <div class="row g-4">
+            <div class="col-md-4 col-sm-6">
+                <div class="py-3">
+                    <h3 class="fw-bold text-primary mb-2">+10k</h3>
+                    <p class="text-muted mb-0 fw-500">Usuarios Activos</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="py-3">
+                    <h3 class="fw-bold text-primary mb-2">50 Ton</h3>
+                    <p class="text-muted mb-0 fw-500">Material Reciclado</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="py-3">
+                    <h3 class="fw-bold text-primary mb-2">120</h3>
+                    <p class="text-muted mb-0 fw-500">Puntos de Recogida</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="servicios" class="py-5 bg-light">
+    <div class="container py-lg-5">
+        <div class="text-center mb-5">
+            <h6 class="text-success fw-bold text-uppercase" style="letter-spacing: 2px;">¿Cómo funciona?</h6>
+            <h2 class="display-5 fw-bold mt-3">Nuestros Servicios Clave</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 p-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
+                            <i class="bi bi-box-seam text-success fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold">Registro Ágil</h4>
+                        <p class="text-muted">Escanea o sube tus tickets de reciclaje de plástico, papel o vidrio de forma inmediata.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 p-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
+                            <i class="bi bi-trophy text-warning fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold">Gamificación</h4>
+                        <p class="text-muted">Sube de nivel en el ranking nacional y desbloquea insignias por tus logros ambientales.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 p-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
+                            <i class="bi bi-geo-alt text-primary fs-2"></i>
+                        </div>
+                        <h4 class="fw-bold">Mapa de Centros</h4>
+                        <p class="text-muted">Encuentra los contenedores y centros de acopio más cercanos a tu ubicación actual.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Section -->
+<section id="impacto" class="py-5">
+    <div class="container py-lg-5">
+        <div class="row align-items-center g-4 g-lg-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" alt="Reciclaje comunitario" class="img-fluid rounded-4 shadow">
+            </div>
+            <div class="col-lg-6 ps-lg-4 ps-lg-5">
+                <h2 class="display-5 fw-bold mb-4">Por qué elegir GreenPoints</h2>
+                <p class="lead text-secondary mb-4">
+                    Transformamos la sostenibilidad en una experiencia social. No solo reciclas, sino que ves el impacto real de tus acciones.
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-4 d-flex align-items-start">
+                        <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1 fs-4"></i>
+                        <span class="ms-3">Canjea puntos por descuentos en comercios locales.</span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?action=centros">
-                            <i class="bi bi-geo-alt me-1"></i>Centros
-                        </a>
+                    <li class="mb-4 d-flex align-items-start">
+                        <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1 fs-4"></i>
+                        <span class="ms-3">Estadísticas detalladas de tu huella de carbono reducida.</span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?action=registro_create">
-                            <i class="bi bi-recycle me-1"></i>Registrar
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary ms-2 px-3" href="index.php?action=login">
-                            <i class="bi bi-person-circle me-1"></i>Login
-                        </a>
+                    <li class="mb-4 d-flex align-items-start">
+                        <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1 fs-4"></i>
+                        <span class="ms-3">Comunidad activa comprometida con el medio ambiente.</span>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </nav>
-
-    <header class="px-4 py-5 my-5 text-center">
-        <img class="d-block mx-lg-auto img-fluid" src="../public/img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
-        <h1 class="display-5 fw-bold">GreenPoints</h1>
-        <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">
-                Nuestro proyecto trata de concienciar a las personas sobre la importancia de reciclar. Ésto lo hacemos mediante un sistema de puntos y recompensas, además de un ranking para incentivar a la competitividad. Cuantos más puntos tengas, más recompensas podrás obtener.
-            </p>
-            <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-md-center">
-                <a href="index.php?action=register" class="btn btn-primary btn-lg px-4 gap-3">
-                    <i class="bi bi-person-plus me-2"></i>Registro
-                </a>
-                <a href="index.php?action=login" class="btn btn-outline-secondary btn-lg px-4">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                <a href="index.php?action=register" class="btn btn-success btn-lg rounded-pill px-5 mt-4">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Únete Ahora
                 </a>
             </div>
         </div>
-    </header>
+    </div>
+</section>
 
-    <section class="py-5 bg-white shadow-sm border-0 stats-section">
-        <div class="container text-center">
-            <div class="row g-4">
-                <div class="col-md-4 col-sm-6">
-                    <div class="py-3">
-                        <h3 class="fw-bold text-primary mb-2">+10k</h3>
-                        <p class="text-muted mb-0 fw-500">Usuarios Activos</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="py-3">
-                        <h3 class="fw-bold text-primary mb-2">50 Ton</h3>
-                        <p class="text-muted mb-0 fw-500">Material Reciclado</p>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="py-3">
-                        <h3 class="fw-bold text-primary mb-2">120</h3>
-                        <p class="text-muted mb-0 fw-500">Puntos de Recogida</p>
-                    </div>
-                </div>
-            </div>
+<!-- CTA Section -->
+<section class="py-5 bg-success text-white">
+    <div class="container text-center py-5">
+        <h2 class="display-4 fw-bold mb-4">¿Listo para hacer la diferencia?</h2>
+        <p class="lead mb-4">Únete a miles de usuarios que ya están transformando el mundo</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="index.php?action=register" class="btn btn-light btn-lg px-5 rounded-pill">
+                <i class="bi bi-person-plus me-2"></i>Crear Cuenta Gratis
+            </a>
+            <a href="index.php?action=ranking" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                <i class="bi bi-trophy me-2"></i>Ver Ranking
+            </a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="servicios" class="py-5 bg-light services-section">
-        <div class="container py-lg-5">
-            <div class="text-center mb-5">
-                <h6 class="text-success fw-bold text-uppercase letter-spacing">¿Cómo funciona?</h6>
-                <h2 class="display-5 fw-bold mt-3">Nuestros Servicios Clave</h2>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
-                                <i class="bi bi-box-seam text-success fs-2"></i>
-                            </div>
-                            <h4 class="fw-bold">Registro Ágil</h4>
-                            <p class="text-muted">Escanea o sube tus tickets de reciclaje de plástico, papel o vidrio de forma inmediata.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
-                                <i class="bi bi-trophy text-warning fs-2"></i>
-                            </div>
-                            <h4 class="fw-bold">Gamificación</h4>
-                            <p class="text-muted">Sube de nivel en el ranking nacional y desbloquea insignias por tus logros ambientales.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 border-0 shadow-sm">
-                        <div class="card-body">
-                            <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
-                                <i class="bi bi-geo-alt text-primary fs-2"></i>
-                            </div>
-                            <h4 class="fw-bold">Mapa de Centros</h4>
-                            <p class="text-muted">Encuentra los contenedores y centros de acopio más cercanos a tu ubicación actual.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="impacto" class="py-5 impact-section">
-        <div class="container py-lg-5">
-            <div class="row align-items-center g-4 g-lg-5">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" alt="Reciclaje comunitario" class="img-fluid rounded-4">
-                </div>
-                <div class="col-lg-6 ps-lg-4 ps-lg-5">
-                    <h2 class="display-5 fw-bold mb-4">Por qué elegir GreenPoints</h2>
-                    <p class="lead text-secondary mb-4">
-                        Transformamos la sostenibilidad en una experiencia social. No solo reciclas, sino que ves el impacto real de tus acciones.
-                    </p>
-                    <ul class="list-unstyled">
-                        <li class="mb-4 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
-                            <span class="ms-3">Canjea puntos por descuentos en comercios locales.</span>
-                        </li>
-                        <li class="mb-4 d-flex align-items-start">
-                            <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
-                            <span class="ms-3">Estadísticas detalladas de tu huella de carbono reducida.</span>
-                        </li>
-                    </ul>
-                    <a href="index.php?action=home" class="btn btn-primary rounded-pill px-5 mt-4">Descubre nuestra misión</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark text-white pt-5 pb-3 footer-section">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 mb-4 mb-lg-0">
-                    <h5 class="fw-bold mb-4"><i class="bi bi-leaf-fill text-success me-2"></i>GreenPoints</h5>
-                    <p class="text-muted small mb-4">Liderando la revolución verde a través de la tecnología y el compromiso ciudadano.</p>
-                    <div class="d-flex gap-3 mt-4 social-links">
-                        <a href="#" class="text-white fs-5" title="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white fs-5" title="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white fs-5" title="Twitter"><i class="bi bi-twitter-x"></i></a>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-2 ms-lg-auto mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-4">App</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Ranking</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Centros</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Premios</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="fw-bold mb-4">Soporte</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Ayuda</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Privacidad</a></li>
-                        <li class="mb-2"><a href="#" class="text-muted text-decoration-none small">Contacto</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="mt-5 opacity-10">
-            <p class="text-center text-muted small mt-4 mb-0">© 2025 GreenPoints. Hecho con ❤️ por el planeta.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Efecto de scroll para el navbar
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled', 'shadow');
-            } else {
-                nav.classList.remove('scrolled', 'shadow');
-            }
-        });
-        // Animación de números contadores
-        function animateCounter(element, target, duration = 2000) {
-            let current = 0;
-            const increment = target / (duration / 16);
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current);
-                }
-            }, 16);
+<style>
+    .fw-500 {
+        font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+        .ps-lg-5 {
+            padding-left: 0 !important;
+            margin-top: 30px;
         }
+    }
+</style>
 
-        // Observador para activar animaciones cuando las secciones entran en vista
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-                    entry.target.classList.add('animated');
-                    
-                    // Animar números si es la sección de estadísticas
-                    if (entry.target.querySelector('h3')) {
-                        const numbers = entry.target.querySelectorAll('h3');
-                        numbers.forEach(num => {
-                            const text = num.textContent.match(/\\d+/);
-                            if (text) {
-                                const target = parseInt(text[0]);
-                                animateCounter(num, target);
-                            }
-                        });
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observar secciones
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Efecto parallax mejorado en el hero
-        const hero = document.querySelector('.hero');
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            if (hero && scrolled < hero.offsetHeight) {
-                hero.style.backgroundPosition = `center ${scrolled * 0.5}px`;
-            }
-        });
-
-        // Mejorar comportamiento de botones
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                this.appendChild(ripple);
-                
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });    </script>
-</body>
-</html>
+<?php
+include __DIR__ . '/partials/footer.php';
+?>

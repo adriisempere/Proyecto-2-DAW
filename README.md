@@ -40,6 +40,9 @@
 
 - **Interfaz Atractiva**
   - Diseño moderno y responsivo con Bootstrap 5
+  - Header y Footer reutilizables con navegación completa
+  - Sistema de alertas automático (éxito, error, info)
+  - Menú de usuario con dropdown para gestión de cuenta
   - Animaciones y efectos visuales
   - UX optimizada para dispositivos móviles
 
@@ -65,9 +68,10 @@ Proyecto-2-DAW/
 │       ├── home.php          # Landing page
 │       ├── login.php         # Inicio de sesión
 │       ├── register.php      # Registro de usuarios
+│       ├── ejemplo_vista.php # Template de ejemplo
 │       └── partials/         # Componentes reutilizables
-│           ├── header.php
-│           └── footer.php
+│           ├── header.php    # Header con navbar, alertas y meta tags
+│           └── footer.php    # Footer completo con enlaces y redes sociales
 │
 ├── config/
 │   └── database.php          # Configuración de BD
@@ -278,19 +282,23 @@ http://localhost/Proyecto-2-DAW/public/  (Apache)
   - CRUD completo para todas las entidades
   - Validación de datos del lado del servidor
 
-### Fase 4: Frontend (Parcialmente Completado) 🚧
+### Fase 4: Frontend (Avanzado) 🚀
 - **Completado:**
   - Landing page atractiva y responsiva
-  - Integración de Bootstrap 5
-  - Animaciones y efectos visuales
-  - Estructura base de vistas
+  - Sistema de partials (header/footer) completo y reutilizable
+  - Header con navbar gradiente, menú de usuario y sistema de alertas
+  - Footer profesional de 4 columnas con newsletter y redes sociales
+  - Vistas de login y registro completamente funcionales
+  - Integración de Bootstrap 5 con estilos personalizados
+  - Animaciones y efectos visuales (Animate.css)
+  - Vista de ranking con tabla estilizada
+  - Sistema de navegación completo y responsive
   
 - **En progreso:**
-  - Vistas de login y registro funcionales
-  - Panel de usuario con dashboard
-  - Vista de ranking con filtros
+  - Panel de usuario con dashboard personalizado
   - Mapa interactivo de centros de reciclaje
-  - Formularios de registro de reciclaje
+  - Vistas de perfil de usuario
+  - Vista de historial de registros con filtros
 
 ### Fase 5: Funcionalidades Avanzadas (Pendiente) 📋
 - Sistema de recompensas canjeables
@@ -312,9 +320,10 @@ http://localhost/Proyecto-2-DAW/public/  (Apache)
 ## 🐛 Problemas Conocidos y Mejoras Pendientes
 
 ### Issues Identificados
-- [ ] Controladores con lógica mínima (solo echo de prueba)
-- [ ] Vista de login sin contenido
-- [ ] Falta implementar validación de formularios
+- [x] ~~Controladores con lógica mínima~~ (SOLUCIONADO)
+- [x] ~~Vista de login sin contenido~~ (SOLUCIONADO)
+- [x] ~~Vistas sin usar partials~~ (SOLUCIONADO)
+- [ ] Falta implementar validación avanzada de formularios
 - [ ] Credenciales de BD hardcodeadas (sin .env)
 - [ ] Falta manejo de errores robusto
 - [ ] Sin protección CSRF en formularios
@@ -327,6 +336,53 @@ http://localhost/Proyecto-2-DAW/public/  (Apache)
 - [ ] Añadir tests automatizados
 - [ ] Dockerizar la aplicación
 - [ ] Implementar caché de consultas frecuentes
+
+---
+
+## 🎨 Sistema de Partials
+
+El proyecto utiliza un sistema de componentes reutilizables (partials) para mantener consistencia en el diseño:
+
+### Header (`app/views/partials/header.php`)
+- Estructura HTML completa con meta tags
+- Navbar con gradiente verde (identidad de marca)
+- Menú de navegación responsive
+- Sistema de usuario (badge con nombre y puntos)
+- Dropdown con opciones de perfil y admin
+- Sistema de alertas automático (success, error, info)
+- Detección automática de página activa
+- Sticky navbar con efecto scroll
+
+### Footer (`app/views/partials/footer.php`)
+- Footer de 4 columnas completamente responsive
+- Sección de marca con estadísticas
+- Enlaces a aplicación y soporte
+- Newsletter con formulario
+- Información de contacto
+- Redes sociales con animaciones
+- Botón scroll-to-top automático
+- Copyright dinámico
+
+### Uso de Partials
+
+```php
+<?php
+// Definir título de página (opcional)
+$pageTitle = "Mi Página - GreenPoints";
+
+// Incluir header
+include __DIR__ . '/partials/header.php';
+?>
+
+<!-- Tu contenido aquí -->
+
+<?php
+// Incluir footer
+include __DIR__ . '/partials/footer.php';
+?>
+```
+
+Ver `app/views/ejemplo_vista.php` para un ejemplo completo.
 
 ---
 

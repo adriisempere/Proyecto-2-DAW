@@ -6,11 +6,11 @@
         <div class="row g-4">
             <!-- Columna 1: Información de la marca -->
             <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <h5 class="fw-bold mb-4">
+                <h5 class="fw-bold mb-4 text-white">
                     <i class="bi bi-leaf-fill text-success me-2"></i>
                     GreenPoints
                 </h5>
-                <p class="text-muted mb-4">
+                <p class="mb-4" style="color: rgba(255,255,255,0.8);">
                     Liderando la revolución verde a través de la tecnología y el compromiso ciudadano. 
                     Cada acción cuenta para un planeta más sostenible.
                 </p>
@@ -18,15 +18,15 @@
                 <!-- Estadísticas rápidas -->
                 <div class="row text-center mb-4">
                     <div class="col-6">
-                        <div class="stat-box p-3 rounded" style="background: rgba(40, 167, 69, 0.1);">
+                        <div class="stat-box p-3 rounded" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3);">
                             <h5 class="text-success fw-bold mb-0">+10k</h5>
-                            <small class="text-muted">Usuarios</small>
+                            <small class="text-white-50">Usuarios</small>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="stat-box p-3 rounded" style="background: rgba(32, 201, 151, 0.1);">
+                        <div class="stat-box p-3 rounded" style="background: rgba(32, 201, 151, 0.15); border: 1px solid rgba(32, 201, 151, 0.3);">
                             <h5 class="text-success fw-bold mb-0">50 Ton</h5>
-                            <small class="text-muted">Reciclado</small>
+                            <small class="text-white-50">Reciclado</small>
                         </div>
                     </div>
                 </div>
@@ -53,25 +53,25 @@
             
             <!-- Columna 2: Enlaces rápidos -->
             <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-                <h6 class="fw-bold mb-4">Aplicación</h6>
+                <h6 class="fw-bold mb-4 text-white">Aplicación</h6>
                 <ul class="list-unstyled">
                     <li class="mb-2">
-                        <a href="index.php?action=home" class="footer-link text-muted text-decoration-none">
+                        <a href="index.php?action=home" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Inicio
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="index.php?action=ranking" class="footer-link text-muted text-decoration-none">
+                        <a href="index.php?action=ranking" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Ranking
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="index.php?action=centros" class="footer-link text-muted text-decoration-none">
+                        <a href="index.php?action=centros" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Centros
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="index.php?action=registro_create" class="footer-link text-muted text-decoration-none">
+                        <a href="index.php?action=registro_create" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Registrar
                         </a>
                     </li>
@@ -80,30 +80,30 @@
             
             <!-- Columna 3: Soporte -->
             <div class="col-lg-2 col-md-6 col-6 mb-4 mb-lg-0">
-                <h6 class="fw-bold mb-4">Soporte</h6>
+                <h6 class="fw-bold mb-4 text-white">Soporte</h6>
                 <ul class="list-unstyled">
                     <li class="mb-2">
-                        <a href="#" class="footer-link text-muted text-decoration-none">
+                        <a href="#" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Ayuda
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="footer-link text-muted text-decoration-none">
+                        <a href="#" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>FAQ
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="footer-link text-muted text-decoration-none">
+                        <a href="#" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Privacidad
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="footer-link text-muted text-decoration-none">
+                        <a href="#" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Términos
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="footer-link text-muted text-decoration-none">
+                        <a href="#" class="footer-link text-decoration-none" style="color: rgba(255,255,255,0.7);">
                             <i class="bi bi-chevron-right me-1"></i>Contacto
                         </a>
                     </li>
@@ -112,8 +112,8 @@
             
             <!-- Columna 4: Newsletter y contacto -->
             <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                <h6 class="fw-bold mb-4">Newsletter</h6>
-                <p class="text-muted small mb-3">
+                <h6 class="fw-bold mb-4 text-white">Newsletter</h6>
+                <p class="small mb-3" style="color: rgba(255,255,255,0.8);">
                     Suscríbete para recibir noticias sobre sostenibilidad y novedades de GreenPoints.
                 </p>
                 
@@ -138,15 +138,15 @@
                 
                 <!-- Información de contacto -->
                 <div class="contact-info">
-                    <p class="text-muted small mb-2">
+                    <p class="small mb-2" style="color: rgba(255,255,255,0.8);">
                         <i class="bi bi-envelope-fill text-success me-2"></i>
                         info@greenpoints.com
                     </p>
-                    <p class="text-muted small mb-2">
+                    <p class="small mb-2" style="color: rgba(255,255,255,0.8);">
                         <i class="bi bi-telephone-fill text-success me-2"></i>
                         +34 900 123 456
                     </p>
-                    <p class="text-muted small mb-0">
+                    <p class="small mb-0" style="color: rgba(255,255,255,0.8);">
                         <i class="bi bi-geo-alt-fill text-success me-2"></i>
                         Madrid, España
                     </p>
@@ -160,12 +160,12 @@
         <!-- Copyright y enlaces legales -->
         <div class="row align-items-center">
             <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <p class="text-muted small mb-0">
+                <p class="small mb-0" style="color: rgba(255,255,255,0.6);">
                     © <?= date('Y') ?> GreenPoints. Todos los derechos reservados.
                 </p>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <p class="text-muted small mb-0">
+                <p class="small mb-0" style="color: rgba(255,255,255,0.6);">
                     Hecho con <i class="bi bi-heart-fill text-danger"></i> por el planeta 
                     <i class="bi bi-globe text-success"></i>
                 </p>
@@ -210,13 +210,13 @@
     // Estilos para enlaces del footer
     document.querySelectorAll('.footer-link').forEach(link => {
         link.addEventListener('mouseenter', function() {
-            this.style.color = '#28a745';
+            this.style.color = '#ffffff';
             this.style.paddingLeft = '5px';
             this.style.transition = 'all 0.3s';
         });
         
         link.addEventListener('mouseleave', function() {
-            this.style.color = '';
+            this.style.color = 'rgba(255,255,255,0.7)';
             this.style.paddingLeft = '0';
         });
     });
