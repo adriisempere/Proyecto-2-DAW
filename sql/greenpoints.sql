@@ -1,6 +1,5 @@
 -- ====================================================
 --  BASE DE DATOS: GREENPOINTS
---  Modelo según tu diagrama ER
 -- ====================================================
 
 -- Borrar tablas si existen (para reiniciar)

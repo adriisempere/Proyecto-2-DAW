@@ -1,11 +1,4 @@
 <?php
-/**
- * Configuración de conexión a la base de datos
- * 
- * NOTA DE SEGURIDAD: En producción, utiliza variables de entorno
- * para almacenar las credenciales de la base de datos.
- * Considera crear un archivo .env (no incluido en Git) y usar una librería como vlucas/phpdotenv
- */
 
 // Configuración de la base de datos
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');

@@ -65,7 +65,7 @@ include __DIR__ . '/partials/header.php';
                         </div>
                         <h4 class="fw-bold">Registro Ágil</h4>
                         <p class="text-muted">Escanea o sube tus tickets de reciclaje de plástico, papel o vidrio de forma inmediata.</p>
-                    </div>
+                    </div> 
                 </div>
             </div>
             <div class="col-md-4">
@@ -128,7 +128,7 @@ include __DIR__ . '/partials/header.php';
     </div>
 </section>
 
-<!-- CTA Section -->
+<!-- Section Ranking-Cuenta -->
 <section class="py-5 bg-success text-white">
     <div class="container text-center py-5">
         <h2 class="display-4 fw-bold mb-4">¿Listo para hacer la diferencia?</h2>

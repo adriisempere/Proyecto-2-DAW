@@ -33,19 +33,19 @@
                 
                 <!-- Redes sociales -->
                 <div class="d-flex gap-3">
-                    <a href="#" class="social-link text-white fs-4" title="Facebook" target="_blank">
+                    <a href="https://www.facebook.com/?locale=es_ES" class="social-link text-white fs-4" title="Facebook" target="_blank">
                         <i class="bi bi-facebook"></i>
                     </a>
-                    <a href="#" class="social-link text-white fs-4" title="Instagram" target="_blank">
+                    <a href="https://www.instagram.com/" class="social-link text-white fs-4" title="Instagram" target="_blank">
                         <i class="bi bi-instagram"></i>
                     </a>
-                    <a href="#" class="social-link text-white fs-4" title="Twitter/X" target="_blank">
+                    <a href="https://x.com/" class="social-link text-white fs-4" title="Twitter/X" target="_blank">
                         <i class="bi bi-twitter-x"></i>
                     </a>
-                    <a href="#" class="social-link text-white fs-4" title="LinkedIn" target="_blank">
+                    <a href="https://www.linkedin.com/" class="social-link text-white fs-4" title="LinkedIn" target="_blank">
                         <i class="bi bi-linkedin"></i>
                     </a>
-                    <a href="#" class="social-link text-white fs-4" title="YouTube" target="_blank">
+                    <a href="https://www.youtube.com/" class="social-link text-white fs-4" title="YouTube" target="_blank">
                         <i class="bi bi-youtube"></i>
                     </a>
                 </div>
