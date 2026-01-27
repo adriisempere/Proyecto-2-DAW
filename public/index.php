@@ -11,7 +11,6 @@ $action = $_GET['action'] ?? 'home';
 
 switch ($action) {
     case 'home':
-        // Ajusta la ruta según donde tengas tus vistas. Aquí se asume `app/views/home.php`.
         include __DIR__ . '/../app/views/home.php';
         break;
     case 'register':
