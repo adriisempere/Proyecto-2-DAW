@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - GreenPoints</title>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -18,30 +19,30 @@
             align-items: center;
             padding: 40px 0;
         }
-        
+
         .register-card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
-        
+
         .register-header {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             padding: 40px;
             text-align: center;
         }
-        
+
         .register-body {
             padding: 40px;
         }
-        
+
         .form-control:focus {
             border-color: #28a745;
             box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
         }
-        
+
         .btn-register {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
@@ -49,23 +50,35 @@
             font-weight: 600;
             transition: transform 0.3s;
         }
-        
+
         .btn-register:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
         }
-        
+
         .password-strength {
             height: 5px;
             border-radius: 3px;
             transition: all 0.3s;
         }
-        
-        .strength-weak { background: #dc3545; width: 33%; }
-        .strength-medium { background: #ffc107; width: 66%; }
-        .strength-strong { background: #28a745; width: 100%; }
+
+        .strength-weak {
+            background: #dc3545;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background: #ffc107;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background: #28a745;
+            width: 100%;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row justify-content-center">
@@ -76,7 +89,7 @@
                         <h2 class="fw-bold">Únete a GreenPoints</h2>
                         <p class="mb-0">Comienza tu viaje hacia un planeta más verde</p>
                     </div>
-                    
+
                     <div class="register-body">
                         <?php if (isset($_SESSION['error'])): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -86,96 +99,75 @@
                             </div>
                             <?php unset($_SESSION['error']); ?>
                         <?php endif; ?>
-                        
+
                         <form method="POST" action="index.php?action=register_post" id="registerForm">
+                            <!-- Token CSRF -->
+                            <?php
+                            require_once __DIR__ . '/../helpers/CsrfHelper.php';
+                            echo CsrfHelper::getTokenField();
+                            ?>
+
                             <div class="mb-3">
                                 <label for="nombre" class="form-label fw-semibold">
                                     <i class="bi bi-person me-2"></i>Nombre Completo
                                 </label>
-                                <input 
-                                    type="text" 
-                                    class="form-control form-control-lg" 
-                                    id="nombre" 
-                                    name="nombre" 
-                                    placeholder="Tu nombre"
-                                    required
-                                    minlength="3"
-                                    autocomplete="name"
-                                >
+                                <input type="text" class="form-control form-control-lg" id="nombre" name="nombre"
+                                    placeholder="Tu nombre" required minlength="3" autocomplete="name"
+                                    value="<?= isset($_SESSION['old_data']['nombre']) ? htmlspecialchars($_SESSION['old_data']['nombre']) : '' ?>">
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="email" class="form-label fw-semibold">
                                     <i class="bi bi-envelope me-2"></i>Correo Electrónico
                                 </label>
-                                <input 
-                                    type="email" 
-                                    class="form-control form-control-lg" 
-                                    id="email" 
-                                    name="email" 
-                                    placeholder="tu@email.com"
-                                    required
-                                    autocomplete="email"
-                                >
+                                <input type="email" class="form-control form-control-lg" id="email" name="email"
+                                    placeholder="tu@email.com" required autocomplete="email"
+                                    value="<?= isset($_SESSION['old_data']['email']) ? htmlspecialchars($_SESSION['old_data']['email']) : '' ?>">
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="password" class="form-label fw-semibold">
                                     <i class="bi bi-lock me-2"></i>Contraseña
                                 </label>
-                                <input 
-                                    type="password" 
-                                    class="form-control form-control-lg" 
-                                    id="password" 
-                                    name="password" 
-                                    placeholder="••••••••"
-                                    required
-                                    minlength="6"
-                                    autocomplete="new-password"
-                                >
+                                <input type="password" class="form-control form-control-lg" id="password"
+                                    name="password" placeholder="••••••••" required minlength="6"
+                                    autocomplete="new-password">
                                 <div class="password-strength mt-2" id="passwordStrength"></div>
                                 <small class="text-muted">Mínimo 6 caracteres</small>
                             </div>
-                            
+
                             <div class="mb-4">
                                 <label for="password_confirm" class="form-label fw-semibold">
                                     <i class="bi bi-lock-fill me-2"></i>Confirmar Contraseña
                                 </label>
-                                <input 
-                                    type="password" 
-                                    class="form-control form-control-lg" 
-                                    id="password_confirm" 
-                                    name="password_confirm" 
-                                    placeholder="••••••••"
-                                    required
-                                    autocomplete="new-password"
-                                >
+                                <input type="password" class="form-control form-control-lg" id="password_confirm"
+                                    name="password_confirm" placeholder="••••••••" required autocomplete="new-password">
                                 <div class="invalid-feedback">
                                     Las contraseñas no coinciden
                                 </div>
                             </div>
-                            
+
                             <div class="mb-4 form-check">
                                 <input type="checkbox" class="form-check-input" id="terms" required>
                                 <label class="form-check-label small" for="terms">
-                                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a> 
+                                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a>
                                     y la <a href="#" class="text-decoration-none">política de privacidad</a>
                                 </label>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-success btn-register w-100 btn-lg mb-3">
                                 <i class="bi bi-person-plus me-2"></i>Crear Cuenta
                             </button>
-                            
+
                             <div class="text-center">
                                 <p class="text-muted mb-2">¿Ya tienes cuenta?</p>
                                 <a href="index.php?action=login" class="text-decoration-none fw-semibold">
                                     Inicia sesión aquí
                                 </a>
                             </div>
-                            
+
                             <hr class="my-4">
-                            
+
                             <div class="text-center">
                                 <a href="index.php?action=home" class="text-muted text-decoration-none">
                                     <i class="bi bi-arrow-left me-2"></i>Volver al inicio
@@ -184,7 +176,7 @@
                         </form>
                     </div>
                 </div>
-                
+
                 <!-- Beneficios de unirse -->
                 <div class="row mt-4 text-white">
                     <div class="col-md-4 text-center">
@@ -203,7 +195,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Validación de contraseñas coincidentes
@@ -211,18 +203,18 @@
         const passwordConfirm = document.getElementById('password_confirm');
         const form = document.getElementById('registerForm');
         const strengthBar = document.getElementById('passwordStrength');
-        
+
         // Verificar fuerza de contraseña
-        password.addEventListener('input', function() {
+        password.addEventListener('input', function () {
             const value = this.value;
             let strength = 0;
-            
+
             if (value.length >= 6) strength++;
             if (value.length >= 10) strength++;
             if (/[a-z]/.test(value) && /[A-Z]/.test(value)) strength++;
             if (/\d/.test(value)) strength++;
             if (/[@$!%*?&#]/.test(value)) strength++;
-            
+
             strengthBar.className = 'password-strength mt-2';
             if (strength <= 2) {
                 strengthBar.classList.add('strength-weak');
@@ -232,9 +224,9 @@
                 strengthBar.classList.add('strength-strong');
             }
         });
-        
+
         // Validar que las contraseñas coincidan
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             if (password.value !== passwordConfirm.value) {
                 e.preventDefault();
                 passwordConfirm.classList.add('is-invalid');
@@ -243,8 +235,8 @@
                 passwordConfirm.classList.remove('is-invalid');
             }
         });
-        
-        passwordConfirm.addEventListener('input', function() {
+
+        passwordConfirm.addEventListener('input', function () {
             if (this.value === password.value) {
                 this.classList.remove('is-invalid');
                 this.classList.add('is-valid');
@@ -255,4 +247,5 @@
         });
     </script>
 </body>
+
 </html>
