@@ -166,18 +166,12 @@ Hemos implementado varias medidas para garantizar la robustez:
 
 ---
 
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia **MIT**.
-
----
-
 ## 👥 Equipo
 
--   **Adrian Sempere** - [GitHub](https://github.com/tu-usuario)
+-   **Adrian Sempere Serrano / Diego Mario Ralcef** - [GitHub](https://github.com/tu-usuario)
 
 ---
 
 <p align="center">
-  <strong>💚 Hecho con pasión por un planeta más sostenible 🌍</strong>
+  <strong>💚 Hecho por un planeta más sostenible 🌍</strong>
 </p>
