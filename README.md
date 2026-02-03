@@ -1,6 +1,26 @@
 # 🌱 GreenPoints - Gamificación del Reciclaje
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D_8.0-777bb4.svg?logo=php&logoColor=white)](https://www.php.net/)
+[![Bootstrap Version](https://img.shields.io/badge/Bootstrap-5.3.3-7952b3.svg?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![Status](https://img.shields.io/badge/Status-Desarrollo_Activo-brightgreen.svg)](https://github.com/tu-usuario/Proyecto-2-DAW)
+
 ![GreenPoints Logo](public/img/LogoGreenPoints.png)
+
+## 📖 Tabla de Contenidos
+
+- [Descripción](#-descripción-del-proyecto)
+- [Características](#-características-principales)
+- [Arquitectura](#-arquitectura-del-proyecto)
+- [Base de Datos](#-base-de-datos)
+- [Tecnologías](#-tecnologías-utilizadas)
+- [Instalación](#-instalación-y-configuración)
+- [Uso](#-uso-de-la-aplicación)
+- [Desarrollo](#-proceso-de-desarrollo)
+- [Seguridad](#-seguridad-y-mejores-prácticas)
+- [Contribución](#-contribución)
+
+---
 
 ## 📋 Descripción del Proyecto
 
@@ -8,10 +28,10 @@
 
 ### 🎯 Objetivos Principales
 
-- **Concienciación ambiental**: Educar sobre la importancia del reciclaje
-- **Gamificación**: Sistema de puntos, ranking y recompensas para motivar la participación
-- **Comunidad**: Crear una red de usuarios comprometidos con el medio ambiente
-- **Impacto medible**: Estadísticas en tiempo real del material reciclado y CO₂ reducido
+-   🌿 **Concienciación Ambiental**: Educar sobre el impacto positivo del reciclaje.
+-   🎮 **Gamificación**: Uso de rankings y recompensas para fomentar la participación.
+-   🤝 **Comunidad**: Crear una red de usuarios comprometidos.
+-   📊 **Impacto Medible**: Estadísticas en tiempo real de materiales y CO₂.
 
 ---
 
@@ -19,422 +39,145 @@
 
 ### ✨ Funcionalidades Implementadas
 
-- **Sistema de Usuarios**
-  - Registro e inicio de sesión
-  - Perfiles de usuario con sistema de puntos
-  - Roles diferenciados (Usuario y Administrador)
-  
-- **Registro de Reciclaje**
-  - Registro de materiales reciclados (plástico, papel, vidrio, metal)
-  - Cálculo automático de puntos según tipo y cantidad
-  - Vinculación con centros de reciclaje
-  
-- **Centros de Reciclaje**
-  - Gestión de puntos de recogida
-  - Información de ubicación, horarios y tipos de residuos aceptados
-  
-- **Sistema de Ranking**
-  - Clasificación de usuarios por puntos acumulados
-  - Rankings periódicos (diario, semanal, mensual)
-  - Posiciones e historial de rendimiento
-
-- **Interfaz Atractiva**
-  - Diseño moderno y responsivo con Bootstrap 5
-  - Header y Footer reutilizables con navegación completa
-  - Sistema de alertas automático (éxito, error, info)
-  - Menú de usuario con dropdown para gestión de cuenta
-  - Animaciones y efectos visuales
-  - UX optimizada para dispositivos móviles
+-   👤 **Sistema de Usuarios**: Registro, inicio de sesión seguro (Bcrypt) y perfiles con puntos.
+-   ♻️ **Registro de Reciclaje**: Gestión de materiales (plástico, papel, vidrio, metal) con cálculo automático de puntos.
+-   📍 **Centros de Reciclaje**: Directorio de puntos de recogida con horarios y tipos de residuos.
+-   🏆 **Ranking Global**: Clasificación periódica de usuarios por rendimiento ambiental.
+-   📱 **Interfaz UX/UI**: Diseño moderno, responsivo y fluido con Bootstrap 5 y animaciones.
 
 ---
 
 ## 🏗️ Arquitectura del Proyecto
 
-### Patrón de Diseño: MVC (Modelo-Vista-Controlador)
+El proyecto sigue el patrón de diseño **MVC (Modelo-Vista-Controlador)** para garantizar la escalabilidad y mantenibilidad.
 
-El proyecto sigue el patrón MVC para mantener una separación clara de responsabilidades:
-
-```
+```text
 Proyecto-2-DAW/
-│
 ├── app/
-│   ├── controllers/          # Lógica de negocio
-│   │   ├── UsuarioController.php
-│   │   ├── CentroController.php
-│   │   ├── RegistroController.php
-│   │   └── RankingController.php
-│   │
-│   └── views/                # Interfaz de usuario
-│       ├── home.php          # Landing page
-│       ├── login.php         # Inicio de sesión
-│       ├── register.php      # Registro de usuarios
-│       ├── ejemplo_vista.php # Template de ejemplo
-│       └── partials/         # Componentes reutilizables
-│           ├── header.php    # Header con navbar, alertas y meta tags
-│           └── footer.php    # Footer completo con enlaces y redes sociales
-│
+│   ├── controllers/      # Lógica de negocio (Usuario, Centro, Registro, Ranking)
+│   ├── helpers/          # Utilidades (CsrfHelper, Sesiones)
+│   ├── models/           # Interacción con la base de datos (En desarrollo)
+│   └── views/            # Interfaz de usuario (Home, Login, Register)
+│       └── partials/     # Componentes reutilizables (Header, Footer)
 ├── config/
-│   └── database.php          # Configuración de BD
-│
-├── public/                   # Archivos públicos
-│   ├── index.php            # Punto de entrada (Front Controller)
-│   ├── css/                 # Estilos (reservado para futuros CSS personalizados)
-│   ├── js/                  # JavaScript (reservado para futuros scripts)
-│   └── img/                 # Imágenes
-│       └── LogoGreenPoints.png
-│
+│   └── database.php      # Configuración de conexión (soporta variables de entorno)
+├── public/               # Punto de entrada público
+│   ├── css/              # Estilos personalizados
+│   ├── js/               # Scripts JavaScript
+│   ├── img/              # Recursos visuales
+│   └── index.php         # Front Controller
 ├── sql/
-│   └── greenpoints.sql      # Script de base de datos
-│
-├── .gitignore
-└── README.md
+│   └── greenpoints.sql   # Esquema de la base de datos
+├── INSTALL.md            # Guía detallada de instalación
+└── README.md             # Documentación principal
 ```
 
 ---
 
 ## 🗄️ Base de Datos
 
-### Modelo Entidad-Relación
+La base de datos `greenpoints` utiliza un diseño relacional optimizado:
 
-La base de datos `greenpoints` está compuesta por las siguientes tablas:
-
-#### **usuario**
-Almacena la información de los usuarios registrados.
-- `id` (PK)
-- `nombre`
-- `email` (UNIQUE)
-- `password` (Hash)
-- `rol` (ENUM: 'usuario', 'admin')
-- `puntos_totales` (Default: 0)
-- `foto`
-- `creado_at`
-
-#### **admin**
-Hereda de usuario para identificar administradores.
-- `id` (PK, FK → usuario.id)
-
-#### **centro_reciclaje**
-Información de los puntos de recogida.
-- `id` (PK)
-- `nombre`
-- `direccion`
-- `tipos_residuos`
-- `horario`
-- `creado_at`
-
-#### **registro_reciclaje**
-Registros de actividades de reciclaje de los usuarios.
-- `id` (PK)
-- `usuario_id` (FK → usuario.id)
-- `centro_id` (FK → centro_reciclaje.id)
-- `fecha`
-- `tipo_material`
-- `cantidad`
-- `puntos_ganados`
-
-#### **ranking**
-Períodos de clasificación.
-- `id` (PK)
-- `fecha`
-- `descripcion`
-- `creado_at`
-
-#### **detalle_ranking**
-Posiciones de usuarios en cada ranking.
-- `id` (PK)
-- `ranking_id` (FK → ranking.id)
-- `usuario_id` (FK → usuario.id)
-- `posicion`
-- `puntos`
-
-### Relaciones
-- Un **usuario** puede tener múltiples **registros de reciclaje** (1:N)
-- Un **centro de reciclaje** puede estar vinculado a múltiples **registros** (1:N)
-- Un **ranking** contiene múltiples **detalles de ranking** (1:N)
-- Un **usuario** puede aparecer en múltiples **detalles de ranking** (1:N)
+-   **usuario**: Datos personales, credenciales (hash) y puntos acumulados.
+-   **centro_reciclaje**: Ubicaciones y tipos de materiales aceptados.
+-   **registro_reciclaje**: Historial de depósitos y puntos ganados.
+-   **ranking**: Períodos de competición.
+-   **detalle_ranking**: Instantáneas de posiciones y puntos.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-### Backend
-- **PHP 8+**: Lenguaje de programación del servidor
-- **MySQL**: Sistema de gestión de bases de datos
-- **Patrón MVC**: Arquitectura de software
-
-### Frontend
-- **HTML5 / CSS3**: Estructura y estilos
-- **Bootstrap 5.3.3**: Framework CSS para diseño responsivo
-- **JavaScript Vanilla**: Interactividad y animaciones integradas en partials
-- **Bootstrap Icons**: Iconografía
-- **Animate.css**: Librería de animaciones
-- **Google Fonts (Poppins)**: Tipografía moderna
-
-### Otros
-- **Git**: Control de versiones
-- **Composer** (preparado): Gestor de dependencias PHP
+| Categoría | Tecnologías |
+| :--- | :--- |
+| **Backend** | ![PHP](https://img.shields.io/badge/PHP-8.x-777bb4?style=flat-square&logo=php&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat-square&logo=mysql&logoColor=white) |
+| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952b3?style=flat-square&logo=bootstrap&logoColor=white) ![JS](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black) |
+| **Librerías** | `Animate.css`, `Bootstrap Icons`, `Google Fonts (Poppins)` |
+| **Herramientas** | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) ![Composer](https://img.shields.io/badge/Composer-v2-885630?style=flat-square&logo=composer&logoColor=white) |
 
 ---
 
 ## 📦 Instalación y Configuración
 
-### Requisitos Previos
+> Para una guía detallada, consulta [INSTALL.md](./INSTALL.md).
 
-- PHP >= 8.0
-- MySQL >= 5.7 o MariaDB >= 10.2
-- Servidor web (Apache, Nginx) o PHP built-in server
-- Composer (opcional)
+### Resumen Rápido:
 
-### Paso 1: Clonar el repositorio
-
-```bash
-git clone https://github.com/tu-usuario/Proyecto-2-DAW.git
-cd Proyecto-2-DAW
-```
-
-### Paso 2: Configurar la base de datos
-
-1. Crea una base de datos MySQL:
-```sql
-CREATE DATABASE greenpoints CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-2. Importa el script SQL:
-```bash
-mysql -u root -p greenpoints < sql/greenpoints.sql
-```
-
-3. Configura las credenciales en `config/database.php`:
-```php
-$mysqli = new mysqli("localhost", "tu_usuario", "tu_contraseña", "greenpoints");
-```
-
-> **💡 Recomendación de seguridad**: En producción, usa variables de entorno para las credenciales de la base de datos.
-
-### Paso 3: Configurar el servidor
-
-#### Opción A: Servidor PHP integrado (desarrollo)
-```bash
-cd public
-php -S localhost:8000
-```
-
-#### Opción B: Apache
-Configura el DocumentRoot a la carpeta `public/` y asegúrate de tener mod_rewrite activado.
-
-#### Opción C: XAMPP/WAMP
-Coloca el proyecto en `htdocs/` o `www/` y accede vía `http://localhost/Proyecto-2-DAW/public/`
-
-### Paso 4: Acceder a la aplicación
-
-Abre tu navegador y visita:
-```
-http://localhost:8000  (servidor PHP integrado)
-http://localhost/Proyecto-2-DAW/public/  (Apache)
-```
+1.  **Clonar repositorio**:
+    ```bash
+    git clone https://github.com/tu-usuario/Proyecto-2-DAW.git
+    ```
+2.  **Base de datos**:
+    Importa `sql/greenpoints.sql` en tu MySQL.
+3.  **Configuración**:
+    Crea un archivo `.env` o edita `config/database.php`.
+4.  **Ejecutar**:
+    ```bash
+    cd public
+    php -S localhost:8000
+    ```
 
 ---
 
 ## 🎮 Uso de la Aplicación
 
 ### Credenciales de Prueba
+-   **Admin**: `admin@greenpoints.com` / `admin123`
+-   **Usuario**: `usuario@ejemplo.com` / `user123` (si está en el SQL)
 
-**Administrador:**
-- Email: `admin@greenpoints.com`
-- Contraseña: `admin123`
-
-### Flujo de Usuario
-
-1. **Registro**: Crear una cuenta nueva en `/index.php?action=register`
-2. **Login**: Iniciar sesión en `/index.php?action=login`
-3. **Registrar Reciclaje**: Añadir actividades de reciclaje desde el panel de usuario
-4. **Consultar Ranking**: Ver tu posición en la tabla de clasificación
-5. **Explorar Centros**: Encontrar puntos de reciclaje cercanos
+### Flujo Principal
+1.  **Registro/Login** para acceder al panel.
+2.  **Registrar reciclaje** para ganar puntos.
+3.  **Explorar centros** para encontrar lugares cercanos.
+4.  **Consultar ranking** para ver tu progreso.
 
 ---
 
 ## 🔄 Proceso de Desarrollo
 
-### Fase 1: Planificación y Diseño ✅
-- Definición de requisitos funcionales
-- Diseño del modelo de base de datos (Diagrama ER)
-- Wireframes y mockups de la interfaz
-- Selección de tecnologías
-
-### Fase 2: Configuración del Entorno ✅
-- Estructura de carpetas MVC
-- Configuración de base de datos
-- Implementación del Front Controller (`public/index.php`)
-- Sistema de enrutamiento básico
-
-### Fase 3: Backend (En Desarrollo) 🚧
-- **Completado:**
-  - Creación de controladores base
-  - Script SQL con tablas y relaciones
-  - Configuración de conexión a BD
-  
-- **En progreso:**
-  - Implementación de lógica en controladores
-  - Sistema de autenticación seguro (sesiones, bcrypt)
-  - CRUD completo para todas las entidades
-  - Validación de datos del lado del servidor
-
-### Fase 4: Frontend (Avanzado) 🚀
-- **Completado:**
-  - Landing page atractiva y responsiva
-  - Sistema de partials (header/footer) completo y reutilizable
-  - Header con navbar gradiente, menú de usuario y sistema de alertas
-  - Footer profesional de 4 columnas con newsletter y redes sociales
-  - Vistas de login y registro completamente funcionales
-  - Integración de Bootstrap 5 con estilos personalizados
-  - Animaciones y efectos visuales (Animate.css)
-  - Vista de ranking con tabla estilizada
-  - Sistema de navegación completo y responsive
-  
-- **En progreso:**
-  - Panel de usuario con dashboard personalizado
-  - Mapa interactivo de centros de reciclaje
-  - Vistas de perfil de usuario
-  - Vista de historial de registros con filtros
-
-### Fase 5: Funcionalidades Avanzadas (Pendiente) 📋
-- Sistema de recompensas canjeables
-- Notificaciones en tiempo real
-- Estadísticas personalizadas de impacto ambiental
-- API REST para aplicación móvil
-- Integración de mapas (Google Maps / OpenStreetMap)
-- Sistema de insignias y logros
-
-### Fase 6: Testing y Despliegue (Pendiente) 📋
-- Pruebas unitarias
-- Pruebas de integración
-- Optimización de rendimiento
-- Despliegue en servidor de producción
-- Documentación técnica completa
+-   [x] **Fase 1**: Diseño y Planificación.
+-   [x] **Fase 2**: Arquitectura MVC y Enrutamiento.
+-   [x] **Fase 3**: CRUD Base y Autenticación.
+-   [ ] **Fase 4**: Panel de Usuario y Estadísticas.
+-   [ ] **Fase 5**: Sistema de Recompensas e Insignias.
+-   [ ] **Fase 6**: Testing, Seguridad y Despliegue.
 
 ---
 
-## 🐛 Problemas Conocidos y Mejoras Pendientes
+## 🛡️ Seguridad y Mejores Prácticas
 
-### Issues Identificados
-- [x] ~~Controladores con lógica mínima~~ (SOLUCIONADO)
-- [x] ~~Vista de login sin contenido~~ (SOLUCIONADO)
-- [x] ~~Vistas sin usar partials~~ (SOLUCIONADO)
-- [ ] Falta implementar validación avanzada de formularios
-- [ ] Credenciales de BD hardcodeadas (sin .env)
-- [ ] Falta manejo de errores robusto
-- [ ] Sin protección CSRF en formularios
+Hemos implementado varias medidas para garantizar la robustez:
 
-### Mejoras Planificadas
-- [ ] Implementar sistema de sesiones seguro
-- [ ] Añadir validación client-side con JavaScript
-- [ ] Crear middleware de autenticación
-- [ ] Implementar sistema de logs
-- [ ] Añadir tests automatizados
-- [ ] Dockerizar la aplicación
-- [ ] Implementar caché de consultas frecuentes
-
----
-
-## 🎨 Sistema de Partials
-
-El proyecto utiliza un sistema de componentes reutilizables (partials) para mantener consistencia en el diseño:
-
-### Header (`app/views/partials/header.php`)
-- Estructura HTML completa con meta tags
-- Navbar con gradiente verde (identidad de marca)
-- Menú de navegación responsive
-- Sistema de usuario (badge con nombre y puntos)
-- Dropdown con opciones de perfil y admin
-- Sistema de alertas automático (success, error, info)
-- Detección automática de página activa
-- Sticky navbar con efecto scroll
-
-### Footer (`app/views/partials/footer.php`)
-- Footer de 4 columnas completamente responsive
-- Sección de marca con estadísticas
-- Enlaces a aplicación y soporte
-- Newsletter con formulario
-- Información de contacto
-- Redes sociales con animaciones
-- Botón scroll-to-top automático
-- Copyright dinámico
-
-### Uso de Partials
-
-```php
-<?php
-// Definir título de página (opcional)
-$pageTitle = "Mi Página - GreenPoints";
-
-// Incluir header
-include __DIR__ . '/partials/header.php';
-?>
-
-<!-- Tu contenido aquí -->
-
-<?php
-// Incluir footer
-include __DIR__ . '/partials/footer.php';
-?>
-```
-
-Ver `app/views/ejemplo_vista.php` para un ejemplo completo.
+-   ✅ **Protección CSRF**: Uso de tokens en formularios críticos.
+-   ✅ **Hashing de Contraseñas**: Implementación de `password_hash()` con Bcrypt.
+-   ✅ **Gestión de Sesiones**: Control seguro de acceso de usuarios.
+-   ✅ **Variables de Entorno**: Configuración desacoplada para mayor seguridad.
+-   🚧 **Validación**: Limpieza de inputs y sentencias preparadas (PDO/MySQLi).
 
 ---
 
 ## 🤝 Contribución
 
-Este es un proyecto académico de 2º DAW (Desarrollo de Aplicaciones Web). Si deseas contribuir:
-
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+1.  Haz un **Fork** del proyecto.
+2.  Crea una rama (`git checkout -b feature/MejoraX`).
+3.  Haz un **Commit** de tus cambios.
+4.  Haz un **Push** a la rama.
+5.  Abre un **Pull Request**.
 
 ---
 
 ## 📝 Licencia
 
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+Este proyecto está bajo la Licencia **MIT**.
 
 ---
 
-## 👥 Autores
+## 👥 Equipo
 
-- **Equipo de Desarrollo** - Proyecto Intermodular 2º DAW
-
----
-
-## 📞 Contacto
-
-Para consultas o sugerencias sobre el proyecto:
-- Email: admin@greenpoints.com
-- GitHub: [Proyecto-2-DAW](https://github.com/tu-usuario/Proyecto-2-DAW)
-
----
-
-## 🙏 Agradecimientos
-
-- Profesores y tutores de 2º DAW
-- Comunidad de Bootstrap
-- Imágenes de Unsplash
-- Iconos de Bootstrap Icons
-
----
-
-## 📊 Estadísticas del Proyecto
-
-- **Líneas de código**: ~2,500+
-- **Archivos PHP**: 15
-- **Archivos de documentación**: 4 (README, INSTALL, SECURITY, CHANGELOG)
-- **Commits**: En desarrollo
-- **Estado**: 🚧 En desarrollo activo
-- **Peso del proyecto**: ~50KB (sin dependencias externas)
+-   **Adrian Sempere** - [GitHub](https://github.com/tu-usuario)
 
 ---
 
 <p align="center">
-  <strong>💚 Hecho por el planeta 🌍</strong>
+  <strong>💚 Hecho con pasión por un planeta más sostenible 🌍</strong>
 </p>
