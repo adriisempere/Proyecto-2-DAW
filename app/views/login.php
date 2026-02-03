@@ -60,6 +60,19 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
         }
+
+        .invalid-feedback {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control {
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
     </style>
 </head>
 
@@ -93,7 +106,7 @@
                             <?php unset($_SESSION['success']); ?>
                         <?php endif; ?>
 
-                        <form method="POST" action="index.php?action=login_post">
+                        <form method="POST" action="index.php?action=login_post" novalidate>
                             <!-- Token CSRF -->
                             <?php
                             require_once __DIR__ . '/../helpers/CsrfHelper.php';
@@ -106,6 +119,9 @@
                                 </label>
                                 <input type="email" class="form-control form-control-lg" id="email" name="email"
                                     placeholder="tu@email.com" required autocomplete="email">
+                                <div class="invalid-feedback">
+                                    Por favor, introduce un correo electrónico válido.
+                                </div>
                             </div>
 
                             <div class="mb-4">
@@ -114,6 +130,9 @@
                                 </label>
                                 <input type="password" class="form-control form-control-lg" id="password"
                                     name="password" placeholder="••••••••" required autocomplete="current-password">
+                                <div class="invalid-feedback">
+                                    Por favor, introduce tu contraseña.
+                                </div>
                             </div>
 
                             <div class="mb-4 form-check">
@@ -149,6 +168,55 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const inputs = form.querySelectorAll('input[required]');
+
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateInput(this);
+                });
+
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        validateInput(this);
+                    }
+                });
+            });
+
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                inputs.forEach(input => {
+                    if (!validateInput(input)) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const firstInvalid = form.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                    }
+                }
+            });
+
+            function validateInput(input) {
+                if (!input.checkValidity()) {
+                    input.classList.add('is-invalid');
+                    input.classList.remove('is-valid');
+                    return false;
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                    return true;
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
