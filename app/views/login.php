@@ -106,7 +106,7 @@
                             <?php unset($_SESSION['success']); ?>
                         <?php endif; ?>
 
-                        <form method="POST" action="index.php?action=login_post" novalidate>
+                        <form method="POST" action="index.php?action=login_post" id="loginForm" novalidate>
                             <!-- Token CSRF -->
                             <?php
                             require_once __DIR__ . '/../helpers/CsrfHelper.php';
@@ -168,55 +168,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input[required]');
-
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateInput(this);
-                });
-
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid')) {
-                        validateInput(this);
-                    }
-                });
-            });
-
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (!validateInput(input)) {
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const firstInvalid = form.querySelector('.is-invalid');
-                    if (firstInvalid) {
-                        firstInvalid.focus();
-                    }
-                }
-            });
-
-            function validateInput(input) {
-                if (!input.checkValidity()) {
-                    input.classList.add('is-invalid');
-                    input.classList.remove('is-valid');
-                    return false;
-                } else {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
-                    return true;
-                }
-            }
-        });
-    </script>
+    <script src="js/validation.js"></script>
 </body>
 
 </html>

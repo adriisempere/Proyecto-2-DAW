@@ -22,18 +22,8 @@ class CentroController {
             $centros[] = $row;
         }
 
-        // TODO: Crear vista para listar centros
-        echo "<h1>Centros de Reciclaje</h1>";
-        echo "<a href='index.php?action=centro_create'>Añadir nuevo centro</a><br><br>";
-        
-        foreach ($centros as $centro) {
-            echo "<div style='border: 1px solid #ccc; padding: 10px; margin: 10px 0;'>";
-            echo "<h3>{$centro['nombre']}</h3>";
-            echo "<p><strong>Dirección:</strong> {$centro['direccion']}</p>";
-            echo "<p><strong>Tipos de residuos:</strong> {$centro['tipos_residuos']}</p>";
-            echo "<p><strong>Horario:</strong> {$centro['horario']}</p>";
-            echo "</div>";
-        }
+        // Cargar la vista
+        require __DIR__ . '/../views/centros/index.php';
     }
 
     /**
