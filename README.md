@@ -5,7 +5,9 @@
 [![Bootstrap Version](https://img.shields.io/badge/Bootstrap-5.3.3-7952b3.svg?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
 [![Status](https://img.shields.io/badge/Status-Desarrollo_Activo-brightgreen.svg)](https://github.com/tu-usuario/Proyecto-2-DAW)
 
-![GreenPoints Logo](public/img/LogoGreenPoints.png)
+<p align="center">
+  <img src="public/img/LogoGreenPoints.png" alt="GreenPoints Logo" width="300">
+</p>
 
 ## 📖 Tabla de Contenidos
 
