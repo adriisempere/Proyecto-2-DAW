@@ -5,15 +5,15 @@ include __DIR__ . '/partials/header.php';
 
 <!-- Hero Section -->
 <header class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-lg-auto img-fluid" src="img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
-    <h1 class="display-5 fw-bold">GreenPoints</h1>
-    <div class="col-lg-6 mx-auto">
+    <img class="d-block mx-lg-auto img-fluid animate-float" src="img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
+    <h1 class="display-5 fw-bold animate__animated animate__fadeInDown text-gradient">GreenPoints</h1>
+    <div class="col-lg-6 mx-auto animate__animated animate__fadeInUp delay-200">
         <p class="lead mb-4">
             Nuestro proyecto trata de concienciar a las personas sobre la importancia de reciclar. Ésto lo hacemos mediante un sistema de puntos y recompensas, además de un ranking para incentivar a la competitividad. Cuantos más puntos tengas, más recompensas podrás obtener.
         </p>
         <p class="lead mb-4 h4">¡Empieza a reciclar hoy mismo!</p>
         <div class="d-grid gap-2 d-sm-flex justify-content-md-center">
-            <a href="index.php?action=register" class="btn btn-primary btn-lg px-4 gap-3">
+            <a href="index.php?action=register" class="btn btn-primary btn-lg px-4 gap-3 btn-pulse">
                 <i class="bi bi-person-plus me-2"></i>Registro
             </a>
             <a href="index.php?action=login" class="btn btn-outline-secondary btn-lg px-4">
@@ -28,19 +28,19 @@ include __DIR__ . '/partials/header.php';
     <div class="container text-center">
         <div class="row g-4">
             <div class="col-md-4 col-sm-6">
-                <div class="py-3">
+                <div class="py-3 animate__animated animate__zoomIn delay-100">
                     <h3 class="fw-bold text-primary mb-2">+10k</h3>
                     <p class="text-muted mb-0 fw-500">Usuarios Activos</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
-                <div class="py-3">
+                <div class="py-3 animate__animated animate__zoomIn delay-200">
                     <h3 class="fw-bold text-primary mb-2">50 Ton</h3>
                     <p class="text-muted mb-0 fw-500">Material Reciclado</p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
-                <div class="py-3">
+                <div class="py-3 animate__animated animate__zoomIn delay-300">
                     <h3 class="fw-bold text-primary mb-2">120</h3>
                     <p class="text-muted mb-0 fw-500">Puntos de Recogida</p>
                 </div>
@@ -58,7 +58,7 @@ include __DIR__ . '/partials/header.php';
         </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm">
+                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-100">
                     <div class="card-body">
                         <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-box-seam text-success fs-2"></i>
@@ -69,7 +69,7 @@ include __DIR__ . '/partials/header.php';
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm">
+                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-200">
                     <div class="card-body">
                         <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-trophy text-warning fs-2"></i>
@@ -80,7 +80,7 @@ include __DIR__ . '/partials/header.php';
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm">
+                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-300">
                     <div class="card-body">
                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-geo-alt text-primary fs-2"></i>
