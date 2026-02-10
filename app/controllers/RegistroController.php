@@ -34,7 +34,7 @@ class RegistroController {
         $centros = $this->db->query($query);
 
         // Cargar vista
-        include__DIR__ . '/../views/registro_create.php';
+        include __DIR__ . '/../views/registro_create.php';
     }
 
     /**
