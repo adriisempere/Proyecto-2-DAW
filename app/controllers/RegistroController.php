@@ -33,29 +33,8 @@ class RegistroController {
         $query = "SELECT id, nombre FROM centro_reciclaje ORDER BY nombre ASC";
         $centros = $this->db->query($query);
 
-        // TODO: Crear vista con formulario completo
-        echo "<h1>Registrar Actividad de Reciclaje</h1>";
-        echo "<form method='POST' action='index.php?action=registro_store'>";
-        echo "<label>Centro de reciclaje:</label><br>";
-        echo "<select name='centro_id'>";
-        echo "<option value=''>Selecciona un centro</option>";
-        while ($centro = $centros->fetch_assoc()) {
-            echo "<option value='{$centro['id']}'>{$centro['nombre']}</option>";
-        }
-        echo "</select><br><br>";
-        
-        echo "<label>Tipo de material:</label><br>";
-        echo "<select name='tipo_material' required>";
-        foreach (self::PUNTOS_POR_MATERIAL as $material => $puntos) {
-            echo "<option value='$material'>" . ucfirst($material) . " ($puntos pts/kg)</option>";
-        }
-        echo "</select><br><br>";
-        
-        echo "<label>Cantidad (kg):</label><br>";
-        echo "<input type='number' name='cantidad' step='0.1' min='0.1' required><br><br>";
-        
-        echo "<button type='submit'>Registrar Reciclaje</button>";
-        echo "</form>";
+        // Cargar vista
+        include__DIR__ . '/../views/registro_create.php';
     }
 
     /**
