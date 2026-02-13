@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <!-- Custom Animations -->
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/custom.css?v=<?= time() ?>">
     
     <!-- Estilos Custom -->
     <style>
@@ -27,8 +27,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            background-color: var(--bg-body, #f8fdf9);
+            color: var(--text-main, #333333);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         
@@ -38,7 +38,7 @@
         
         /* Navbar Styles */
         .navbar {
-            background: linear-gradient(135deg, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%) !important;
+            background: linear-gradient(135deg, var(--navbar-bg-start, #28a745) 0%, var(--navbar-bg-end, #20c997) 100%) !important;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             padding: 1rem 0;
             transition: all 0.3s ease;
