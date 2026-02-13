@@ -5,333 +5,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $pageTitle ?? 'GreenPoints - Recicla y Gana' ?></title>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Bootstrap 5 -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <!-- Custom Animations -->
-    <link rel="stylesheet" href="css/custom.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/custom.css">
     
     <!-- Estilos Custom -->
     <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #20c997;
+            --dark-color: #343a40;
+            --light-color: #f8fdf9;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
+            background-color: var(--light-color);
+            color: #333;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-color: var(--bg-body, #f8fdf9);
-            color: var(--text-main, #333333);
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        .main-content {
+        main {
             flex: 1;
         }
         
         /* Navbar Styles */
         .navbar {
-            background: linear-gradient(135deg, var(--navbar-bg-start, #28a745) 0%, var(--navbar-bg-end, #20c997) 100%) !important;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             padding: 1rem 0;
             transition: all 0.3s ease;
-        }
-        
-        .navbar.scrolled {
-            padding: 0.5rem 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
         
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
             color: white !important;
-            display: flex;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-        
-        .navbar-brand:hover {
-            transform: scale(1.05);
-        }
-        
-        .navbar-brand i {
-            font-size: 1.8rem;
-            margin-right: 0.5rem;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .nav-link {
             color: rgba(255,255,255,0.9) !important;
             font-weight: 500;
             padding: 0.5rem 1rem !important;
-            transition: all 0.3s;
-            position: relative;
+            border-radius: 50px;
+            transition: all 0.3s ease;
         }
         
-        .nav-link:hover {
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.2);
             color: white !important;
             transform: translateY(-2px);
         }
         
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: white;
-            transition: all 0.3s;
-            transform: translateX(-50%);
-        }
-        
-        .nav-link:hover::after {
-            width: 80%;
-        }
-        
-        .nav-link.active {
-            color: white !important;
-            font-weight: 600;
-        }
-        
-        .user-badge {
-            background: var(--badge-bg);
-            padding: 0.4rem 1rem;
-            border-radius: 25px;
+        /* User Profile Dropdown */
+        .user-profile-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            font-weight: 500;
-            margin-right: 1rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .points-badge {
-            background: var(--accent-color);
-            color: #000;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .btn-login {
-            background: var(--badge-bg);
-            border: 2px solid white;
-            color: white;
-            font-weight: 600;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
         }
         
-        .btn-login:hover {
+        .user-profile-btn:hover {
             background: white;
             color: var(--primary-color);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        
-        .btn-register {
-            background: white;
-            color: var(--primary-color);
-            font-weight: 600;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            transition: all 0.3s;
-            border: 2px solid white;
+
+        /* Badge Styles */
+        .badge-points {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(5px);
         }
-        
-        .btn-register:hover {
-            background: transparent;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.3);
-        }
-        
+
+        /* Glassmorphism for Dropdowns */
         .dropdown-menu {
-            border-radius: 15px;
-            background-color: var(--dropdown-bg);
-            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
             border: none;
-            margin-top: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease;
         }
         
         .dropdown-item {
-            padding: 0.7rem 1.5rem;
-            transition: all 0.3s;
-            color: var(--text-main);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            transition: all 0.2s;
         }
         
         .dropdown-item:hover {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-item:active {
+            background-color: var(--primary-color);
             color: white;
         }
-        
-        .dropdown-divider {
-            margin: 0.5rem 0;
+
+        /* Mobile Toggle */
+        .navbar-toggler {
+            border: none;
+            background: rgba(255,255,255,0.2);
         }
         
-        /* Responsive */
-        @media (max-width: 991px) {
-            .navbar-collapse {
-                background: rgba(255,255,255,0.1);
-                backdrop-filter: blur(10px);
-                padding: 1rem;
-                border-radius: 15px;
-                margin-top: 1rem;
-            }
-            
-            .user-badge {
-                margin: 0.5rem 0;
-            }
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-nav-item {
+            animation: fadeIn 0.5s ease backwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        
+        /* Navbar scroll effect */
+        .navbar.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(40, 167, 69, 0.95);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNavbar">
-    <div class="container">
-        <a class="navbar-brand" href="index.php?action=home">
-            <i class="bi bi-leaf-fill"></i>
-            GreenPoints
-        </a>
-        
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=home">
-                        <i class="bi bi-house-door me-1"></i>Inicio
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=ranking">
-                        <i class="bi bi-trophy me-1"></i>Ranking
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=centros">
-                        <i class="bi bi-geo-alt me-1"></i>Centros
-                    </a>
-                </li>
-                <?php if (isset($_SESSION['usuario_id'])): ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=registro_create">
-                        <i class="bi bi-recycle me-1"></i>Registrar Reciclaje
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.php?action=mis_registros">
-                        <i class="bi bi-list-check me-1"></i>Mis Registros
-                    </a>
-                </li>
-                <?php endif; ?>
-            </ul>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeInLeft" href="index.php?action=home">
+                <i class="bi bi-recycle me-2"></i>GreenPoints
+            </a>
             
-            <div class="d-flex align-items-center flex-wrap">
-                <!-- Theme Toggle -->
-                <button id="theme-toggle" class="btn btn-outline-light rounded-circle me-3 border-0" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
-                    <i class="bi bi-moon-fill"></i>
-                </button>
+            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item animate-nav-item delay-1">
+                        <a class="nav-link" href="index.php?action=home">
+                            <i class="bi bi-house-door me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item animate-nav-item delay-2">
+                        <a class="nav-link" href="index.php?action=ranking">
+                            <i class="bi bi-trophy me-1"></i>Ranking
+                        </a>
+                    </li>
+                    <li class="nav-item animate-nav-item delay-3">
+                        <a class="nav-link" href="index.php?action=centros">
+                            <i class="bi bi-geo-alt me-1"></i>Centros
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center animate__animated animate__fadeInRight">
+                    <?php if(isset($_SESSION['usuario'])): ?>
+                        <!-- User Points Badge -->
+                        <div class="badge-points rounded-pill px-3 py-2 text-white me-3 d-none d-md-flex align-items-center">
+                            <i class="bi bi-star-fill text-warning me-2"></i>
+                            <span class="fw-bold"><?= $_SESSION['usuario']['puntos'] ?? 0 ?> pts</span>
+                        </div>
 
-                <?php if (isset($_SESSION['usuario_id'])): ?>
-                    <!-- Usuario logueado -->
-                    <div class="user-badge me-2">
-                        <i class="bi bi-person-circle me-2"></i>
-                        <?= htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Usuario') ?>
-                    </div>
-                    <span class="points-badge me-2">
-                        <i class="bi bi-star-fill me-1"></i>
-                        <?= number_format($_SESSION['usuario_puntos'] ?? 0) ?> pts
-                    </span>
-                    
-                    <div class="dropdown">
-                        <button class="btn btn-light btn-sm rounded-circle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;">
-                            <i class="bi bi-gear-fill"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="index.php?action=perfil">
-                                    <i class="bi bi-person me-2"></i>Mi Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="index.php?action=mis_registros">
-                                    <i class="bi bi-list-ul me-2"></i>Mis Registros
-                                </a>
-                            </li>
-                            <?php if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] === 'admin'): ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="index.php?action=admin">
-                                    <i class="bi bi-shield-check me-2"></i>Panel Admin
-                                </a>
-                            </li>
-                            <?php endif; ?>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="index.php?action=logout">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                <?php else: ?>
-                    <!-- Usuario no logueado -->
-                    <a href="index.php?action=login" class="btn btn-login me-2">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
-                    </a>
-                    <a href="index.php?action=register" class="btn btn-register">
-                        <i class="bi bi-person-plus me-1"></i>Registro
-                    </a>
-                <?php endif; ?>
+                        <!-- User Profile Dropdown -->
+                        <div class="dropdown">
+                            <button class="user-profile-btn dropdown-toggle d-flex align-items-center text-decoration-none" 
+                                    type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center me-2" 
+                                     style="width: 32px; height: 32px; font-weight: bold;">
+                                    <?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?>
+                                </div>
+                                <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
+                                <li><h6 class="dropdown-header text-muted">Mi Cuenta</h6></li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=perfil">
+                                        <i class="bi bi-person me-2 text-primary"></i>Perfil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=mis_registros">
+                                        <i class="bi bi-clock-history me-2 text-info"></i>Mis Registros
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=registro_create">
+                                        <i class="bi bi-plus-circle me-2 text-success"></i>Registrar Puntos
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="index.php?action=logout">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php else: ?>
+                        <!-- Login/Register Buttons -->
+                        <div class="d-flex gap-2">
+                            <a href="index.php?action=login" class="btn btn-outline-light rounded-pill px-4">
+                                Login
+                            </a>
+                            <a href="index.php?action=register" class="btn btn-light text-success rounded-pill px-4 fw-bold shadow-sm">
+                                Registro
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- Alerts (si existen mensajes) -->
-<?php if (isset($_SESSION['success']) || isset($_SESSION['error']) || isset($_SESSION['info'])): ?>
-<div class="container mt-3">
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <?= htmlspecialchars($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php unset($_SESSION['success']); ?>
-    <?php endif; ?>
-    
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            <?= htmlspecialchars($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
-    
-    <?php if (isset($_SESSION['info'])): ?>
-        <div class="alert alert-info alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
-            <i class="bi bi-info-circle-fill me-2"></i>
-            <?= htmlspecialchars($_SESSION['info']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php unset($_SESSION['info']); ?>
-    <?php endif; ?>
-</div>
-<?php endif; ?>
-
-<!-- Main Content -->
-<main class="main-content">
+    <!-- Main Content Wrapper -->
+    <main>

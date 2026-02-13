@@ -14,26 +14,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <!-- Custom Animations -->
-    <link rel="stylesheet" href="css/custom.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/custom.css">
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--auth-bg-gradient, linear-gradient(135deg, #11998e 0%, #38ef7d 100%));
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
         }
 
         .login-card {
-            background: var(--card-bg, #ffffff);
+            background: white;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
         .login-header {
-            background: var(--auth-header-gradient, linear-gradient(135deg, #28a745 0%, #20c997 100%));
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             padding: 40px;
             text-align: center;
@@ -49,7 +49,7 @@
         }
 
         .btn-login {
-            background: var(--auth-header-gradient);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
             padding: 12px;
             font-weight: 600;
@@ -77,11 +77,6 @@
 </head>
 
 <body>
-    <!-- Theme Toggle -->
-    <button id="theme-toggle" class="btn btn-outline-light position-fixed top-0 end-0 m-4 rounded-circle" style="z-index: 1000; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
-        <i class="bi bi-moon-fill"></i>
-    </button>
-    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
@@ -173,7 +168,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/theme.js?v=<?= time() ?>"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form');

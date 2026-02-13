@@ -1,90 +1,5 @@
 /* Custom Animations for GreenPoints */
 
-:root {
-    /* Light Theme (Default) */
-    --bg-body: #f8fdf9;
-    --text-main: #333333;
-    --text-muted: #666666;
-    --primary-color: #28a745;
-    --secondary-color: #20c997;
-    --accent-color: #ffc107;
-    --navbar-bg-start: #28a745;
-    --navbar-bg-end: #20c997;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-border: rgba(255, 255, 255, 0.2);
-    --input-bg: #ffffff;
-    --input-border: #ced4da;
-    --input-text: #495057;
-    --dropdown-bg: #ffffff;
-    --dropdown-item-hover: #f8f9fa;
-    --badge-bg: rgba(255, 255, 255, 0.2);
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-hover: rgba(0, 0, 0, 0.15);
-    --auth-bg-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    --auth-header-gradient: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-}
-
-[data-theme="dark"] {
-    /* Dark Theme */
-    --bg-body: #121212;
-    --text-main: #e0e0e0;
-    --text-muted: #b0b0b0;
-    --primary-color: #3dd862;
-    /* Brighter green for contrast */
-    --secondary-color: #2bdba8;
-    --accent-color: #ffca2c;
-    --navbar-bg-start: #1b4d24;
-    /* Darker green */
-    --navbar-bg-end: #0f3d32;
-    --card-bg: #1e1e1e;
-    --card-border: #333333;
-    --input-bg: #2d2d2d;
-    --input-border: #444444;
-    --input-text: #e0e0e0;
-    --dropdown-bg: #2d2d2d;
-    --dropdown-item-hover: #3d3d3d;
-    --badge-bg: rgba(255, 255, 255, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.5);
-    --shadow-hover: rgba(0, 0, 0, 0.7);
-    --auth-bg-gradient: linear-gradient(135deg, #0f3d32 0%, #1b4d24 100%);
-    --auth-header-gradient: linear-gradient(135deg, #1b4d24 0%, #0f3d32 100%);
-}
-
-body {
-    background-color: var(--bg-body) !important;
-    color: var(--text-main) !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Bootstrap Overrides for Dark Mode */
-[data-theme="dark"] .bg-white {
-    background-color: var(--card-bg) !important;
-    color: var(--text-main) !important;
-}
-
-[data-theme="dark"] .bg-light {
-    background-color: var(--bg-body) !important;
-    /* Or slightly different shade if needed */
-    color: var(--text-main) !important;
-}
-
-[data-theme="dark"] .text-muted {
-    color: var(--text-muted) !important;
-}
-
-[data-theme="dark"] .text-secondary {
-    color: var(--text-muted) !important;
-}
-
-[data-theme="dark"] .border {
-    border-color: var(--card-border) !important;
-}
-
-[data-theme="dark"] .shadow-sm {
-    box-shadow: 0 .125rem .25rem var(--shadow-color) !important;
-}
-
-
 /* Floating Animation for Hero Images */
 @keyframes float {
     0% {
@@ -146,17 +61,17 @@ body {
 
 /* Hover Lift Effect for Cards */
 .hover-lift {
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px var(--shadow-hover) !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Gradient Text */
 .text-gradient {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -183,12 +98,9 @@ body {
 
 /* Glassmorphism Card */
 .glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--card-border);
-    color: var(--text-main);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Staggered entrance for list items */
