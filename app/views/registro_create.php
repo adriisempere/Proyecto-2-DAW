@@ -7,7 +7,7 @@ include __DIR__ . '/partials/header.php';
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card border-0 shadow-lg animate__animated animate__fadeInUp">
-                <div class="card-header bg-success text-white text-center py-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                <div class="card-header bg-success text-white text-center py-4" style="background: var(--auth-header-gradient);">
                     <h2 class="mb-0 fw-bold"><i class="bi bi-recycle me-2"></i>Registrar Reciclaje</h2>
                     <p class="mb-0 opacity-75">Suma puntos y ayuda al planeta</p>
                 </div>
@@ -103,7 +103,9 @@ include __DIR__ . '/partials/header.php';
 
 <style>
     .input-group-text {
-        background-color: #fff;
+        background-color: var(--input-bg);
+        color: var(--text-main);
+        border-color: var(--input-border);
     }
     .form-control:focus, .form-select:focus {
         border-color: #28a745;
@@ -121,6 +123,12 @@ include __DIR__ . '/partials/header.php';
     .btn-check:checked + .btn-outline-success i {
          transform: scale(1.1);
          transition: transform 0.2s;
+    }
+    
+    [data-theme="dark"] .btn-check:checked + .btn-outline-success {
+        background-color: rgba(40, 167, 69, 0.2);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
     }
 </style>
 

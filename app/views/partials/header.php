@@ -27,6 +27,9 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .main-content {
@@ -35,7 +38,7 @@
         
         /* Navbar Styles */
         .navbar {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            background: linear-gradient(135deg, var(--navbar-bg-start) 0%, var(--navbar-bg-end) 100%) !important;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             padding: 1rem 0;
             transition: all 0.3s ease;
@@ -99,7 +102,7 @@
         }
         
         .user-badge {
-            background: rgba(255,255,255,0.2);
+            background: var(--badge-bg);
             padding: 0.4rem 1rem;
             border-radius: 25px;
             color: white;
@@ -109,7 +112,7 @@
         }
         
         .points-badge {
-            background: #ffc107;
+            background: var(--accent-color);
             color: #000;
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
@@ -118,7 +121,7 @@
         }
         
         .btn-login {
-            background: rgba(255,255,255,0.2);
+            background: var(--badge-bg);
             border: 2px solid white;
             color: white;
             font-weight: 600;
@@ -130,14 +133,14 @@
         
         .btn-login:hover {
             background: white;
-            color: #28a745;
+            color: var(--primary-color);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(255,255,255,0.3);
         }
         
         .btn-register {
             background: white;
-            color: #28a745;
+            color: var(--primary-color);
             font-weight: 600;
             padding: 0.5rem 1.5rem;
             border-radius: 25px;
@@ -154,6 +157,7 @@
         
         .dropdown-menu {
             border-radius: 15px;
+            background-color: var(--dropdown-bg);
             box-shadow: 0 5px 25px rgba(0,0,0,0.15);
             border: none;
             margin-top: 0.5rem;
@@ -162,10 +166,11 @@
         .dropdown-item {
             padding: 0.7rem 1.5rem;
             transition: all 0.3s;
+            color: var(--text-main);
         }
         
         .dropdown-item:hover {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
         }
         
@@ -235,6 +240,11 @@
             </ul>
             
             <div class="d-flex align-items-center flex-wrap">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="btn btn-outline-light rounded-circle me-3 border-0" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                    <i class="bi bi-moon-fill"></i>
+                </button>
+
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <!-- Usuario logueado -->
                     <div class="user-badge me-2">
