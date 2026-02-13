@@ -19,6 +19,7 @@
     --dropdown-item-hover: #f8f9fa;
     --badge-bg: rgba(255, 255, 255, 0.2);
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-hover: rgba(0, 0, 0, 0.15);
     --auth-bg-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     --auth-header-gradient: linear-gradient(135deg, #28a745 0%, #20c997 100%);
 }
@@ -44,6 +45,7 @@
     --dropdown-item-hover: #3d3d3d;
     --badge-bg: rgba(255, 255, 255, 0.1);
     --shadow-color: rgba(0, 0, 0, 0.5);
+    --shadow-hover: rgba(0, 0, 0, 0.7);
     --auth-bg-gradient: linear-gradient(135deg, #0f3d32 0%, #1b4d24 100%);
     --auth-header-gradient: linear-gradient(135deg, #1b4d24 0%, #0f3d32 100%);
 }
@@ -144,12 +146,12 @@ body {
 
 /* Hover Lift Effect for Cards */
 .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px var(--shadow-color) !important;
+    box-shadow: 0 20px 40px var(--shadow-hover) !important;
 }
 
 /* Gradient Text */
@@ -182,9 +184,11 @@ body {
 /* Glassmorphism Card */
 .glass-card {
     background: var(--card-bg);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--card-border);
     color: var(--text-main);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
 /* Staggered entrance for list items */

@@ -5,7 +5,7 @@ include __DIR__ . '/partials/header.php';
 
 <!-- Hero Section -->
 <header class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-lg-auto img-fluid animate-float" src="img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
+    <img class="d-block mx-lg-auto img-fluid animate-float rounded-circle shadow-lg" src="img/LogoGreenPoints.png" alt="logo del hero" width="160px" height="160px" loading="lazy">
     <h1 class="display-5 fw-bold animate__animated animate__fadeInDown text-gradient">GreenPoints</h1>
     <div class="col-lg-6 mx-auto animate__animated animate__fadeInUp delay-200">
         <p class="lead mb-4">
