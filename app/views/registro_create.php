@@ -44,37 +44,6 @@ include __DIR__ . '/partials/header.php';
                                 <!-- Generado por JS -->
                             </div>
                         </div>
-                                </select>
-                            </div>
-                            <div class="form-text">Elige el punto donde depositaste tus residuos.</div>
-                        </div>
-
-                        <!-- Tipo de Material -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-secondary">Tipo de Material</label>
-                            <div class="row g-2">
-                                <?php 
-                                $icons = [
-                                    'plastico' => 'bi-box-seam',
-                                    'papel' => 'bi-file-earmark-text',
-                                    'vidrio' => 'bi-lightbulb',
-                                    'metal' => 'bi-nut',
-                                    'organico' => 'bi-flower1'
-                                ];
-                                foreach (RegistroController::PUNTOS_POR_MATERIAL as $material => $puntos): 
-                                    $icon = $icons[$material] ?? 'bi-recycle';
-                                ?>
-                                <div class="col-6">
-                                    <input type="radio" class="btn-check" name="tipo_material" id="material_<?= $material ?>" value="<?= $material ?>" required>
-                                    <label class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3 position-relative" for="material_<?= $material ?>">
-                                        <i class="bi <?= $icon ?> fs-2 mb-2"></i>
-                                        <span class="text-capitalize fw-bold"><?= $material ?></span>
-                                        <span class="badge bg-success bg-opacity-25 text-success rounded-pill mt-1"><?= $puntos ?> pts/kg</span>
-                                    </label>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
 
                         <!-- Cantidad -->
                         <div class="mb-4">
