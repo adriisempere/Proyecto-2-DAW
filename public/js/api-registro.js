@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const materialContainer = document.getElementById('materialOptions');
     const registroForm = document.getElementById('registroForm');
 
+    // Materiales y sus puntos por kg
     const materiales = {
         plastico: { icon: 'bi-box-seam', puntos: 10 },
         papel:    { icon: 'bi-file-earmark-text', puntos: 5 },

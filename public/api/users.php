@@ -9,11 +9,11 @@ $db = getConnection();
 
 $action = $_GET['action'] ?? null;
 
-// Read JSON body if present
+// Leer datos JSON o POST
 $raw = file_get_contents('php://input');
 $data = json_decode($raw, true) ?: $_POST;
 
-// Helper responder
+// Función de respuesta unificada
 function resp($ok, $msg = '', $extra = []) {
     echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
     exit;

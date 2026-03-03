@@ -26,7 +26,7 @@
 
 ## 📋 Descripción del Proyecto
 
-**GreenPoints** es una aplicación web interactiva diseñada para incentivar el reciclaje mediante un sistema de gamificación. La plataforma permite a los usuarios registrar sus actividades de reciclaje, acumular puntos, competir en rankings y canjear recompensas, todo con el objetivo de promover prácticas sostenibles y conciencia ambiental.
+**GreenPoints** es una aplicación web interactiva diseñada para incentivar el reciclaje mediante un sistema de gamificación. La plataforma permite a los usuarios registrar sus actividades de reciclaje, acumular puntos, competir en rankings y canjear recompensas; en la versión actual el servidor sólo expone simples APIs JSON y el cliente (HTML/JS) gestiona casi toda la experiencia, reduciendo al mínimo el uso de PHP mientras mantiene un aspecto atractivo y responsivo. Todo ello con el objetivo de promover prácticas sostenibles y conciencia ambiental.
 
 ### 🎯 Objetivos Principales
 
@@ -39,38 +39,38 @@
 
 ## 🚀 Características Principales
 
-### ✨ Funcionalidades Implementadas
+### ✨ Funcionalidades Implementadas (full-JS con PHP mínimo)
 
--   👤 **Sistema de Usuarios**: Registro, inicio de sesión seguro (Bcrypt) y perfiles con puntos.
--   ♻️ **Registro de Reciclaje**: Gestión de materiales (plástico, papel, vidrio, metal) con cálculo automático de puntos.
--   📍 **Centros de Reciclaje**: Directorio de puntos de recogida con horarios y tipos de residuos.
--   🏆 **Ranking Global**: Clasificación periódica de usuarios por rendimiento ambiental.
--   📱 **Interfaz UX/UI**: Diseño moderno, responsivo y fluido con Bootstrap 5 y animaciones.
+-   👤 **API de Usuarios**: Endpoints JSON para registro, login, logout y listado; la interfaz usa `fetch` y muestra notificaciones dinámicas sin recargar.
+-   ♻️ **Registro de Reciclaje**: Formulario JS que consume `api/registro.php`; cálculo de puntos en servidor y actualización de sesión.
+-   📍 **Centros de Reciclaje**: Listado cargado desde `api/centros.php` y opción de creación restringida a administradores.
+-   🏆 **Ranking Global**: Datos pedidos a `api/ranking.php` y renderizados en tabla responsiva.
+-   📱 **Interfaz UX/UI**: Bootstrap 5, animaciones CSS, validaciones en cliente y diseño responsive.
+-   🔄 **Navegación SPA-like**: Cambios de página ligeros, recargas mínimas y experiencia fluida.
 
 ---
 
 ## 🏗️ Arquitectura del Proyecto
 
-El proyecto sigue el patrón de diseño **MVC (Modelo-Vista-Controlador)** para garantizar la escalabilidad y mantenibilidad.
+La versión actual del proyecto apuesta por la **máxima simplicidad en PHP** y traslada la mayor parte de la lógica al navegador mediante APIs RESTful y JavaScript moderno. Gracias a esta estrategia el backend sólo expone rutas JSON y casi toda la interacción se realiza en `public/js/*`, manteniendo el mismo aspecto visual.
 
 ```text
 Proyecto-2-DAW/
 ├── app/
-│   ├── controllers/      # Lógica de negocio (Usuario, Centro, Registro, Ranking)
 │   ├── helpers/          # Utilidades (CsrfHelper, Sesiones)
-│   ├── models/           # Interacción con la base de datos (En desarrollo)
-│   └── views/            # Interfaz de usuario (Home, Login, Register)
-│       └── partials/     # Componentes reutilizables (Header, Footer)
+│   └── views/            # Interfaz de usuario (HTML estático + componentes)
+│       └── partials/     # Header, Footer, etc.
 ├── config/
-│   └── database.php      # Configuración de conexión (soporta variables de entorno)
+│   └── database.php      # Conexión MySQL (variables de entorno opcionales)
 ├── public/               # Punto de entrada público
-│   ├── css/              # Estilos personalizados
-│   ├── js/               # Scripts JavaScript
+│   ├── api/              # Endpoints JSON (usuarios, registro, centros, ranking)
+│   ├── css/              # Estilos personalizados (Bootstrap + custom)
+│   ├── js/               # Lógica de cliente (fetch, validaciones, UI)
 │   ├── img/              # Recursos visuales
-│   └── index.php         # Front Controller
+│   └── index.php         # Enrutador mínimo que incluye vistas
 ├── sql/
 │   └── greenpoints.sql   # Esquema de la base de datos
-├── INSTALL.md            # Guía detallada de instalación
+├── INSTALL.md            # Guía de instalación
 └── README.md             # Documentación principal
 ```
 
@@ -148,13 +148,15 @@ La base de datos `greenpoints` utiliza un diseño relacional optimizado:
 
 ## 🛡️ Seguridad y Mejores Prácticas
 
-Hemos implementado varias medidas para garantizar la robustez:
+Aunque el backend está reducido a APIs, la seguridad sigue siendo fundamental:
 
--   ✅ **Protección CSRF**: Uso de tokens en formularios críticos.
--   ✅ **Hashing de Contraseñas**: Implementación de `password_hash()` con Bcrypt.
--   ✅ **Gestión de Sesiones**: Control seguro de acceso de usuarios.
--   ✅ **Variables de Entorno**: Configuración desacoplada para mayor seguridad.
--   🚧 **Validación**: Limpieza de inputs y sentencias preparadas (PDO/MySQLi).
+-   ✅ **Protección CSRF**: Cada formulario incluye un token generado por `CsrfHelper`; las APIs lo verifican antes de procesar.
+-   ✅ **Hashing de Contraseñas**: `password_hash()` con Bcrypt protege las credenciales en la base de datos.
+-   ✅ **Gestión de Sesiones**: El inicio de sesión regenera ID y guarda sólo lo necesario (`usuario_id`, nombre, puntos, rol).
+-   ✅ **Validación híbrida**: Se realizan comprobaciones en el cliente para buena UX y en el servidor para seguridad.
+-   🔐 **Preparadas/parametrizadas**: Todas las consultas MySQL utilizan `prepare()` para evitar inyecciones.
+-   🌍 **Entorno flexible**: Configuración a través de `config/database.php` o variables de entorno según despliegue.
+-   📦 **Mínimo PHP expuesto**: Al no haber lógica de presentación en el servidor, el riesgo de fugas se reduce.
 
 ---
 

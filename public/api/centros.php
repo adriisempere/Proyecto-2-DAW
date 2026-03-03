@@ -22,7 +22,7 @@ try {
             break;
 
         case 'store':
-            // Solo admin (sencillo)
+            // Solo admin
             if (empty($_SESSION['usuario_rol']) || $_SESSION['usuario_rol'] !== 'admin') { resp(false,'No autorizado'); }
             $csrf = $data['csrf_token'] ?? null;
             if (!CsrfHelper::verifyToken($csrf)) { resp(false,'Token inválido'); }

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 5000);
     }
 
-    // Login form
+    // Formulario de login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async function (e) {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Register form
+    // Formulario de registro
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', async function (e) {
