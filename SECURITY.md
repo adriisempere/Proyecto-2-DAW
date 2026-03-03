@@ -51,7 +51,7 @@ A partir de la versión actual se detectan algunas carencias que conviene resolv
 
 Si detectas un fallo de seguridad, por favor repórtalo de manera privada para que podamos solucionarlo antes de que se haga público.
 
-- **Contacto**: [admin@greenpoints.com](mailto:admin@greenpoints.com)
+- **Contacto**: [admin@greenpoints.com](mailto:adriisempere@proton.me)
 
 ---
 
