@@ -1,4 +1,4 @@
-# 🌱 GreenPoints - Gamificación del Reciclaje
+# GreenPoints - Gamificación del Reciclaje
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D_8.0-777bb4.svg?logo=php&logoColor=white)](https://www.php.net/)
@@ -11,42 +11,42 @@
 
 ## 📖 Tabla de Contenidos
 
-- [Descripción](#-descripción-del-proyecto)
-- [Características](#-características-principales)
-- [Arquitectura](#-arquitectura-del-proyecto)
-- [Base de Datos](#-base-de-datos)
-- [Tecnologías](#-tecnologías-utilizadas)
-- [Instalación](#-instalación-y-configuración)
-- [Uso](#-uso-de-la-aplicación)
-- [Desarrollo](#-proceso-de-desarrollo)
-- [Seguridad](#-seguridad-y-mejores-prácticas)
-- [Contribución](#-contribución)
+- [Descripción](#descripción-del-proyecto)
+- [Características](#características-principales)
+- [Arquitectura](#arquitectura-del-proyecto)
+- [Base de Datos](#base-de-datos)
+- [Tecnologías](#tecnologías-utilizadas)
+- [Instalación](#instalación-y-configuración)
+- [Uso](#uso-de-la-aplicación)
+- [Desarrollo](#proceso-de-desarrollo)
+- [Seguridad](#seguridad-y-mejores-prácticas)
+- [Contribución](#contribución)
 
 ---
 
 ## 📋 Descripción del Proyecto
 
-**GreenPoints** es una aplicación web interactiva diseñada para incentivar el reciclaje mediante un sistema de gamificación. La plataforma permite a los usuarios registrar sus actividades de reciclaje, acumular puntos, competir en rankings y canjear recompensas; en la versión actual el servidor sólo expone simples APIs JSON y el cliente (HTML/JS) gestiona casi toda la experiencia, reduciendo al mínimo el uso de PHP mientras mantiene un aspecto atractivo y responsivo. Todo ello con el objetivo de promover prácticas sostenibles y conciencia ambiental.
+**GreenPoints** es una aplicación web cuya finalidad es fomentar el reciclaje a través de una mecánica de puntos y clasificaciones. Los usuarios pueden anotar sus actividades de reciclaje, ver su posición en un ranking y acceder a información sobre centros de recogida. En esta iteración el servidor ofrece únicamente APIs JSON; la interfaz en el navegador, construida con HTML, CSS y JavaScript, se encarga de la mayor parte de la experiencia de usuario. El uso de PHP se limita a operaciones de datos y seguridad.
 
-### 🎯 Objetivos Principales
+### Objetivos principales
 
--   🌿 **Concienciación Ambiental**: Educar sobre el impacto positivo del reciclaje.
--   🎮 **Gamificación**: Uso de rankings y recompensas para fomentar la participación.
--   🤝 **Comunidad**: Crear una red de usuarios comprometidos.
--   📊 **Impacto Medible**: Estadísticas en tiempo real de materiales y CO₂.
+-   Concienciar sobre el impacto del reciclaje.
+-   Ofrecer una experiencia de gamificación mediante rankings y recompensas.
+-   Favorecer la formación de una comunidad de usuarios.
+-   Proporcionar estadísticas sobre materiales reciclados y reducción de emisiones.
 
 ---
 
 ## 🚀 Características Principales
 
-### ✨ Funcionalidades Implementadas (full-JS con PHP mínimo)
+### Funcionalidades implementadas
 
--   👤 **API de Usuarios**: Endpoints JSON para registro, login, logout y listado; la interfaz usa `fetch` y muestra notificaciones dinámicas sin recargar.
--   ♻️ **Registro de Reciclaje**: Formulario JS que consume `api/registro.php`; cálculo de puntos en servidor y actualización de sesión.
--   📍 **Centros de Reciclaje**: Listado cargado desde `api/centros.php` y opción de creación restringida a administradores.
--   🏆 **Ranking Global**: Datos pedidos a `api/ranking.php` y renderizados en tabla responsiva.
--   📱 **Interfaz UX/UI**: Bootstrap 5, animaciones CSS, validaciones en cliente y diseño responsive.
--   🔄 **Navegación SPA-like**: Cambios de página ligeros, recargas mínimas y experiencia fluida.
+-   API de usuarios: registro, acceso y cierre de sesión mediante peticiones JSON.
+-   Registro de reciclaje: formulario que envía datos al servidor y actualiza el saldo de puntos.
+-   Listado de centros de reciclaje: obtenido dinámicamente y, en su caso, creación por administradores.
+-   Ranking global: visualizado en una tabla y ordenado por puntos acumulados.
+-   Interfaz responsive construida con Bootstrap 5 y animaciones sencillas.
+-   Navegación dinámica que reduce recargas de página.
 
 ---
 
