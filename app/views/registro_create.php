@@ -20,7 +20,9 @@ include __DIR__ . '/partials/header.php';
                         <?php unset($_SESSION['error']); ?>
                     <?php endif; ?>
 
-                    <form method="POST" action="index.php?action=registro_store" class="needs-validation" novalidate>
+                    <form id="registroForm" class="needs-validation" novalidate>
+                        <!-- Token CSRF -->
+                        <?php require_once __DIR__ . '/../helpers/CsrfHelper.php'; echo CsrfHelper::getTokenField(); ?>
                         
                         <!-- Centro de Reciclaje -->
                         <div class="mb-4">
@@ -29,13 +31,19 @@ include __DIR__ . '/partials/header.php';
                                 <span class="input-group-text bg-light border-end-0"><i class="bi bi-geo-alt text-success"></i></span>
                                 <select class="form-select border-start-0 ps-0" name="centro_id" id="centro_id" required>
                                     <option value="" selected disabled>Selecciona un centro cercano</option>
-                                    <?php if ($centros && $centros->num_rows > 0): ?>
-                                        <?php while ($centro = $centros->fetch_assoc()): ?>
-                                            <option value="<?= $centro['id'] ?>"><?= htmlspecialchars($centro['nombre']) ?></option>
-                                        <?php endwhile; ?>
-                                    <?php else: ?>
-                                        <option value="" disabled>No hay centros disponibles</option>
-                                    <?php endif; ?>
+                                    <!-- Opciones cargadas por JS desde API -->
+                                </select>
+                            </div>
+                            <div class="form-text">Elige el punto donde depositaste tus residuos.</div>
+                        </div>
+
+                        <!-- Tipo de Material (generado por JS) -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary">Tipo de Material</label>
+                            <div class="row g-2" id="materialOptions">
+                                <!-- Generado por JS -->
+                            </div>
+                        </div>
                                 </select>
                             </div>
                             <div class="form-text">Elige el punto donde depositaste tus residuos.</div>
@@ -141,5 +149,7 @@ include __DIR__ . '/partials/header.php';
             })
     })()
 </script>
+
+<script src="js/api-registro.js"></script>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>

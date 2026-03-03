@@ -106,7 +106,7 @@
                             <?php unset($_SESSION['success']); ?>
                         <?php endif; ?>
 
-                        <form method="POST" action="index.php?action=login_post" novalidate>
+                        <form method="POST" id="loginForm" novalidate>
                             <!-- Token CSRF -->
                             <?php
                             require_once __DIR__ . '/../helpers/CsrfHelper.php';
@@ -168,6 +168,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api-users.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form');

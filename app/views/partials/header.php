@@ -189,11 +189,11 @@
                 </ul>
                 
                 <div class="d-flex align-items-center animate__animated animate__fadeInRight">
-                    <?php if(isset($_SESSION['usuario'])): ?>
+                    <?php if(isset($_SESSION['usuario_id'])): ?>
                         <!-- User Points Badge -->
                         <div class="badge-points rounded-pill px-3 py-2 text-white me-3 d-none d-md-flex align-items-center">
                             <i class="bi bi-star-fill text-warning me-2"></i>
-                            <span class="fw-bold"><?= $_SESSION['usuario']['puntos'] ?? 0 ?> pts</span>
+                            <span class="fw-bold"><?= $_SESSION['usuario_puntos'] ?? 0 ?> pts</span>
                         </div>
 
                         <!-- User Profile Dropdown -->
@@ -202,9 +202,9 @@
                                     type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center me-2" 
                                      style="width: 32px; height: 32px; font-weight: bold;">
-                                    <?= strtoupper(substr($_SESSION['usuario']['nombre'], 0, 1)) ?>
+                                    <?= strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1)) ?>
                                 </div>
-                                <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                                <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Usuario') ?></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="userDropdown">
                                 <li><h6 class="dropdown-header text-muted">Mi Cuenta</h6></li>

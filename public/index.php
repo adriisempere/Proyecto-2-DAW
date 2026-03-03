@@ -2,59 +2,39 @@
 session_start();
 
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../app/controllers/UsuarioController.php';
-require_once __DIR__ . '/../app/controllers/CentroController.php';
-require_once __DIR__ . '/../app/controllers/RegistroController.php';
-require_once __DIR__ . '/../app/controllers/RankingController.php';
 
 $action = $_GET['action'] ?? 'home';
 
+// Rutas simplificadas: las operaciones con datos se realizan mediante las APIs en public/api/
 switch ($action) {
     case 'home':
         include __DIR__ . '/../app/views/home.php';
         break;
     case 'register':
-        (new UsuarioController())->showRegister();
-        break;
-    case 'register_post':
-        (new UsuarioController())->register();
+        include __DIR__ . '/../app/views/register.php';
         break;
     case 'login':
-        (new UsuarioController())->showLogin();
-        break;
-    case 'login_post':
-        (new UsuarioController())->login();
+        include __DIR__ . '/../app/views/login.php';
         break;
     case 'logout':
-        (new UsuarioController())->logout();
+        // Logout simple
+        session_destroy();
+        header('Location: index.php?action=home');
         break;
-    // centros
     case 'centros':
-        (new CentroController())->index();
+        include __DIR__ . '/../app/views/centros.php';
         break;
-    case 'centro_create':
-        (new CentroController())->showCreate();
-        break;
-    case 'centro_store':
-        (new CentroController())->store();
-        break;
-    // registros de reciclaje
     case 'registro_create':
-        (new RegistroController())->showCreate();
-        break;
-    case 'registro_store':
-        (new RegistroController())->store();
+        include __DIR__ . '/../app/views/registro_create.php';
         break;
     case 'mis_registros':
-        (new RegistroController())->misRegistros();
+        include __DIR__ . '/../app/views/mis_registros.php';
         break;
-    // ranking
     case 'ranking':
-        (new RankingController())->index();
+        include __DIR__ . '/../app/views/ranking.php';
         break;
-    // perfil de usuario
     case 'perfil':
-        (new UsuarioController())->perfil();
+        include __DIR__ . '/../app/views/perfil.php';
         break;
     default:
         http_response_code(404);

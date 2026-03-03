@@ -119,7 +119,7 @@
                             <?php unset($_SESSION['error']); ?>
                         <?php endif; ?>
 
-                        <form method="POST" action="index.php?action=register_post" id="registerForm" novalidate>
+                        <form method="POST" id="registerForm" novalidate>
                             <!-- Token CSRF -->
                             <?php
                             require_once __DIR__ . '/../helpers/CsrfHelper.php';
@@ -228,6 +228,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api-users.js"></script>
     <script>
         // Validación de contraseñas coincidentes
         const password = document.getElementById('password');
