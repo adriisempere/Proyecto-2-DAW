@@ -88,6 +88,26 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ---
 
+### 🔁 Cambios importantes (2026-03-03)
+
+### ✨ Añadido
+- APIs JSON en `public/api/` para exponer la lógica de la aplicación: `users.php`, `registro.php`, `centros.php`, `ranking.php`.
+- Scripts cliente en `public/js/` para manejar autenticación y formularios vía `fetch`: `api-users.js`, `api-registro.js`.
+- Nuevas vistas con carga dinámica: `app/views/centros.php`, `ranking.php`, `mis_registros.php`, `perfil.php`.
+
+### 🔧 Modificado
+- Simplificado el enrutador: `public/index.php` ahora incluye vistas directamente y delega operaciones a las APIs.
+- Vistas existentes actualizadas para funcionar con JavaScript (login, register, registro_create y otras), reduciendo recargas y mejorando UX.
+- `app/views/partials/header.php` adaptado para usar variables de sesión simplificadas (`usuario_id`, `usuario_nombre`, `usuario_puntos`).
+
+### 🗑️ Eliminado
+- Eliminados los controladores PHP de la carpeta `app/controllers/` (UsuarioController, CentroController, RegistroController, RankingController). La lógica pasó a las APIs en `public/api/`.
+
+### 🔒 Seguridad / Documentación
+- `README.md` y `SECURITY.md` actualizados para reflejar la nueva arquitectura (API-first y JS-heavy) y las medidas de seguridad vigentes.
+- Se mantuvieron las buenas prácticas: tokens CSRF, prepared statements y hashing de contraseñas.
+
+
 ## [0.2.0] - 2026-01-19
 
 ### ✨ Añadido
