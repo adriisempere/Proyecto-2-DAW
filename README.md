@@ -172,7 +172,7 @@ Aunque el backend está reducido a APIs, la seguridad sigue siendo fundamental:
 
 ## 👥 Equipo
 
--   **Adrian Sempere Serrano / Diego Mario Ralcef** - [GitHub](https://github.com/tu-usuario)
+-   **Adrian Sempere Serrano** - [GitHub](https://github.com/tu-usuario)
 
 ---
 
