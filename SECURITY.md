@@ -1,56 +1,49 @@
-# 🔒 Guía de Seguridad - GreenPoints
+# Guía de seguridad del proyecto
 
 Este documento detalla las consideraciones de seguridad y mejores prácticas implementadas en el proyecto GreenPoints.
 
 ---
 
-## 🛡️ Medidas de Seguridad Implementadas
+## Medidas de seguridad implementadas
 
 ### 1. Protección contra CSRF (Cross-Site Request Forgery)
-✅ **Implementado**: Utilizamos tokens CSRF únicos por sesión para validar cualquier petición POST crítica (Login, Registro, etc.).
-- **Helper**: `app/helpers/CsrfHelper.php`
-- **Uso**: Se genera un campo oculto en los formularios y se valida en los controladores antes de procesar la lógica de negocio.
+Implementamos tokens CSRF únicos por sesión para validar las llamadas que modifican datos (registro, login, envío de reciclaje, etc.).
+- Se genera un campo oculto en cada formulario mediante `CsrfHelper`.
+- El token se verifica en los endpoints antes de ejecutar cualquier acción.
 
 ### 2. Hashing de Contraseñas
-✅ **Implementado**: Las contraseñas NUNCA se almacenan en texto plano. Utilizamos `password_hash()` con el algoritmo **Bcrypt**.
-- **Algoritmo**: `PASSWORD_DEFAULT`
-- **Verificación**: `password_verify()` durante el inicio de sesión.
+Las contraseñas no se guardan en texto plano; se aplican hashes mediante la función `password_hash()` de PHP, usando el valor por defecto de algoritmo (actualmente Bcrypt). Durante el acceso se comprueba con `password_verify()`.
 
 ### 3. Prevención de Inyección SQL
-✅ **Implementado**: Todas las consultas a la base de datos se realizan mediante **Sentencias Preparadas (Prepared Statements)** a través de la extensión MySQLi.
-- **Técnica**: `bind_param()` para desacoplar los datos de la lógica SQL.
+Todas las consultas que incluyen datos de usuarios se ejecutan con sentencias preparadas (`prepare()` y `bind_param()`), eliminando la mayor parte del riesgo de inyección SQL.
 
 ### 4. Gestión de Sesiones Seguras
-✅ **Implementado**:
-- Uso de `session_start()` con configuraciones recomendadas.
-- Regeneración de ID de sesión tras el login para prevenir el secuestro de sesiones.
+Las sesiones se inician con `session_start()` y, tras iniciar sesión, se regenera el identificador para dificultar el secuestro de sesiones.
 
 ### 5. Escape de Salida (XSS)
-✅ **Implementado**: Se utiliza `htmlspecialchars()` en las vistas para sanitizar cualquier dato dinámico proveniente de la base de datos o del usuario antes de renderizarlo en el navegador.
+Se aplica `htmlspecialchars()` en la salida de datos en todas las vistas para evitar inyecciones de código (XSS).
 
 ---
 
 ## 🏗️ Configuración Segura
 
-### Variables de Entorno
-El sistema está preparado para no exponer credenciales sensibles en el código fuente.
-- **Archivo de Configuración**: `config/database.php` utiliza `getenv()` para cargar las credenciales.
-- **Recomendación**: En entornos locales, crea un archivo `.env` (siguiendo el ejemplo de `INSTALL.md`) y asegúrate de que esté en tu `.gitignore`.
+### Variables de entorno
+La configuración de la base de datos se puede cargar desde variables de entorno. `config/database.php` utiliza `getenv()` y ofrece valores por defecto para un entorno de desarrollo. En producción se recomienda un `.env` (o manejo similar) fuera del control de versiones.
 
-### Permisos de Archivos Recomendados
-En un entorno de producción (Linux/Apache), se recomiendan los siguientes permisos:
-- **Directorios**: `755`
-- **Archivos**: `644`
-- **Configuraciones sensibles**: `600` (especialmente `config/database.php`)
+### Permisos de archivos recomendados
+En servidores Linux conviene mantener permisos restrictivos:
+- Directorios con `755`
+- Archivos con `644`
+- Archivos sensibles (`config/database.php`, etc.) con `600` si es posible.
 
 ---
 
-## 🚦 Problemas Conocidos y Mejoras Pendientes
+## Problemas conocidos y mejoras pendientes
 
-Aunque hemos avanzado significativamente, todavía hay áreas en desarrollo:
-- [ ] **Rate Limiting**: Implementar un límite de intentos de inicio de sesión para prevenir ataques de fuerza bruta.
-- [ ] **Validación Avanzada**: Migrar a una validación de inputs más robusta por el lado del servidor.
-- [ ] **Headers de Seguridad**: Implementar headers HTTP como `Content-Security-Policy` y `X-Frame-Options`.
+A partir de la versión actual se detectan algunas carencias que conviene resolver:
+- Aplicar límites de intentos de acceso para mitigar ataques de fuerza bruta.
+- Ampliar la validación de datos en el servidor, más allá de las comprobaciones locales de JavaScript.
+- Añadir cabeceras de seguridad HTTP (`Content-Security-Policy`, `X-Frame-Options`, etc.).
 
 ---
 
