@@ -1,6 +1,13 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-session_start();
+
+// Sesión sencilla con path común (igual que en index.php)
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'path' => '/',
+    ]);
+    session_start();
+}
 
 require_once __DIR__ . '/../../config/database.php';
 

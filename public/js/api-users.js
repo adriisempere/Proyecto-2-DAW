@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const resp = await fetch('api/users.php?action=login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: 'same-origin'
             });
             const json = await resp.json();
             if (json.success) {
@@ -48,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const resp = await fetch('api/users.php?action=register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: 'same-origin'
             });
             const json = await resp.json();
             if (json.success) {

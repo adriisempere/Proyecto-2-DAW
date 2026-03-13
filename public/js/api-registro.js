@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
             try {
                 const res = await fetch('api/registro.php?action=store', {
-                    method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(payload),
+                    credentials: 'same-origin'
                 });
                 const json = await res.json();
                 if (json.success) {

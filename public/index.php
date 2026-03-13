@@ -1,5 +1,11 @@
 <?php
-session_start();
+// Sesión sencilla con path común para todo el proyecto
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'path' => '/',
+    ]);
+    session_start();
+}
 
 require_once __DIR__ . '/../config/database.php';
 
