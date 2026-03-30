@@ -8,6 +8,14 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ## [Unreleased] - 2026-01-20
 
+### 🎨 Diseño y UI (2026-03-30)
+- **Rediseño visual completo de la vista de Perfil (`app/views/perfil.php`)**
+  - Implementación de un diseño moderno basado en tarjetas (Cards) consistentes con la identidad de marca (uso de variables CSS `--primary-color` y `--secondary-color`).
+  - Creación de un header atractivo con degradados dinámicos y un avatar circular interactivo que toma la inicial del usuario.
+  - Integración intensiva de la biblioteca `Animate.css` mediante efectos de aparición encadenados (`fadeInDown`, `fadeInUp`, `zoomIn`).
+  - Añadido un nuevo panel de "Acciones Rápidas" con acceso directo a registros de puntos, historial y el ranking.
+  - Mejora drástica de la pantalla de acceso restringido para usuarios no autenticados, integrando iconos grandes y botones llamativos.
+
 ### ✨ Añadido
 - **Sistema de Partials Completo**
   - Header reutilizable con navbar, sistema de alertas y menú de usuario
