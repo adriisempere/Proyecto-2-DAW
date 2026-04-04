@@ -1,165 +1,167 @@
-# 📋 Changelog - GreenPoints
+# Changelog — GreenPoints
 
-Todos los cambios notables del proyecto serán documentados en este archivo.
-
-El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/).
-
----
-
-## [Unreleased] - 2026-01-20
-
-### 🎨 Diseño y UI (2026-03-30)
-- **Rediseño visual completo de la vista de Perfil (`app/views/perfil.php`)**
-  - Implementación de un diseño moderno basado en tarjetas (Cards) consistentes con la identidad de marca (uso de variables CSS `--primary-color` y `--secondary-color`).
-  - Creación de un header atractivo con degradados dinámicos y un avatar circular interactivo que toma la inicial del usuario.
-  - Integración intensiva de la biblioteca `Animate.css` mediante efectos de aparición encadenados (`fadeInDown`, `fadeInUp`, `zoomIn`).
-  - Añadido un nuevo panel de "Acciones Rápidas" con acceso directo a registros de puntos, historial y el ranking.
-  - Mejora drástica de la pantalla de acceso restringido para usuarios no autenticados, integrando iconos grandes y botones llamativos.
-
-### ✨ Añadido
-- **Sistema de Partials Completo**
-  - Header reutilizable con navbar, sistema de alertas y menú de usuario
-  - Footer profesional de 4 columnas con newsletter y redes sociales
-  - Archivo de ejemplo (`ejemplo_vista.php`) mostrando uso de partials
-  
-- **Header Features**
-  - Navbar con gradiente verde (identidad de marca)
-  - Sistema de usuario con badge de nombre y puntos
-  - Menú dropdown con opciones de perfil y administración
-  - Sistema de alertas automático (success, error, info)
-  - Detección automática de página activa
-  - Efecto sticky con animación al hacer scroll
-  - Diseño completamente responsive
-
-- **Footer Features**
-  - Layout de 4 columnas (marca, app, soporte, newsletter)
-  - Estadísticas destacadas con estilos mejorados
-  - Enlaces a redes sociales con animaciones
-  - Formulario de suscripción a newsletter
-  - Información de contacto completa
-  - Botón scroll-to-top automático
-  - Copyright dinámico con año actual
-
-- **Documentación**
-  - Actualización completa del README.md
-  - Sección detallada sobre sistema de partials
-  - Ejemplos de uso de header y footer
-  - CHANGELOG.md para seguimiento de cambios
-  - INSTALL.md con guía de instalación paso a paso
-  - SECURITY.md con mejores prácticas de seguridad
-
-### 🔧 Modificado
-- **Vistas Refactorizadas**
-  - `home.php` ahora usa partials (header/footer)
-  - Eliminado HTML duplicado de las vistas
-  - Estructura más limpia y mantenible
-  
-- **Estilos del Footer**
-  - Mejorado contraste de texto para mejor legibilidad
-  - Colores ajustados: `rgba(255,255,255,0.7)` para texto secundario
-  - Títulos en blanco puro para mejor visibilidad
-  - Bordes sutiles en estadísticas para definición
-  - Enlaces con hover hacia blanco completo
-
-- **Controladores Mejorados**
-  - `UsuarioController.php`: Sistema completo de autenticación
-  - `CentroController.php`: CRUD de centros de reciclaje
-  - `RegistroController.php`: Sistema de puntos y transacciones
-  - `RankingController.php`: Ranking con estadísticas completas
-
-- **Configuración de Base de Datos**
-  - Soporte para variables de entorno
-  - Manejo de errores mejorado
-  - Función helper `getConnection()`
-  - Charset UTF-8 configurado
-
-### 🐛 Corregido
-- Problema de visualización: vistas no usaban partials
-- Conflicto de HTML duplicado en vistas
-- Problemas de contraste en el footer
-- Enlaces del navbar que apuntaban a `#`
-- Botones del hero sin enlaces funcionales
-
-### 🗑️ Eliminado
-- Archivo duplicado `UsuarioControllers.php` (con 's' final)
-- HTML redundante en vistas individuales
-- Estilos inline duplicados
-- **Archivos CSS/SCSS sin uso** (`estilos.css`, `estilos.scss`, `estilos.css.map`)
-- **JavaScript sin uso** (`app.js` - solo tenía console.log)
-- Archivos innecesarios que no se cargaban en ninguna vista
-
-### 🔒 Seguridad
-- Password hashing con bcrypt
-- Prepared statements en todas las consultas
-- Escape de salida HTML con `htmlspecialchars()`
-- Manejo seguro de sesiones
+Todos los cambios relevantes del proyecto quedan registrados aquí.  
+El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/).
 
 ---
 
-### 🔁 Cambios importantes (2026-03-03)
+## [Unreleased]
 
-### ✨ Añadido
-- APIs JSON en `public/api/` para exponer la lógica de la aplicación: `users.php`, `registro.php`, `centros.php`, `ranking.php`.
-- Scripts cliente en `public/js/` para manejar autenticación y formularios vía `fetch`: `api-users.js`, `api-registro.js`.
-- Nuevas vistas con carga dinámica: `app/views/centros.php`, `ranking.php`, `mis_registros.php`, `perfil.php`.
+### Seguridad
 
-### 🔧 Modificado
-- Simplificado el enrutador: `public/index.php` ahora incluye vistas directamente y delega operaciones a las APIs.
-- Vistas existentes actualizadas para funcionar con JavaScript (login, register, registro_create y otras), reduciendo recargas y mejorando UX.
-- `app/views/partials/header.php` adaptado para usar variables de sesión simplificadas (`usuario_id`, `usuario_nombre`, `usuario_puntos`).
+- **`public/api/users.php`** — Cookie de sesión reforzada con los atributos `HttpOnly`, `SameSite: Lax` y `Secure` (activado automáticamente cuando el servidor usa HTTPS). Antes la cookie se creaba sin ninguna de estas protecciones.
+- **`public/api/users.php`** — `logout` ahora vacía `$_SESSION`, elimina la cookie del navegador y destruye la sesión. El comportamiento anterior solo llamaba a `session_destroy()`, dejando la cookie activa en el cliente.
+- **`public/api/users.php`** — El endpoint `list` requiere ahora sesión activa con rol `admin`. Antes era accesible sin autenticación y devolvía el email de todos los usuarios.
+- **`public/api/users.php`** — El bloque `catch` ya no retorna `$e->getMessage()` al cliente; el detalle del error se redirige al log del servidor mediante `error_log()`.
+- **`public/api/centros.php`** — La inicialización de sesión pasa a usar `session_set_cookie_params()` con `HttpOnly`, `SameSite: Lax` y `Secure`, en línea con el resto de APIs. Antes usaba `session_start()` directo sin ningún parámetro de seguridad.
+- **`public/api/centros.php`** — El bloque `catch` redirige el detalle del error al log del servidor en lugar de exponerlo al cliente.
 
-### 🗑️ Eliminado
-- Eliminados los controladores PHP de la carpeta `app/controllers/` (UsuarioController, CentroController, RegistroController, RankingController). La lógica pasó a las APIs en `public/api/`.
+### Añadido
 
-### 🔒 Seguridad / Documentación
-- `README.md` y `SECURITY.md` actualizados para reflejar la nueva arquitectura (API-first y JS-heavy) y las medidas de seguridad vigentes.
-- Se mantuvieron las buenas prácticas: tokens CSRF, prepared statements y hashing de contraseñas.
+- **`public/api/users.php`** — Nuevo endpoint `me`: devuelve los datos del usuario autenticado directamente desde la sesión, sin consulta adicional a la base de datos. Útil para poblar el header y la vista de perfil.
+- **`public/api/users.php`** — El endpoint `login` incluye ahora el campo `rol` en la respuesta, permitiendo al frontend mostrar u ocultar opciones de administrador sin una petición extra.
+- **`public/api/users.php`** — Validación de longitud mínima de contraseña (6 caracteres) en el registro.
+- **`public/api/users.php`** — Funciones auxiliares internas `isAuthenticated()` e `isAdmin()` para centralizar las comprobaciones de acceso y evitar código duplicado.
+- **`public/api/users.php`** — Cabecera de documentación describiendo cada endpoint, esquema de respuesta JSON y propósito general del módulo.
+- **`public/api/centros.php`** — Nuevo endpoint `update`: permite a un administrador modificar el nombre, dirección, tipos de residuos y horario de un centro existente.
+- **`public/api/centros.php`** — Nuevo endpoint `delete`: permite a un administrador eliminar un centro. Devuelve error si el ID no existe.
+- **`public/api/centros.php`** — El endpoint `store` devuelve ahora el `id` del centro recién creado en la respuesta, evitando una consulta adicional desde el cliente.
+- **`public/api/centros.php`** — Cabecera de documentación describiendo cada endpoint y su nivel de acceso requerido.
 
+### Modificado
 
-## [0.2.0] - 2026-01-19
+- **`public/api/users.php`** — `verifyCsrf()` recibe ahora el array `$data` completo en lugar del token ya extraído, centralizando la lógica de búsqueda del token en un único punto.
+- **`public/api/users.php`** — Mensajes de error de login unificados: usuario inexistente y contraseña incorrecta devuelven el mismo texto (`Credenciales incorrectas`) para evitar la enumeración de emails registrados.
+- **`public/api/centros.php`** — El endpoint `store` valida que ningún campo llegue vacío antes de intentar la inserción. Antes insertaba registros con campos en blanco sin avisar.
+- **`public/api/centros.php`** — La función `requireAdmin()` centraliza la comprobación de rol, eliminando el condicional inline que había en `store`.
+- **`public/api/registro.php`** — Cookie de sesión actualizada con `HttpOnly`, `SameSite: Lax` y `Secure`, en línea con el resto de APIs.
+- **`public/api/registro.php`** — Los bloques `catch` redirigen los detalles del error al log del servidor en lugar de exponer mensajes genéricos sin contexto.
+- **`public/api/registro.php`** — El mapa de puntos por material pasa a ser una constante `PUNTOS_POR_MATERIAL` definida a nivel de archivo, en lugar de un array hardcodeado dentro del `switch`. Facilita futuros ajustes de puntuación sin buscar dentro de la lógica.
+- **`public/api/registro.php`** — Nuevo endpoint `delete`: elimina un registro de reciclaje propio y descuenta los puntos correspondientes al usuario, todo dentro de una transacción. Usa `GREATEST(0, ...)` en el UPDATE para evitar que los puntos totales bajen de cero. Verifica que el registro pertenezca al usuario antes de actuar.
+- **`public/api/registro.php`** — `store` devuelve ahora el `id` del nuevo registro y los `puntos_totales` actualizados, evitando que el cliente tenga que hacer una petición extra para refrescar el marcador de puntos.
+- **`public/api/registro.php`** — `list` selecciona ahora columnas explícitas en lugar de `r.*`, evitando traer datos innecesarios como `usuario_id` que el cliente ya conoce.
+- **`public/api/registro.php`** — Función `requireAuth()` centraliza la comprobación de sesión activa, eliminando el condicional `isset($_SESSION['usuario_id'])` repetido en cada `case`.
+- **`public/api/registro.php`** — Validaciones de `store` separadas: error específico si el material no es válido, y error específico si la cantidad es ≤ 0. Antes ambos casos devolvían el mismo mensaje `Datos inválidos`.
+- **`public/api/ranking.php`** — Cookie de sesión actualizada con `HttpOnly`, `SameSite: Lax` y `Secure`, en línea con el resto de APIs.
+- **`public/api/ranking.php`** — El bloque `catch` redirige el error al log del servidor. Antes el mensaje genérico se devolvía sin registrar nada.
 
-### ✨ Añadido
-- Vistas de login y registro funcionales
-- Sistema de validación básico
-- Integración completa de Bootstrap 5
-- Animaciones con Animate.css
+### Añadido (ranking)
 
-### 🔧 Modificado
-- Mejoras en la landing page
-- Optimización de estilos CSS
+- **`public/api/ranking.php`** — Nuevo endpoint `stats`: devuelve los totales globales de la plataforma (usuarios activos, reciclajes realizados, kg reciclados, puntos repartidos y CO₂ ahorrado estimado). Útil para la sección de impacto de la landing o el dashboard.
+- **`public/api/ranking.php`** — Nuevo endpoint `me`: calcula y devuelve la posición exacta del usuario autenticado dentro del ranking junto con sus estadísticas personales, sin necesidad de cargar el top 100 completo.
+- **`public/api/ranking.php`** — `list` devuelve ahora el campo `total` con el número de entradas del ranking.
+- **`public/api/ranking.php`** — Constante `KG_CO2_POR_KG_RECICLADO` (1.5) documentada para el cálculo del CO₂ ahorrado, con comentario sobre la estimación.
+- **`public/api/ranking.php`** — `list` maneja correctamente el caso de 0 usuarios, devolviendo array vacío en lugar de fallar.
+- **`public/api/ranking.php`** — Cabecera de documentación describiendo cada endpoint y su nivel de acceso.
+- **`app/helpers/CsrfHelper.php`** — Nuevo método `rotateToken()`: regenera el token invalidando el anterior. Permite llamarlo tras un login o registro exitoso para que el mismo token no pueda reutilizarse en una segunda petición.
+- **`app/helpers/CsrfHelper.php`** — Método privado `ensureSession()` que centraliza la comprobación `session_status() === PHP_SESSION_NONE` eliminando el bloque duplicado que existía en `generateToken()` y `verifyToken()`.
+- **`app/helpers/CsrfHelper.php`** — Cabecera de documentación con ejemplos de uso en formularios HTML y en APIs JSON.
+
+### Modificado (helpers)
+
+- **`app/helpers/CsrfHelper.php`** — `verifyToken()` acepta ahora `?string` en lugar de `$token` sin tipo. Evita el warning de PHP 8 cuando llega `null` desde la API antes de que `hash_equals()` lo reciba.
+- **`app/helpers/CsrfHelper.php`** — `getTokenField()` escapa el token con `htmlspecialchars()` antes de insertarlo en el HTML. Aunque `bin2hex` produce solo caracteres seguros, es una capa de defensa en profundidad consistente con el resto del proyecto.
+- **`app/helpers/CsrfHelper.php`** — Todos los métodos públicos tienen type hints de retorno explícitos (`string`, `bool`, `void`) para consistencia con las APIs mejoradas en esta misma versión.
 
 ---
 
-## [0.1.0] - 2026-01-15
+## [0.4.0] — 2026-03-30
 
-### ✨ Añadido
-- Estructura inicial del proyecto MVC
-- Configuración de base de datos
-- Script SQL con tablas y relaciones
-- Controladores base
-- Sistema de enrutamiento (Front Controller)
-- Vistas básicas
-- README.md inicial
+### Añadido
+
+- **`app/views/perfil.php`** — Rediseño completo basado en tarjetas consistentes con la identidad visual del proyecto (variables CSS `--primary-color` y `--secondary-color`).
+- **`app/views/perfil.php`** — Header con degradado dinámico y avatar circular que muestra la inicial del usuario.
+- **`app/views/perfil.php`** — Animaciones de aparición encadenadas con `Animate.css` (`fadeInDown`, `fadeInUp`, `zoomIn`).
+- **`app/views/perfil.php`** — Panel de acciones rápidas con acceso directo a registros, historial y ranking.
+- **`app/views/partials/header.php`** — Navbar reutilizable con gradiente de marca, badge de puntos del usuario, menú dropdown con opciones de perfil y administración, detección automática de página activa y efecto sticky al hacer scroll.
+- **`app/views/partials/footer.php`** — Footer de cuatro columnas (marca, aplicación, soporte, newsletter) con estadísticas destacadas, enlaces a redes sociales, formulario de suscripción y botón de scroll-to-top.
+- **`CHANGELOG.md`**, **`INSTALL.md`**, **`SECURITY.md`** — Documentación inicial del proyecto.
+
+### Modificado
+
+- **`app/views/home.php`** — Integración de los partials de header y footer; eliminado el HTML duplicado.
+- **`app/views/partials/footer.php`** — Contraste de texto mejorado (`rgba(255,255,255,0.7)` para texto secundario, blanco puro en títulos); bordes sutiles en estadísticas para mayor definición.
+- **`app/controllers/`** — Controladores actualizados: `UsuarioController`, `CentroController`, `RegistroController` y `RankingController`.
+- **`config/database.php`** — Añadido soporte para variables de entorno, manejo de errores mejorado, función helper `getConnection()` y charset UTF-8 explícito.
+
+### Eliminado
+
+- **`app/controllers/UsuarioControllers.php`** — Archivo duplicado con 's' final en el nombre.
+- **`public/css/estilos.css`**, **`estilos.scss`**, **`estilos.css.map`** — Archivos de estilos sin uso que no se cargaban en ninguna vista.
+- **`public/js/app.js`** — Archivo JavaScript vacío (solo contenía un `console.log`).
+- HTML redundante y estilos inline duplicados en vistas individuales.
+
+### Corregido
+
+- Vistas que no incluían los partials de header y footer.
+- Conflicto de HTML duplicado al incluir partials.
+- Problemas de contraste en el footer.
+- Enlaces del navbar que apuntaban a `#` sin destino.
+- Botones del hero sin rutas funcionales.
 
 ---
 
-## 📝 Tipos de Cambios
+## [0.3.0] — 2026-03-03
 
-- ✨ **Añadido**: Nuevas características
-- 🔧 **Modificado**: Cambios en funcionalidad existente
-- 🐛 **Corregido**: Corrección de bugs
-- 🗑️ **Eliminado**: Características removidas
-- 🔒 **Seguridad**: Mejoras de seguridad
-- 📚 **Documentación**: Cambios en documentación
-- 🎨 **Estilos**: Cambios en diseño/UI
-- ⚡ **Performance**: Mejoras de rendimiento
-- ♻️ **Refactoring**: Cambios en código sin afectar funcionalidad
+### Añadido
+
+- **`public/api/`** — APIs JSON para exponer la lógica de la aplicación: `users.php`, `registro.php`, `centros.php`, `ranking.php`.
+- **`public/js/`** — Scripts cliente para gestionar autenticación y formularios vía `fetch`: `api-users.js`, `api-registro.js`.
+- **`app/views/`** — Nuevas vistas con carga dinámica: `centros.php`, `ranking.php`, `mis_registros.php`, `perfil.php`.
+
+### Modificado
+
+- **`public/index.php`** — Enrutador simplificado: incluye vistas directamente y delega las operaciones a las APIs, reduciendo recargas de página.
+- **`app/views/`** — Vistas de login, registro y registro de reciclaje actualizadas para funcionar con JavaScript mediante `fetch`.
+- **`app/views/partials/header.php`** — Adaptado para usar variables de sesión simplificadas (`usuario_id`, `usuario_nombre`, `usuario_puntos`).
+
+### Eliminado
+
+- **`app/controllers/`** — Eliminados los controladores PHP (`UsuarioController`, `CentroController`, `RegistroController`, `RankingController`). La lógica se trasladó a las APIs en `public/api/`.
+
+### Seguridad
+
+- Mantenidas las buenas prácticas existentes: tokens CSRF, prepared statements y hashing de contraseñas con bcrypt.
+- Actualizados `README.md` y `SECURITY.md` para reflejar la nueva arquitectura API-first.
 
 ---
 
-## 🔗 Enlaces
+## [0.2.0] — 2026-01-19
 
-- [README.md](README.md)
-- [INSTALL.md](INSTALL.md)
-- [SECURITY.md](SECURITY.md)
-- [Repositorio GitHub](https://github.com/tu-usuario/Proyecto-2-DAW)
+### Añadido
+
+- Vistas de login y registro funcionales.
+- Sistema de validación básico en cliente.
+- Integración completa de Bootstrap 5.
+- Animaciones con `Animate.css`.
+
+### Modificado
+
+- Mejoras en la landing page.
+- Optimización de estilos CSS.
+
+---
+
+## [0.1.0] — 2026-01-15
+
+### Añadido
+
+- Estructura inicial del proyecto siguiendo el patrón MVC.
+- Configuración de base de datos (`config/database.php`).
+- Script SQL con tablas, relaciones e inserts de ejemplo (`sql/greenpoints.sql`).
+- Controladores base.
+- Sistema de enrutamiento (Front Controller en `public/index.php`).
+- Vistas básicas.
+- `README.md` inicial.
+
+---
+
+## Tipos de cambio
+
+| Etiqueta | Descripción |
+|---|---|
+| **Añadido** | Nuevas funcionalidades o archivos |
+| **Modificado** | Cambios en funcionalidad existente |
+| **Eliminado** | Funcionalidades o archivos eliminados |
+| **Corregido** | Corrección de errores |
+| **Seguridad** | Mejoras relacionadas con la seguridad |
