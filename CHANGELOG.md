@@ -62,6 +62,40 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/helpers/CsrfHelper.php`** — `verifyToken()` acepta ahora `?string` en lugar de `$token` sin tipo. Evita el warning de PHP 8 cuando llega `null` desde la API antes de que `hash_equals()` lo reciba.
 - **`app/helpers/CsrfHelper.php`** — `getTokenField()` escapa el token con `htmlspecialchars()` antes de insertarlo en el HTML. Aunque `bin2hex` produce solo caracteres seguros, es una capa de defensa en profundidad consistente con el resto del proyecto.
 - **`app/helpers/CsrfHelper.php`** — Todos los métodos públicos tienen type hints de retorno explícitos (`string`, `bool`, `void`) para consistencia con las APIs mejoradas en esta misma versión.
+- **`app/views/login.php`** — Migrada para usar `partials/header.php` y `partials/footer.php`. Antes tenía su propio `<!DOCTYPE html>` completo, duplicando navbar, footer y todos los assets. Cualquier cambio en el header había que aplicarlo en tres sitios distintos.
+- **`app/views/login.php`** — Añadida redirección automática al inicio si el usuario ya tiene sesión activa, evitando que un usuario autenticado vea el formulario de login.
+- **`app/views/login.php`** — Añadido botón de mostrar/ocultar contraseña.
+- **`app/views/login.php`** — Añadida alerta dinámica `#loginAlert` para mostrar errores de la API sin recargar la página. Antes los errores solo podían venir de `$_SESSION['error']`.
+- **`app/views/login.php`** — El botón de submit muestra spinner y se deshabilita durante el envío para evitar envíos duplicados.
+- **`app/views/register.php`** — Migrada para usar `partials/header.php` y `partials/footer.php`, igual que login.
+- **`app/views/register.php`** — Añadida redirección automática si el usuario ya tiene sesión activa.
+- **`app/views/register.php`** — Añadido botón de mostrar/ocultar contraseña.
+- **`app/views/register.php`** — El indicador de fuerza de contraseña muestra ahora la etiqueta textual (Débil / Media / Fuerte) además de la barra de color.
+- **`app/views/register.php`** — La revalidación de confirmación de contraseña se dispara también al modificar el campo de contraseña principal, manteniendo ambos campos sincronizados.
+- **`app/views/register.php`** — El botón de submit muestra spinner y se deshabilita durante el envío.
+- **`app/views/register.php`** — Tras registro exitoso redirige automáticamente al login con mensaje de éxito, en lugar de requerir navegación manual.
+- **`app/views/home.php`** — Las tres estadísticas de la sección de impacto (`+10k usuarios`, `50 Ton`, `120 puntos`) eran valores hardcodeados. Ahora se cargan dinámicamente desde `api/ranking.php?action=stats` al cargar la página.
+- **`app/views/home.php`** — Mientras se cargan las estadísticas se muestra un esqueleto de carga (Bootstrap placeholder) en lugar de la página en blanco o los datos falsos.
+- **`app/views/home.php`** — Si la API falla, las estadísticas muestran `—` en lugar de datos inventados, evitando información falsa visible al usuario.
+- **`app/views/home.php`** — Los kg reciclados y CO₂ ahorrado se formatean automáticamente en toneladas cuando superan 1000 kg.
+- **`app/views/home.php`** — El hero adapta los botones de acción según el estado de sesión: un usuario autenticado ve "Registrar Reciclaje" y "Ver Ranking" en lugar de "Registro" e "Iniciar Sesión".
+- **`app/views/home.php`** — Limpieza del texto del hero: eliminada la frase con errata ("Ésto lo hacemos"), redactado de forma más directa y clara.
+- **`app/views/ranking.php`** — Todos los datos de usuario insertados via `innerHTML` ahora pasan por `esc()`, eliminando el riesgo de XSS que existía antes.
+- **`app/views/ranking.php`** — Añadido podio visual para el top 3 con medallas y barras de altura proporcional al puesto.
+- **`app/views/ranking.php`** — Si el usuario está autenticado, se carga su posición exacta desde `api/ranking.php?action=me` y se muestra en un banner sobre la tabla. Su fila en el top 100 se resalta en verde con etiqueta "Tú".
+- **`app/views/ranking.php`** — La tabla incluye columnas de kg reciclados y número de reciclajes, visibles en pantallas medianas y grandes.
+- **`app/views/ranking.php`** — Esqueleto de carga y estado vacío con mensaje específico.
+- **`app/views/mis_registros.php`** — Todos los datos insertados via `innerHTML` pasan por `esc()` para prevenir XSS.
+- **`app/views/mis_registros.php`** — Añadida protección de ruta: redirige al login si no hay sesión activa.
+- **`app/views/mis_registros.php`** — Botón de eliminar en cada tarjeta con modal de confirmación. Tras borrar actualiza el resumen y el badge de puntos del header sin recargar la página.
+- **`app/views/mis_registros.php`** — Sección de resumen rápido con total de registros, kg reciclados y puntos acumulados.
+- **`app/views/mis_registros.php`** — Las fechas se formatean en español legible en lugar del timestamp en crudo.
+- **`app/views/mis_registros.php`** — Icono distinto por tipo de material y esqueleto de carga animado.
+- **`app/views/centros.php`** — Todos los datos insertados via `innerHTML` pasan por `esc()` para prevenir XSS.
+- **`app/views/centros.php`** — Buscador en tiempo real que filtra por nombre, dirección y tipo de residuo sin llamadas adicionales a la API.
+- **`app/views/centros.php`** — Los tipos de residuos se muestran como badges individuales en lugar de texto plano.
+- **`app/views/centros.php`** — Si el usuario es admin, aparece un botón "Nuevo Centro" que abre un modal. Tras guardar, el centro aparece en la lista sin recargar la página.
+- **`app/views/centros.php`** — Esqueleto de carga animado mientras se obtienen los datos.
 
 ---
 

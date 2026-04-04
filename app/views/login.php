@@ -1,223 +1,267 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+/**
+ * Vista de Login — GreenPoints
+ * ---------------------------------------------------------------
+ * Formulario de inicio de sesión. Si el usuario ya tiene sesión
+ * activa se le redirige directamente al inicio.
+ * La autenticación se delega a la API: public/api/users.php?action=login
+ * El token CSRF se genera aquí y se verifica en la API.
+ * ---------------------------------------------------------------
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - GreenPoints</title>
+// Redirigir si ya está autenticado
+if (isset($_SESSION['usuario_id'])) {
+    header('Location: index.php?action=home');
+    exit;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    
-    <!-- Custom Animations -->
-    <link rel="stylesheet" href="css/custom.css">
+$pageTitle = 'Iniciar Sesión | GreenPoints';
+include __DIR__ . '/partials/header.php';
+?>
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
+<style>
+    body {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        min-height: 100vh;
+    }
 
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
+    .login-card {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
 
-        .login-header {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
+    .login-header {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 2.5rem;
+        text-align: center;
+    }
 
-        .login-body {
-            padding: 40px;
-        }
+    .login-body {
+        padding: 2.5rem;
+        background: white;
+    }
 
-        .form-control:focus {
-            border-color: #28a745;
-            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-        }
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
 
-        .btn-login {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            border: none;
-            padding: 12px;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
+    .btn-login {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        color: white;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
-        }
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        color: white;
+    }
 
-        .invalid-feedback {
-            animation: fadeIn 0.3s ease-in;
-        }
+    .btn-login:disabled {
+        opacity: 0.7;
+        transform: none;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .invalid-feedback {
+        animation: fadeInError 0.2s ease-in;
+    }
 
-        .form-control {
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-    </style>
-</head>
+    @keyframes fadeInError {
+        from { opacity: 0; transform: translateY(-4px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
 
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="login-card animate__animated animate__fadeInDown glass-card">
-                    <div class="login-header">
-                        <i class="bi bi-leaf-fill fs-1 mb-3 animate__animated animate__pulse animate__infinite"></i>
-                        <h2 class="fw-bold">GreenPoints</h2>
-                        <p class="mb-0">Inicia sesión para continuar</p>
-                    </div>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
 
-                    <div class="login-body">
-                        <?php if (isset($_SESSION['error'])): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                                <?= htmlspecialchars($_SESSION['error']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="login-card animate__animated animate__fadeInDown">
+
+                <!-- Cabecera -->
+                <div class="login-header">
+                    <i class="bi bi-leaf-fill fs-1 mb-3 d-block animate__animated animate__pulse animate__infinite"></i>
+                    <h2 class="fw-bold mb-1">GreenPoints</h2>
+                    <p class="mb-0 opacity-75">Inicia sesión para continuar</p>
+                </div>
+
+                <!-- Cuerpo -->
+                <div class="login-body">
+
+                    <!-- Alerta de error/éxito desde sesión PHP -->
+                    <?php if (!empty($_SESSION['error'])): ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <?= htmlspecialchars($_SESSION['error']) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <?php unset($_SESSION['error']); ?>
+                    <?php endif; ?>
+
+                    <?php if (!empty($_SESSION['success'])): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <?= htmlspecialchars($_SESSION['success']) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <?php unset($_SESSION['success']); ?>
+                    <?php endif; ?>
+
+                    <!-- Alerta dinámica para errores de la API -->
+                    <div id="loginAlert" class="alert d-none" role="alert"></div>
+
+                    <form id="loginForm" novalidate>
+                        <!-- Token CSRF -->
+                        <?php
+                        require_once __DIR__ . '/../helpers/CsrfHelper.php';
+                        echo CsrfHelper::getTokenField();
+                        ?>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1"></i>Correo electrónico
+                            </label>
+                            <input type="email" class="form-control form-control-lg"
+                                   id="email" name="email"
+                                   placeholder="tu@email.com"
+                                   required autocomplete="email">
+                            <div class="invalid-feedback">
+                                Introduce un correo electrónico válido.
                             </div>
-                            <?php unset($_SESSION['error']); ?>
-                        <?php endif; ?>
+                        </div>
 
-                        <?php if (isset($_SESSION['success'])): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle-fill me-2"></i>
-                                <?= htmlspecialchars($_SESSION['success']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <!-- Contraseña -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">
+                                <i class="bi bi-lock me-1"></i>Contraseña
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-lg"
+                                       id="password" name="password"
+                                       placeholder="••••••••"
+                                       required autocomplete="current-password">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword" tabindex="-1" title="Mostrar/ocultar contraseña">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </button>
                             </div>
-                            <?php unset($_SESSION['success']); ?>
-                        <?php endif; ?>
+                            <div class="invalid-feedback d-block" id="passwordError" style="display:none!important"></div>
+                        </div>
 
-                        <form method="POST" id="loginForm" novalidate>
-                            <!-- Token CSRF -->
-                            <?php
-                            require_once __DIR__ . '/../helpers/CsrfHelper.php';
-                            echo CsrfHelper::getTokenField();
-                            ?>
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-login w-100 btn-lg mb-3" id="submitBtn">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                        </button>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label fw-semibold">
-                                    <i class="bi bi-envelope me-2"></i>Correo Electrónico
-                                </label>
-                                <input type="email" class="form-control form-control-lg" id="email" name="email"
-                                    placeholder="tu@email.com" required autocomplete="email">
-                                <div class="invalid-feedback">
-                                    Por favor, introduce un correo electrónico válido.
-                                </div>
-                            </div>
+                        <div class="text-center">
+                            <p class="text-muted mb-1 small">¿No tienes cuenta?</p>
+                            <a href="index.php?action=register" class="fw-semibold text-success text-decoration-none">
+                                Regístrate aquí
+                            </a>
+                        </div>
 
-                            <div class="mb-4">
-                                <label for="password" class="form-label fw-semibold">
-                                    <i class="bi bi-lock me-2"></i>Contraseña
-                                </label>
-                                <input type="password" class="form-control form-control-lg" id="password"
-                                    name="password" placeholder="••••••••" required autocomplete="current-password">
-                                <div class="invalid-feedback">
-                                    Por favor, introduce tu contraseña.
-                                </div>
-                            </div>
+                        <hr class="my-4">
 
-                            <div class="mb-4 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <label class="form-check-label" for="remember">
-                                    Recordarme
-                                </label>
-                            </div>
-
-                            <button type="submit" class="btn btn-success btn-login w-100 btn-lg mb-3">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
-                            </button>
-
-                            <div class="text-center">
-                                <p class="text-muted mb-2">¿No tienes cuenta?</p>
-                                <a href="index.php?action=register" class="text-decoration-none fw-semibold">
-                                    Regístrate aquí
-                                </a>
-                            </div>
-
-                            <hr class="my-4">
-
-                            <div class="text-center">
-                                <a href="index.php?action=home" class="text-muted text-decoration-none">
-                                    <i class="bi bi-arrow-left me-2"></i>Volver al inicio
-                                </a>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="text-center">
+                            <a href="index.php?action=home" class="text-muted text-decoration-none small">
+                                <i class="bi bi-arrow-left me-1"></i>Volver al inicio
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
+
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/api-users.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const inputs = form.querySelectorAll('input[required]');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form       = document.getElementById('loginForm');
+    const submitBtn  = document.getElementById('submitBtn');
+    const alertBox   = document.getElementById('loginAlert');
+    const toggleBtn  = document.getElementById('togglePassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const passInput  = document.getElementById('password');
 
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateInput(this);
-                });
+    // ── Mostrar / ocultar contraseña ─────────────────────────────
+    toggleBtn.addEventListener('click', function () {
+        const visible = passInput.type === 'text';
+        passInput.type = visible ? 'password' : 'text';
+        toggleIcon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
+    });
 
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid')) {
-                        validateInput(this);
-                    }
-                });
-            });
-
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                inputs.forEach(input => {
-                    if (!validateInput(input)) {
-                        isValid = false;
-                    }
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const firstInvalid = form.querySelector('.is-invalid');
-                    if (firstInvalid) {
-                        firstInvalid.focus();
-                    }
-                }
-            });
-
-            function validateInput(input) {
-                if (!input.checkValidity()) {
-                    input.classList.add('is-invalid');
-                    input.classList.remove('is-valid');
-                    return false;
-                } else {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
-                    return true;
-                }
-            }
+    // ── Validación en tiempo real ─────────────────────────────────
+    form.querySelectorAll('input[required]').forEach(input => {
+        input.addEventListener('blur',  () => validateField(input));
+        input.addEventListener('input', () => {
+            if (input.classList.contains('is-invalid')) validateField(input);
         });
-    </script>
-</body>
+    });
 
-</html>
+    function validateField(input) {
+        const valid = input.checkValidity();
+        input.classList.toggle('is-invalid', !valid);
+        input.classList.toggle('is-valid',    valid);
+        return valid;
+    }
+
+    // ── Mostrar alerta dinámica ───────────────────────────────────
+    function showAlert(msg, type = 'danger') {
+        alertBox.className = `alert alert-${type} animate__animated animate__fadeIn`;
+        alertBox.innerHTML = `<i class="bi bi-${type === 'danger' ? 'exclamation-triangle' : 'check-circle'}-fill me-2"></i>${msg}`;
+    }
+
+    // ── Envío del formulario vía fetch ────────────────────────────
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        // Validar todos los campos antes de enviar
+        let valid = true;
+        form.querySelectorAll('input[required]').forEach(input => {
+            if (!validateField(input)) valid = false;
+        });
+        if (!valid) return;
+
+        // Estado de carga
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Iniciando sesión…';
+
+        const formData = {
+            csrf_token: form.querySelector('[name="csrf_token"]').value,
+            email:      form.querySelector('#email').value.trim(),
+            password:   form.querySelector('#password').value,
+        };
+
+        try {
+            const res  = await fetch('api/users.php?action=login', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(formData),
+            });
+            const json = await res.json();
+
+            if (json.success) {
+                showAlert('¡Inicio de sesión correcto! Redirigiendo…', 'success');
+                setTimeout(() => { window.location.href = json.redirect || 'index.php?action=home'; }, 800);
+            } else {
+                showAlert(json.message || 'Error al iniciar sesión.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
+            }
+        } catch {
+            showAlert('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
+        }
+    });
+});
+</script>
+
+<?php include __DIR__ . '/partials/footer.php'; ?>
