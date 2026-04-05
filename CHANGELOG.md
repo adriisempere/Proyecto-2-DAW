@@ -96,6 +96,18 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/views/centros.php`** — Los tipos de residuos se muestran como badges individuales en lugar de texto plano.
 - **`app/views/centros.php`** — Si el usuario es admin, aparece un botón "Nuevo Centro" que abre un modal. Tras guardar, el centro aparece en la lista sin recargar la página.
 - **`app/views/centros.php`** — Esqueleto de carga animado mientras se obtienen los datos.
+- **`app/views/perfil.php`** — Las tarjetas de kg reciclados y CO₂ ahorrado ahora se cargan desde `api/ranking.php?action=me` en lugar de mostrar datos estáticos hardcodeados.
+- **`app/views/perfil.php`** — La fecha de registro se obtiene desde `api/users.php?action=me` y se muestra en formato legible en español, en lugar de "Información no disponible".
+- **`app/views/perfil.php`** — Añadida tarjeta de posición en el ranking cargada dinámicamente, sin necesidad de abrir la vista de ranking.
+- **`app/views/perfil.php`** — El badge de Administrador se muestra en la cabecera del perfil si el usuario tiene rol admin, junto con un botón adicional "Gestionar Centros" en las acciones rápidas.
+- **`app/views/perfil.php`** — Las tarjetas de estadísticas dinámicas muestran un esqueleto de carga mientras esperan la respuesta de la API.
+- **`app/views/perfil.php`** — El nivel se calcula correctamente en PHP con `elseif` encadenado. La versión anterior usaba `if` independientes que podían sobreescribirse entre sí.
+- **`app/views/registro_create.php`** — Añadida redirección al login si no hay sesión activa, igual que en `mis_registros.php`.
+- **`app/views/registro_create.php`** — El campo de centro de reciclaje pasa a ser opcional con opción por defecto "Sin centro específico", en lugar de requerido. Permite registrar sin un centro asociado.
+- **`app/views/registro_create.php`** — Añadido preview en tiempo real de los puntos que se ganarán, calculado en cliente a partir del material y la cantidad antes de enviar el formulario.
+- **`app/views/registro_create.php`** — Los radio buttons de material se generan desde la constante `MATERIALES` en JS, que incluye los pts/kg de cada tipo, manteniéndose en sincronía con `PUNTOS_POR_MATERIAL` de la API.
+- **`app/views/registro_create.php`** — Tras registro exitoso, actualiza el badge de puntos del header y redirige al historial automáticamente.
+- **`app/views/registro_create.php`** — El JS de validación de Bootstrap ha sido reemplazado por validación propia que soporta el campo de material (radio buttons) y da mensajes específicos por campo.
 
 ---
 
