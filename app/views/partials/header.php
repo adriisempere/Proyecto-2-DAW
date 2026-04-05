@@ -190,13 +190,13 @@
                 
                 <div class="d-flex align-items-center animate__animated animate__fadeInRight">
                     <?php if(isset($_SESSION['usuario_id'])): ?>
-                        <!-- User Points Badge -->
+                        <!-- Puntos de usuario -->
                         <div class="badge-points rounded-pill px-3 py-2 text-white me-3 d-none d-md-flex align-items-center">
                             <i class="bi bi-star-fill text-warning me-2"></i>
                             <span class="fw-bold"><?= $_SESSION['usuario_puntos'] ?? 0 ?> pts</span>
                         </div>
 
-                        <!-- User Profile Dropdown -->
+                        <!-- Perfil de usuario Dropdown -->
                         <div class="dropdown">
                             <button class="user-profile-btn dropdown-toggle d-flex align-items-center text-decoration-none" 
                                     type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -229,10 +229,15 @@
                                         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=tienda">
+                                        <i class="bi bi-gift me-2 text-success"></i>Tienda de Recompensas
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Login/Register Buttons -->
+                        <!-- Login/Register -->
                         <div class="d-flex gap-2">
                             <a href="index.php?action=login" class="btn btn-outline-light rounded-pill px-4">
                                 Login

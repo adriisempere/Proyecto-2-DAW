@@ -108,6 +108,10 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/views/registro_create.php`** — Los radio buttons de material se generan desde la constante `MATERIALES` en JS, que incluye los pts/kg de cada tipo, manteniéndose en sincronía con `PUNTOS_POR_MATERIAL` de la API.
 - **`app/views/registro_create.php`** — Tras registro exitoso, actualiza el badge de puntos del header y redirige al historial automáticamente.
 - **`app/views/registro_create.php`** — El JS de validación de Bootstrap ha sido reemplazado por validación propia que soporta el campo de material (radio buttons) y da mensajes específicos por campo.
+- **`sql/greenpoints_recompensas.sql`** — Nuevas tablas `recompensa` y `canje`. Incluye 8 recompensas de ejemplo (Amazon, Steam, Netflix, Apple, Spotify) con sus precios en puntos.
+- **`public/api/recompensas.php`** — Nueva API con tres endpoints: `list` (catálogo público), `checkout` (procesa el carrito en una transacción, valida puntos en servidor sin confiar en el cliente, y genera códigos ficticios con formato `GP-XXXX-XXXX-XXXX`) y `mis_canjes` (historial del usuario con códigos).
+- **`app/views/tienda.php`** — Nueva vista de tienda con carrito lateral deslizante, filtros por marca, controles de cantidad por tarjeta, preview del saldo resultante antes de confirmar, modal de confirmación con desglose completo y modal de éxito con los códigos generados listos para copiar al portapapeles.
+- **`app/views/mis_canjes.php`** — Nueva vista con historial de todos los canjes y sus códigos, con copia al portapapeles en un clic.
 
 ---
 
