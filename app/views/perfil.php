@@ -1,6 +1,27 @@
 <?php
+session_start();
+
+if (empty($_SESSION['usuario_id'])) {
+    header('Location: index.php?action=login');
+    exit;
+}
+
 $pageTitle = 'Perfil | GreenPoints';
 include __DIR__ . '/partials/header.php';
+
+$nombre = $_SESSION['usuario_nombre'] ?? 'Usuario';
+$email  = $_SESSION['usuario_email'] ?? 'No disponible';
+$puntos = (int)($_SESSION['usuario_puntos'] ?? 0);
+
+function calcularNivel($puntos){
+    if ($puntos > 5000) return 'Maestro Verde';
+    if ($puntos > 2000) return 'Experto';
+    if ($puntos > 500) return 'Avanzado';
+    return 'Principiante';
+}
+
+$nivel = calcularNivel($puntos);
+$inicial = strtoupper(substr($nombre ?: 'U',0,1));
 ?>
 
 <!-- Custom CSS for Profile Page -->
@@ -181,13 +202,7 @@ include __DIR__ . '/partials/header.php';
 
 <div class="container py-5">
     
-    <?php if (isset($_SESSION['usuario_id'])): ?>
-        <?php 
-            $nombre = $_SESSION['usuario_nombre'] ?? 'Usuario';
-            $inicial = strtoupper(substr($nombre, 0, 1));
-            $email = $_SESSION['usuario_email'] ?? 'No disponible';
-            $puntos = $_SESSION['usuario_puntos'] ?? 0;
-        ?>
+   
 
         <!-- Header del Perfil -->
         <div class="profile-header text-center mb-5 animate__animated animate__fadeInDown">
@@ -308,7 +323,7 @@ include __DIR__ . '/partials/header.php';
             </div>
         </div>
 
-    <?php else: ?>
+    
         <div class="row justify-content-center align-items-center animate__animated animate__fadeIn" style="min-height: 50vh;">
             <div class="col-md-8 text-center py-5">
                 <div class="mb-4">
@@ -326,7 +341,7 @@ include __DIR__ . '/partials/header.php';
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    
     
 </div>
 
