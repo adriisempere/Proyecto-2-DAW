@@ -468,9 +468,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ── Gestión del carrito ───────────────────────────────────────
     window.addToCart = function (id) {
-        const r = catalogo.find(x => x.id === id);
+        const r = catalogo.find(x => x.id == id);
         if (!r) return;
-        const existing = carrito.find(i => i.recompensa.id === id);
+        const existing = carrito.find(i => i.recompensa.id == id);
         if (existing) {
             existing.cantidad++;
         } else {
@@ -481,7 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     window.changeQty = function (id, delta) {
-        const idx = carrito.findIndex(i => i.recompensa.id === id);
+        const idx = carrito.findIndex(i => i.recompensa.id == id);
         if (idx === -1) return;
         carrito[idx].cantidad += delta;
         if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);

@@ -1,83 +1,80 @@
 # 📦 Guía de Instalación - GreenPoints
 
-Esta guía te ayudará a configurar el proyecto **GreenPoints** en tu entorno local de desarrollo.
+Esta guía te ayudará a configurar el proyecto **GreenPoints** en tu entorno local de desarrollo (por ejemplo: XAMPP, WAMP o nativo).
 
 ---
 
 ## 📋 Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
-
+Asegúrate de tener instalado:
 - **PHP** >= 8.0 (Recomendado 8.2+)
 - **MySQL** >= 5.7 o **MariaDB** >= 10.4
-- **Servidor Web**: Apache (mediante XAMPP/WAMP) o el servidor integrado de PHP.
-- **Git**: Para clonar el repositorio.
-- **Composer** (opcional): Para futuras dependencias.
+- Servidor Web (**Apache** a través de XAMPP / MAMP u otro compatible)
+- **Git**
 
 ---
 
 ## 🚀 Instalación Paso a Paso
 
-### 1. Obtener el Código
-Clona el repositorio en tu carpeta de servidor local (`htdocs`, `www`, etc.):
+### 1. Clonar el repositorio
+Al clonar o descargar este proyecto, fíjate en su estructura. Si lo descargas directamente o utilizas git dentro de tu directorio público (`htdocs/` en XAMPP):
 ```bash
 git clone https://github.com/tu-usuario/Proyecto-2-DAW.git
-cd Proyecto-2-DAW
 ```
+*(Nota de Archivos: Actualmente el proyecto está contenido dentro de una subcarpeta repetida, es decir `Proyecto-2-DAW-RamaAdrian/Proyecto-2-DAW-RamaAdrian`. Ten en cuenta esto al abrirlo en tu navegador).*
 
-### 2. Configurar la Base de Datos
-1.  **Crear la DB**: Accede a tu gestor (phpMyAdmin o terminal) y crea una base de datos llamada `greenpoints`.
-    ```sql
-    CREATE DATABASE greenpoints CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    ```
-2.  **Importar Esquema**: Importa el archivo contenido en `sql/greenpoints.sql`.
-    ```bash
-    mysql -u root -p greenpoints < sql/greenpoints.sql
-    ```
+### 2. Configurar la Base de Datos y Codificación
 
-### 3. Configurar Credenciales
-Edita el archivo `config/database.php`. El sistema buscará variables de entorno primero, pero puedes editarlas directamente para desarrollo local:
+1. **Crear la Base de Datos:** (Puedes usar phpMyAdmin)
+   ```sql
+   CREATE DATABASE greenpoints CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+2. **Importar los Datos Iniciales y las Recompensas (MUY IMPORTANTE):**
+   Para evitar que el terminal corrompa los símbolos como la 'Á' o el euro ('€') introduciendo caracteres extraños, al importar el archivo `.sql` debes forzar explícitamente el modo `utf8mb4`. En la consola `cmd` ejecuta:
+   ```bash
+   mysql --default-character-set=utf8mb4 -u root greenpoints < sql/greenpoints.sql
+   ```
+   *Esto desplegará las tablas base de usuario, registros y el catálogo con todas las tarjetas de recompensa ya configuradas y con su formato intacto.*
+
+### 3. Configurar Credenciales Seguras y Rápidas
+El puente a la base de datos se rige por el código en `config/database.php` (y/o `app/config/database.php`). Confirma que coinciden con tu XAMPP:
 ```php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'tu_usuario'); // Por defecto 'root' en XAMPP
-define('DB_PASS', 'tu_pass');    // Por defecto '' en XAMPP
+define('DB_HOST', '127.0.0.1');  // ¡Usa siempre 127.0.0.1 en lugar de localhost para evitar la lentitud por IPv6 de Windows!
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_NAME', 'greenpoints');
 ```
 
 ---
 
-## 💻 Ejecución
+## 💻 Ejecución del Proyecto
 
-### Opción A: Servidor Integrado de PHP (Rápido)
-Desde la raíz del proyecto, ejecuta:
-```bash
-cd public
-php -S localhost:8000
+### Opción A: Mediante XAMPP (Apache)
+Encendiendo los módulos de Apache y MySQL en el panel de control XAMPP, ingresa en el navegador (adecuando el nombre de tu carpeta):
 ```
-Luego accede a `http://localhost:8000`.
+http://localhost/Proyecto-2-DAW-RamaAdrian/Proyecto-2-DAW-RamaAdrian/public/
+```
 
-### Opción B: XAMPP / WAMP
-1. Asegúrate de que la carpeta del proyecto esté dentro de `htdocs`.
-2. Inicia Apache y MySQL.
-3. Accede a `http://localhost/Proyecto-2-DAW/public/`.
-
----
-
-## 🔑 Credenciales de Acceso
-Para probar las funcionalidades de administrador, utiliza:
-- **Usuario**: `admin@greenpoints.com`
-- **Contraseña**: `admin123`
+### Opción B: Servidor PHP Interno (Opcional)
+Desde la terminal, accede directamente a la carpeta `public/` y ejecuta:
+```bash
+cd Proyecto-2-DAW-RamaAdrian/Proyecto-2-DAW-RamaAdrian/public
+php -S 127.0.0.1:8000
+```
+Y visita en tu navegador la URL `http://127.0.0.1:8000`.
 
 ---
 
-## 🛠️ Solución de Problemas Comunes
+## 🔐 Cuentas de Acceso (Administración)
 
-- **Error de Conexión**: Revisa que los datos en `config/database.php` coincidan con tu configuración de MySQL.
-- **Iconos no cargan**: Asegúrate de tener conexión a internet (los iconos de Bootstrap Icons se cargan vía CDN).
-- **Charset/Acentos**: El sistema usa `utf8mb4`. Si ves caracteres extraños, verifica que tu base de datos y tablas usen este cotejamiento.
+La base de datos original contiene un perfil administrador prediseñado para poder acceder a los ajustes de validación de los Centros y registros:
+- **Email:** `admin@greenpoints.com`
+- **Contraseña:** `admin123`
 
 ---
 
-<p align="center">
-  <strong>🌱 ¡Gracias por contribuir a un mundo más verde! 🌱</strong>
-</p>
+## 🛠️ Solución a Problemas Comunes
+
+- **Pantalla Blanca (Error 500) o `"Error al cargar el catálogo"`**: Significa que falta la tabla `recompensa` en MySQL. Regresa al *Paso 2* y re-importa el archivo `greenpoints.sql` de la base de código.
+- **Micro-Lentitud: Tarda 1 segundo en cargar cada vista**: Revisa que tus archivos `database.php` usan verdaderamente `define('DB_HOST', '127.0.0.1')` en vez de `"localhost"`. XAMPP a menudo enruta lento el fallback de DNS si se usa localmente por defecto.
+- **Acentos cortados en nombres (ej. `lvaro`) o `10Ôé¼` en tienda**: Vuelve a volcar la base de datos pero recuerda añadir el flag explícito de `--default-character-set=utf8mb4` desde tu terminal nativa.

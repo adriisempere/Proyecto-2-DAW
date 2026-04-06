@@ -194,7 +194,7 @@ include __DIR__ . '/partials/header.php';
 
     <?php
     $nombre  = $_SESSION['usuario_nombre'] ?? 'Usuario';
-    $inicial = strtoupper(mb_substr($nombre, 0, 1));
+    $inicial = mb_strtoupper(mb_substr($nombre, 0, 1, 'UTF-8'), 'UTF-8');
     $email   = $_SESSION['usuario_email']  ?? '';
     $puntos  = (int) ($_SESSION['usuario_puntos'] ?? 0);
     $rol     = $_SESSION['usuario_rol']    ?? 'usuario';
@@ -337,6 +337,16 @@ include __DIR__ . '/partials/header.php';
                     <a href="index.php?action=ranking"
                        class="btn btn-light border action-btn w-100 text-center text-dark">
                         <i class="bi bi-trophy me-2 text-warning"></i>Ver Ranking
+                    </a>
+
+                    <a href="index.php?action=tienda"
+                       class="btn btn-outline-success action-btn w-100 text-center">
+                        <i class="bi bi-gift me-2"></i>Tienda de Recompensas
+                    </a>
+
+                    <a href="index.php?action=mis_canjes"
+                       class="btn btn-outline-info action-btn w-100 text-center">
+                        <i class="bi bi-bag-check me-2"></i>Mis Recompensas Obtenidas
                     </a>
 
                     <?php if ($rol === 'admin'): ?>
