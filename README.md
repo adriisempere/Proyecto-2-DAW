@@ -105,6 +105,7 @@ https://sempere.infinityfree.me/public/index.php
 - [x] Vistas funcionales con carga dinámica
 - [x] Panel de administración básico
 - [x] Sistema de recompensas e insignias
+- [x] Despliegue en Demo
 - [ ] Tests automatizados
 - [ ] Despliegue en producción
 
