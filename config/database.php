@@ -1,10 +1,10 @@
 <?php
 
 // Configuración de la base de datos
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
-define('DB_NAME', getenv('DB_NAME') ?: 'greenpoints');
+define('DB_HOST', getenv('DB_HOST') ?: 'sql305.infinityfree.com');
+define('DB_USER', getenv('DB_USER') ?: 'if0_41618488');
+define('DB_PASS', getenv('DB_PASS') ?: 'Adrianser120719');
+define('DB_NAME', getenv('DB_NAME') ?: 'if0_41618488_greenpoints');
 define('DB_CHARSET', getenv('DB_CHARSET') ?: 'utf8mb4');
 
 // Crear conexión

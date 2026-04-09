@@ -125,7 +125,7 @@ Accede a `http://localhost:8000`.
 - [x] API REST completa (usuarios, reciclaje, centros, ranking)
 - [x] Vistas funcionales con carga dinámica
 - [x] Panel de administración básico
-- [x] Sistema de recompensas e insignias
+- [ ] Sistema de recompensas e insignias
 - [ ] Tests automatizados
 - [ ] Despliegue en producción
 
