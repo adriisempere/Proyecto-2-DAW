@@ -70,30 +70,9 @@ Proyecto-2-DAW/
 
 ---
 
-## Instalación
+## Demo
 
-Consulta [INSTALL.md](./INSTALL.md) para la guía completa. Resumen:
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/adriisempere/Proyecto-2-DAW.git
-cd Proyecto-2-DAW
-
-# 2. Importar la base de datos
-mysql -u root -p greenpoints < sql/greenpoints.sql
-
-# 3. Configurar credenciales en config/database.php
-#    o definir las variables de entorno DB_HOST, DB_USER, DB_PASS, DB_NAME
-
-# 4. Arrancar el servidor
-cd public
-php -S localhost:8000
-```
-
-Accede a `http://localhost:8000`.
-
-**Credenciales de prueba:**
-- Admin: `admin@greenpoints.com` / `admin123`
+https://sempere.infinityfree.me/public/index.php
 
 ---
 
