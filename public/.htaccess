@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Proyecto-2-DAW-RamaAdrian/public/
+    
+    # Manejar el index.php como archivo por defecto
+    DirectoryIndex index.php
+    
+    # Si el archivo o carpeta solicitado existe físicamente, servirlo directamente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # En cualquier otro caso, enviarlo a index.php manejando el parámetro action
+    # Esto permite usar URLs como /public/login y que PHP reciba ?action=login
+    RewriteRule ^(.*)$ index.php?action=$1 [QSA,L]
+</IfModule>

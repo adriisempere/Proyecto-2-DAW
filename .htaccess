@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirigir la raíz a la carpeta public automaticamente
+    RewriteRule ^$ public/ [L]
+    
+    # Redirigir cualquier otra cosa que no sea un archivo/carpeta real a public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
