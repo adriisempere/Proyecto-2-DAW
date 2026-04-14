@@ -175,11 +175,11 @@
         <!-- Botón scroll to top -->
         <button 
             id="scrollTopBtn" 
-            class="btn btn-success rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg"
-            style="width: 50px; height: 50px; display: none; z-index: 1000;"
+            class="btn btn-success rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg animate-float"
+            style="width: 50px; height: 50px; display: none; z-index: 1000; border: none; background: var(--primary);"
             onclick="window.scrollTo({top: 0, behavior: 'smooth'});"
         >
-            <i class="bi bi-arrow-up-short fs-4"></i>
+            <i class="bi bi-arrow-up-short fs-4 text-white"></i>
         </button>
     </div>
 </footer>
@@ -187,70 +187,40 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Scripts personalizados -->
+<!-- Logica Premium: Animaciones y Scroll -->
 <script>
-    // Efecto scroll en navbar
-    window.addEventListener('scroll', function() {
-        const navbar = document.getElementById('mainNavbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        
-        // Mostrar/ocultar botón scroll to top
+    // ── 1. Animaciones al hacer Scroll ─────────────────────
+    const observerOptions = { threshold: 0.15 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+    // ── 2. Efectos de Navegación y Scroll ───────────────────
+    window.addEventListener('scroll', () => {
+        // Mostrar botón subir
         const scrollBtn = document.getElementById('scrollTopBtn');
-        if (window.scrollY > 300) {
-            scrollBtn.style.display = 'block';
-        } else {
-            scrollBtn.style.display = 'none';
+        if (scrollBtn) {
+            scrollBtn.style.display = window.scrollY > 400 ? 'block' : 'none';
         }
     });
-    
-    // Estilos para enlaces del footer
-    document.querySelectorAll('.footer-link').forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            this.style.color = '#ffffff';
-            this.style.paddingLeft = '5px';
-            this.style.transition = 'all 0.3s';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            this.style.color = 'rgba(255,255,255,0.7)';
-            this.style.paddingLeft = '0';
-        });
-    });
-    
-    // Animación para enlaces de redes sociales
-    document.querySelectorAll('.social-link').forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px) scale(1.1)';
-            this.style.color = '#28a745';
-            this.style.transition = 'all 0.3s';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-            this.style.color = '';
-        });
-    });
-    
-    // Auto-cerrar alertas después de 5 segundos
-    document.querySelectorAll('.alert').forEach(alert => {
-        setTimeout(() => {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        }, 5000);
-    });
-    
-    // Marcar enlace activo en el navbar
-    const currentPage = window.location.href;
+
+    // Marcar página activa
+    const url = window.location.href;
     document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.href === currentPage) {
+        if (url.includes(link.getAttribute('href'))) {
             link.classList.add('active');
         }
     });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>

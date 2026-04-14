@@ -25,76 +25,50 @@ include __DIR__ . '/partials/header.php';
     body {
         background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         min-height: 100vh;
-        padding: 2rem 0;
+        padding: 3rem 0;
     }
 
     .register-card {
-        border-radius: 20px;
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .register-header {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         color: white;
-        padding: 2.5rem;
+        padding: 3rem 2rem;
         text-align: center;
     }
 
     .register-body {
-        padding: 2.5rem;
-        background: white;
-    }
-
-    .form-control:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        padding: 3rem 2.5rem;
+        background: var(--bg-card);
     }
 
     .btn-register {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         border: none;
-        padding: 12px;
+        padding: 14px;
         font-weight: 600;
         color: white;
+        border-radius: 12px;
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .btn-register:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
         color: white;
     }
 
-    .btn-register:disabled {
-        opacity: 0.7;
-        transform: none;
-    }
-
-    /* Barra de fuerza de contraseña */
     .strength-bar {
-        height: 5px;
-        border-radius: 3px;
-        transition: width 0.3s, background-color 0.3s;
+        height: 6px;
+        border-radius: 10px;
         width: 0;
-    }
-
-    .strength-weak   { background: #dc3545; width: 33%; }
-    .strength-medium { background: #ffc107; width: 66%; }
-    .strength-strong { background: #28a745; width: 100%; }
-
-    .invalid-feedback {
-        animation: fadeInError 0.2s ease-in;
-    }
-
-    @keyframes fadeInError {
-        from { opacity: 0; transform: translateY(-4px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .benefit-icon {
-        font-size: 2.5rem;
-        opacity: 0.9;
+        transition: var(--transition);
+        background: #eee;
     }
 </style>
 

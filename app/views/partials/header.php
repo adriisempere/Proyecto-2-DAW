@@ -22,137 +22,87 @@
     <!-- Custom Animations -->
     <link rel="stylesheet" href="css/custom.css">
     
-    <!-- Estilos Custom -->
+    <!-- Estilos Premium -->
     <style>
         :root {
-            --primary-color: #28a745;
-            --secondary-color: #20c997;
-            --dark-color: #343a40;
-            --light-color: #f8fdf9;
+            --primary: #28a745;
+            --secondary: #20c997;
+            --text-on-nav: #ffffff;
         }
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: var(--light-color);
-            color: #333;
+            background-color: var(--bg-body, #f8fdf9);
+            color: var(--text-main, #333);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
         
-        main {
-            flex: 1;
-        }
+        main { flex: 1; }
         
-        /* Navbar Styles */
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            padding: 1rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 0.75rem 0;
             transition: all 0.3s ease;
         }
         
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
-            color: white !important;
+            color: var(--text-on-nav) !important;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .nav-link {
-            color: rgba(255,255,255,0.9) !important;
+            color: rgba(255,255,255,0.85) !important;
             font-weight: 500;
-            padding: 0.5rem 1rem !important;
+            padding: 0.5rem 1.2rem !important;
             border-radius: 50px;
             transition: all 0.3s ease;
         }
         
         .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            color: white !important;
-            transform: translateY(-2px);
+            background: rgba(255,255,255,0.15);
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+
+        /* Theme Toggle */
+        #themeToggle {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #themeToggle:hover {
+            background: white;
+            color: var(--primary);
+            transform: rotate(15deg);
         }
         
-        /* User Profile Dropdown */
         .user-profile-btn {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 50px;
             transition: all 0.3s;
         }
         
         .user-profile-btn:hover {
             background: white;
-            color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* Badge Styles */
-        .badge-points {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        /* Glassmorphism for Dropdowns */
-        .dropdown-menu {
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 15px;
-            padding: 1rem;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .dropdown-item {
-            border-radius: 10px;
-            padding: 0.7rem 1rem;
-            transition: all 0.2s;
-        }
-        
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: var(--primary-color);
-            transform: translateX(5px);
-        }
-        
-        .dropdown-item:active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        /* Mobile Toggle */
-        .navbar-toggler {
-            border: none;
-            background: rgba(255,255,255,0.2);
-        }
-        
-        .navbar-toggler:focus {
-            box-shadow: none;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-nav-item {
-            animation: fadeIn 0.5s ease backwards;
-        }
-        
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        
-        /* Navbar scroll effect */
-        .navbar.scrolled {
-            padding: 0.5rem 0;
-            background: rgba(40, 167, 69, 0.95);
-            backdrop-filter: blur(10px);
+            color: var(--primary);
         }
     </style>
 </head>

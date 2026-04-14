@@ -16,49 +16,50 @@ $pageTitle = 'GreenPoints | Recicla y Gana';
 include __DIR__ . '/partials/header.php';
 ?>
 
-<!-- ── Hero ──────────────────────────────────────────────────── -->
-<header class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto img-fluid animate-float mb-3"
-         src="img/LogoGreenPoints.png"
-         alt="Logo GreenPoints"
-         width="160" height="160"
-         loading="lazy">
+<!-- Hero Section Premium -->
+<div class="hero-section text-white d-flex align-items-center position-relative overflow-hidden" 
+     style="min-height: 80vh; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin-top: -24px;">
+    
+    <!-- Círculos decorativos -->
+    <div class="position-absolute translate-middle d-none d-md-block" style="top: 20%; left: 10%; width: 400px; height: 400px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+    <div class="position-absolute translate-middle d-none d-md-block" style="bottom: 10%; right: 5%; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
 
-    <h1 class="display-5 fw-bold text-gradient animate__animated animate__fadeInDown">
-        GreenPoints
-    </h1>
-
-    <div class="col-lg-6 mx-auto animate__animated animate__fadeInUp delay-200">
-        <p class="lead mb-4">
-            Fomentamos el reciclaje a través de un sistema de puntos y recompensas.
-            Registra tus actividades, escala en el ranking y compite con tu comunidad.
-            Cuantos más puntos acumules, más recompensas podrás obtener.
-        </p>
-        <p class="lead fw-semibold mb-4">¡Empieza a reciclar hoy mismo!</p>
-
-        <div class="d-flex gap-2 justify-content-center flex-wrap">
-            <?php if (isset($_SESSION['usuario_id'])): ?>
-                <a href="index.php?action=registro_create"
-                   class="btn btn-success btn-lg px-4 rounded-pill btn-pulse">
-                    <i class="bi bi-plus-circle me-2"></i>Registrar Reciclaje
-                </a>
-                <a href="index.php?action=ranking"
-                   class="btn btn-outline-success btn-lg px-4 rounded-pill">
-                    <i class="bi bi-trophy me-2"></i>Ver Ranking
-                </a>
-            <?php else: ?>
-                <a href="index.php?action=register"
-                   class="btn btn-success btn-lg px-4 rounded-pill btn-pulse">
-                    <i class="bi bi-person-plus me-2"></i>Registro
-                </a>
-                <a href="index.php?action=login"
-                   class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
-                </a>
-            <?php endif; ?>
+    <div class="container position-relative py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-7 animate__animated animate__fadeInLeft">
+                <div class="badge bg-white text-success rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">
+                    <i class="bi bi-stars me-2"></i>Nueva versión 2.0
+                </div>
+                <h1 class="display-3 fw-bold mb-4">
+                    Transforma tus <span class="bg-white text-success px-2 rounded">Residuos</span> en Recompensas
+                </h1>
+                <p class="lead mb-5 opacity- translation-delay-1 fs-4">
+                    Únete a la comunidad de GreenPoints y gana puntos por cada material que recicles. El planeta te lo agradecerá y nosotros también.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <?php if (isset($_SESSION['usuario_id'])): ?>
+                        <a href="index.php?action=registro_create" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-success shadow-lg">
+                            <i class="bi bi-recycle me-2"></i>Empezar a Reciclar
+                        </a>
+                        <a href="index.php?action=ranking" class="btn btn-outline-light btn-lg rounded-pill px-5">
+                            <i class="bi bi-trophy me-2"></i>Ver Ranking
+                        </a>
+                    <?php else: ?>
+                        <a href="index.php?action=register" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-success shadow-lg">
+                            <i class="bi bi-person-plus me-2"></i>Crear Cuenta
+                        </a>
+                        <a href="index.php?action=login" class="btn btn-outline-light btn-lg rounded-pill px-5">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center animate-float">
+                <img src="img/LogoGreenPoints.png" alt="Logo" class="img-fluid" style="filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2)); width: 300px;">
+            </div>
         </div>
     </div>
-</header>
+</div>
 
 <!-- ── Estadísticas globales (cargadas desde la API) ─────────── -->
 <section class="py-5 bg-white shadow-sm">
@@ -105,7 +106,7 @@ include __DIR__ . '/partials/header.php';
         <div class="row g-4">
 
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-100">
+                <div class="card h-100 p-4 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-recycle text-success fs-2"></i>
@@ -120,7 +121,7 @@ include __DIR__ . '/partials/header.php';
             </div>
 
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-200">
+                <div class="card h-100 p-4 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-trophy text-warning fs-2"></i>
@@ -135,7 +136,7 @@ include __DIR__ . '/partials/header.php';
             </div>
 
             <div class="col-md-4">
-                <div class="card h-100 p-4 border-0 shadow-sm hover-lift animate__animated animate__fadeInUp delay-300">
+                <div class="card h-100 p-4 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-4">
                             <i class="bi bi-geo-alt text-primary fs-2"></i>

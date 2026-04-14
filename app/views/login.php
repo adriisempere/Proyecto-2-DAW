@@ -26,55 +26,38 @@ include __DIR__ . '/partials/header.php';
     }
 
     .login-card {
-        border-radius: 20px;
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        border: 1px solid rgba(255,255,255,0.1);
     }
 
     .login-header {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         color: white;
-        padding: 2.5rem;
+        padding: 3rem 2rem;
         text-align: center;
     }
 
     .login-body {
-        padding: 2.5rem;
-        background: white;
-    }
-
-    .form-control:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        padding: 3rem 2.5rem;
+        background: var(--bg-card);
     }
 
     .btn-login {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         border: none;
-        padding: 12px;
+        padding: 14px;
         font-weight: 600;
         color: white;
+        border-radius: 12px;
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .btn-login:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
         color: white;
-    }
-
-    .btn-login:disabled {
-        opacity: 0.7;
-        transform: none;
-    }
-
-    .invalid-feedback {
-        animation: fadeInError 0.2s ease-in;
-    }
-
-    @keyframes fadeInError {
-        from { opacity: 0; transform: translateY(-4px); }
-        to   { opacity: 1; transform: translateY(0); }
     }
 </style>
 

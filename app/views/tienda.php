@@ -32,13 +32,14 @@ include __DIR__ . '/partials/header.php';
         width: 360px;
         max-width: 95vw;
         height: 100vh;
-        background: white;
+        background: var(--bg-card);
         box-shadow: -4px 0 30px rgba(0,0,0,0.12);
         z-index: 1050;
         transform: translateX(100%);
         transition: transform 0.3s cubic-bezier(.4,0,.2,1);
         display: flex;
         flex-direction: column;
+        border-left: 1px solid var(--border-color);
     }
     .cart-drawer.open { transform: translateX(0); }
 
@@ -50,50 +51,9 @@ include __DIR__ . '/partials/header.php';
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.3s;
+        backdrop-filter: blur(2px);
     }
     .cart-overlay.open { opacity: 1; pointer-events: all; }
-
-    .cart-header {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #f0f0f0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
-    }
-
-    .cart-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem 1.5rem;
-    }
-
-    .cart-footer {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid #f0f0f0;
-        flex-shrink: 0;
-        background: #fafafa;
-    }
-
-    .cart-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f5f5f5;
-    }
-
-    .cart-item:last-child { border-bottom: none; }
-
-    .cart-item-img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        border-radius: 8px;
-        background: #f8f8f8;
-        padding: 6px;
-        flex-shrink: 0;
-    }
 
     /* ── Tarjetas del catálogo ───────────────────────────────── */
     .reward-card {
@@ -102,25 +62,18 @@ include __DIR__ . '/partials/header.php';
         transition: all 0.25s;
         cursor: pointer;
         height: 100%;
+        background: var(--bg-card);
+        box-shadow: var(--shadow-sm);
     }
 
     .reward-card:hover {
-        border-color: #28a745;
+        border-color: var(--primary);
         transform: translateY(-4px);
-        box-shadow: 0 10px 28px rgba(40,167,69,0.15) !important;
+        box-shadow: 0 10px 28px rgba(40,167,69,0.15);
     }
-
-    .reward-card .brand-logo {
-        height: 52px;
-        object-fit: contain;
-        filter: grayscale(20%);
-        transition: filter 0.2s;
-    }
-
-    .reward-card:hover .brand-logo { filter: none; }
 
     .pts-badge {
-        background: linear-gradient(135deg, #28a745, #20c997);
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: white;
         border-radius: 20px;
         padding: 0.3rem 0.85rem;
@@ -131,93 +84,26 @@ include __DIR__ . '/partials/header.php';
         gap: 0.3rem;
     }
 
-    .pts-badge.insufficient {
-        background: #dee2e6;
-        color: #6c757d;
-    }
-
-    /* ── Código revelado ─────────────────────────────────────── */
-    .code-box {
-        background: #f8f9fa;
-        border: 2px dashed #28a745;
-        border-radius: 10px;
-        padding: 0.85rem 1rem;
-        font-family: 'Courier New', monospace;
-        font-size: 1.15rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: #198754;
-        text-align: center;
-        cursor: pointer;
-        transition: background 0.2s;
-        position: relative;
-    }
-
-    .code-box:hover { background: #e8f5e9; }
-
-    .code-copied {
-        position: absolute;
-        top: -28px; left: 50%;
-        transform: translateX(-50%);
-        background: #198754;
-        color: white;
-        font-size: .7rem;
-        padding: 2px 8px;
-        border-radius: 20px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s;
-        font-family: 'Poppins', sans-serif;
-        letter-spacing: 0;
-        font-weight: 500;
-    }
-
-    .code-box.just-copied .code-copied { opacity: 1; }
-
-    /* ── Botón flotante del carrito ──────────────────────────── */
+    /* ── Botón flotante ──────────────────────────────────────── */
     .cart-fab {
         position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        z-index: 1048;
-        width: 58px;
-        height: 58px;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        width: 65px;
+        height: 65px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #28a745, #20c997);
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: white;
         border: none;
-        box-shadow: 0 4px 18px rgba(40,167,69,0.4);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.4rem;
+        font-size: 1.6rem;
+        box-shadow: 0 8px 25px rgba(40,167,69,0.4);
         transition: transform 0.2s;
     }
-
-    .cart-fab:hover { transform: scale(1.08); }
-
-    .cart-badge {
-        position: absolute;
-        top: -4px; right: -4px;
-        background: #dc3545;
-        color: white;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        font-size: .7rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        display: none;
-    }
-
-    /* ── Filtros de marca ────────────────────────────────────── */
-    .brand-filter.active {
-        background: #28a745 !important;
-        color: white !important;
-        border-color: #28a745 !important;
-    }
+    .cart-fab:hover { transform: scale(1.1); }
 </style>
 
 <!-- ── Contenido principal ──────────────────────────────────── -->
