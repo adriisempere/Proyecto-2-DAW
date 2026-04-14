@@ -48,15 +48,16 @@ include __DIR__ . '/partials/header.php';
         background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         border: none;
         padding: 14px;
-        font-weight: 600;
+        font-weight: 700;
         color: white;
-        border-radius: 12px;
-        transition: transform 0.2s, box-shadow 0.2s;
+        border-radius: 50px;
+        transition: var(--transition);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.25);
     }
 
     .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(40, 167, 69, 0.4);
         color: white;
     }
 </style>
@@ -65,7 +66,7 @@ include __DIR__ . '/partials/header.php';
     <div class="row justify-content-center">
         <div class="col-md-5">
 
-            <div class="login-card animate__animated animate__fadeInDown">
+            <div class="login-card reveal-on-scroll">
 
                 <!-- Cabecera -->
                 <div class="login-header">

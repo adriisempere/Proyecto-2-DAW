@@ -23,45 +23,46 @@ include __DIR__ . '/partials/header.php';
 
 <div class="container py-5">
 
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div class="d-flex align-items-center justify-content-between mb-5 flex-wrap gap-3 reveal-on-scroll">
         <div>
-            <h1 class="fw-bold display-6 mb-1">
+            <h1 class="fw-bold display-5 mb-1">
                 <i class="bi bi-clock-history text-success me-2"></i>Mis Registros
             </h1>
-            <p class="text-muted mb-0">Historial de tu actividad de reciclaje</p>
+            <p class="text-muted fs-5">Tu historial personal de impacto positivo</p>
         </div>
-        <a href="index.php?action=registro_create" class="btn btn-success rounded-pill px-4">
+        <a href="index.php?action=registro_create" class="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm hover-lift"
+           style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none;">
             <i class="bi bi-plus-circle me-2"></i>Nuevo Registro
         </a>
     </div>
 
-    <!-- Resumen rápido -->
-    <div class="row g-3 mb-4" id="resumenCards">
-        <div class="col-sm-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="text-success fw-bold fs-4" id="resumenTotal">—</div>
-                <div class="text-muted small">Registros totales</div>
+    <!-- Resumen rápido Premium -->
+    <div class="row g-4 mb-5 reveal-on-scroll" id="resumenCards">
+        <div class="col-md-4">
+            <div class="premium-card p-4 text-center h-100">
+                <div class="text-success fw-bold display-6 mb-1" id="resumenTotal">—</div>
+                <div class="text-muted text-uppercase small fw-bold tracking-wider">Registros Totales</div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="text-success fw-bold fs-4" id="resumenKg">—</div>
-                <div class="text-muted small">Kg reciclados</div>
+        <div class="col-md-4">
+            <div class="premium-card p-4 text-center h-100">
+                <div class="text-success fw-bold display-6 mb-1" id="resumenKg">—</div>
+                <div class="text-muted text-uppercase small fw-bold tracking-wider">Kg Reciclados</div>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="card border-0 shadow-sm text-center p-3">
-                <div class="text-success fw-bold fs-4" id="resumenPuntos">—</div>
-                <div class="text-muted small">Puntos acumulados</div>
+        <div class="col-md-4">
+            <div class="premium-card p-4 text-center h-100">
+                <div class="text-success fw-bold display-6 mb-1" id="resumenPuntos">—</div>
+                <div class="text-muted text-uppercase small fw-bold tracking-wider">Puntos Acumulados</div>
             </div>
         </div>
     </div>
 
     <!-- Alerta de feedback -->
-    <div id="feedbackAlert" class="alert d-none mb-3" role="alert"></div>
+    <div id="feedbackAlert" class="alert d-none mb-4" role="alert"></div>
 
     <!-- Contenedor de tarjetas -->
-    <div id="misRegistros"></div>
+    <div id="misRegistros" class="row g-4"></div>
 
 </div>
 
@@ -148,10 +149,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderCards(data) {
         if (data.length === 0) {
             container.innerHTML = `
-                <div class="text-center py-5 text-muted">
-                    <i class="bi bi-inbox fs-1 d-block mb-3 opacity-50"></i>
-                    <p class="mb-3">Aún no tienes registros de reciclaje.</p>
-                    <a href="index.php?action=registro_create" class="btn btn-success rounded-pill px-4">
+                <div class="col-12 text-center py-5 reveal-on-scroll">
+                    <div class="mb-4">
+                        <i class="bi bi-calendar-x opacity-25" style="font-size: 5rem; color: var(--primary);"></i>
+                    </div>
+                    <h3 class="fw-bold mb-3">Tu historial está vacío</h3>
+                    <p class="text-muted mb-4 fs-5">Aún no has registrado ninguna actividad de reciclaje.</p>
+                    <a href="index.php?action=registro_create" class="btn btn-success rounded-pill px-5 py-3 fw-bold shadow-lg"
+                       style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none;">
                         <i class="bi bi-plus-circle me-2"></i>Hacer mi primer registro
                     </a>
                 </div>`;
@@ -159,52 +164,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         container.innerHTML = data.map(r => `
-            <div class="card border-0 shadow-sm mb-3 registro-card" id="card-${esc(String(r.id))}">
-                <div class="card-body d-flex align-items-start gap-3">
-                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                         style="width:46px;height:46px;font-size:1.3rem">
+            <div class="col-md-6 reveal-on-scroll" id="card-${esc(String(r.id))}">
+                <div class="premium-card p-4 h-100 d-flex align-items-start gap-3">
+                    <div class="bg-success bg-opacity-10 text-success rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width:52px;height:52px;font-size:1.5rem; border: 1px solid var(--border-color);">
                         <i class="bi ${materialIcon[r.tipo_material] || 'bi-recycle'}"></i>
                     </div>
-                    <div class="flex-grow-1">
-                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-1">
-                            <h6 class="fw-bold mb-1">${esc(materialLabel[r.tipo_material] || r.tipo_material)}</h6>
-                            <span class="badge bg-success">${esc(String(r.puntos_ganados))} pts</span>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <h6 class="fw-bold mb-0 text-truncate">${esc(materialLabel[r.tipo_material] || r.tipo_material)}</h6>
+                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1 small fw-bold" 
+                                  style="border: 1px solid rgba(40,167,69,0.2)">
+                                +${esc(String(r.puntos_ganados))} pts
+                            </span>
                         </div>
-                        <p class="text-muted small mb-1">
-                            <i class="bi bi-speedometer2 me-1"></i>${esc(String(r.cantidad))} kg
+                        <div class="text-muted small mb-3">
+                            <div class="mb-1"><i class="bi bi-speedometer2 me-1"></i>${esc(String(r.cantidad))} kg</div>
                             ${r.centro_nombre
-                                ? `· <i class="bi bi-geo-alt me-1"></i>${esc(r.centro_nombre)}`
+                                ? `<div class="text-truncate"><i class="bi bi-geo-alt me-1"></i>${esc(r.centro_nombre)}</div>`
                                 : ''}
-                        </p>
-                        <p class="text-muted small mb-0">
-                            <i class="bi bi-calendar3 me-1"></i>${esc(formatDate(r.fecha))}
-                        </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top border-opacity-10">
+                            <small class="text-muted italic"><i class="bi bi-calendar3 me-1"></i>${esc(formatDate(r.fecha))}</small>
+                            <button class="btn btn-sm btn-link text-danger p-0 text-decoration-none hover-lift delete-btn"
+                                    data-id="${esc(String(r.id))}" title="Eliminar registro">
+                                <i class="bi bi-trash3"></i> Eliminar
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-sm btn-outline-danger rounded-pill flex-shrink-0 delete-btn"
-                            data-id="${esc(String(r.id))}" title="Eliminar registro">
-                        <i class="bi bi-trash"></i>
-                    </button>
                 </div>
             </div>
         `).join('');
+        
+        if(window.observer) {
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => window.observer.observe(el));
+        }
     }
 
     // ── Cargar registros ──────────────────────────────────────────
     let registrosData = [];
 
     container.innerHTML = `
-        <div class="placeholder-glow">
-            ${[1,2,3].map(() => `
-                <div class="card border-0 shadow-sm mb-3 p-3">
+        ${[1,2,3,4].map(() => `
+            <div class="col-md-6">
+                <div class="premium-card p-4 h-100 placeholder-glow">
                     <div class="d-flex gap-3">
-                        <span class="placeholder rounded-circle" style="width:46px;height:46px;flex-shrink:0"></span>
+                        <span class="placeholder rounded-3" style="width:52px;height:52px;flex-shrink:0"></span>
                         <div class="flex-grow-1">
-                            <span class="placeholder col-3 rounded mb-2 d-block"></span>
-                            <span class="placeholder col-5 rounded d-block"></span>
+                            <span class="placeholder col-4 rounded mb-2 d-block"></span>
+                            <span class="placeholder col-6 rounded d-block"></span>
                         </div>
                     </div>
-                </div>`).join('')}
-        </div>`;
+                </div>
+            </div>`).join('')}
+    `;
 
     fetch('api/registro.php?action=list')
         .then(r => r.json())

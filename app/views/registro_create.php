@@ -32,76 +32,94 @@ include __DIR__ . '/partials/header.php';
 <style>
     .material-label {
         cursor: pointer;
-        border: 2px solid #dee2e6;
-        border-radius: 12px;
-        padding: 1rem 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 20px;
+        padding: 1.5rem 1rem;
         text-align: center;
-        transition: all 0.2s;
+        transition: var(--transition);
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.4rem;
+        gap: 0.75rem;
+        background: var(--bg-card);
     }
 
     .material-label:hover {
-        border-color: #28a745;
-        background: rgba(40,167,69,0.04);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+        background: hsla(var(--h-primary), var(--s-primary), 95%, 0.1);
     }
 
     .btn-check:checked + .material-label {
-        border-color: #28a745;
-        background: rgba(40,167,69,0.08);
-        color: #198754;
-        box-shadow: 0 0 0 3px rgba(40,167,69,0.15);
+        border-color: var(--primary);
+        background: hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.08);
+        box-shadow: 0 0 0 4px hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.15);
     }
 
-    .material-icon { font-size: 1.6rem; }
-    .material-name { font-weight: 600; font-size: .9rem; }
-    .material-pts  { font-size: .75rem; color: #6c757d; }
+    .material-icon { 
+        font-size: 2.2rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: var(--transition);
+    }
+
+    .btn-check:checked + .material-label .material-icon {
+        transform: scale(1.1);
+    }
+
+    .material-name { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+    .material-pts  { font-size: .85rem; color: var(--text-muted); font-weight: 500; }
 
     .btn-check:checked + .material-label .material-pts {
-        color: #198754;
-        font-weight: 600;
+        color: var(--primary);
+        font-weight: 700;
     }
 
     .preview-box {
-        background: linear-gradient(135deg, #28a745, #20c997);
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         color: white;
-        border-radius: 14px;
-        padding: 1.25rem 1.5rem;
-        transition: all 0.3s;
+        border-radius: 20px;
+        padding: 1.5rem;
+        transition: var(--transition);
+        box-shadow: 0 10px 25px rgba(40,167,69,0.2);
     }
 
     .preview-pts {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 3rem;
+        font-weight: 800;
         line-height: 1;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.2);
+    .custom-form-card {
+        border-radius: 24px;
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        background: var(--bg-card);
     }
 </style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-md-9 col-lg-7">
 
-            <div class="card border-0 shadow-lg animate__animated animate__fadeInUp">
+            <div class="custom-form-card shadow-lg reveal-on-scroll">
 
-                <!-- Cabecera -->
-                <div class="card-header text-white text-center py-4 border-0"
-                     style="background: linear-gradient(135deg, #28a745, #20c997); border-radius: 0.375rem 0.375rem 0 0;">
-                    <h2 class="fw-bold mb-1">
-                        <i class="bi bi-recycle me-2"></i>Registrar Reciclaje
-                    </h2>
-                    <p class="mb-0 opacity-75">Suma puntos y ayuda al planeta</p>
+                <!-- Cabecera Premium -->
+                <div class="p-5 text-white text-center"
+                     style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);">
+                    <div class="mb-3 animate-float">
+                        <i class="bi bi-recycle" style="font-size: 3.5rem;"></i>
+                    </div>
+                    <h2 class="fw-bold mb-2 display-6">Registrar Reciclaje</h2>
+                    <p class="mb-0 opacity-75 fs-5">Cada granito de arena cuenta para salvar el planeta</p>
                 </div>
 
-                <div class="card-body p-4 p-md-5">
+                <div class="p-4 p-md-5">
 
                     <!-- Alerta de feedback -->
                     <div id="formAlert" class="alert d-none mb-4" role="alert"></div>
@@ -168,7 +186,8 @@ include __DIR__ . '/partials/header.php';
 
                         <!-- Submit -->
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg rounded-pill py-3" id="submitBtn">
+                            <button type="submit" class="btn btn-success btn-lg rounded-pill py-3 fw-bold shadow-sm" id="submitBtn" 
+                                    style="background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none;">
                                 <i class="bi bi-check-lg me-2"></i>Registrar Puntos
                             </button>
                         </div>
@@ -177,13 +196,13 @@ include __DIR__ . '/partials/header.php';
                 </div>
             </div>
 
-            <div class="text-center mt-4 text-muted small animate__animated animate__fadeIn">
+            <div class="text-center mt-5 text-muted small reveal-on-scroll">
                 <i class="bi bi-info-circle me-1"></i>
-                Los puntos se acreditan inmediatamente en tu cuenta.
+                Los puntos se acreditarán inmediatamente en tu cuenta tras la validación.
                 <br>
                 <a href="index.php?action=mis_registros"
-                   class="text-success fw-semibold text-decoration-none mt-1 d-inline-block">
-                    Ver mi historial <i class="bi bi-arrow-right"></i>
+                   class="text-success fw-bold text-decoration-none mt-2 d-inline-block hover-lift">
+                    Ver mi historial completo <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
 

@@ -7,6 +7,28 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 
 ## [Unreleased]
 
+---
+
+## [0.5.0] — 2026-04-14
+
+### Añadido
+- **Premium Mastery**: Implementado sistema de animaciones "Reveal on Scroll" en toda la aplicación para una navegación suave.
+- **Interatividad Premium**: Rediseño del formulario de registro (`registro_create.php`) con tarjetas de material animadas y panel de preview de puntos.
+- **Visuales Glassmorphism**: Estilización de los códigos de recompensa (`mis_canjes.php`) con efectos de cristal y tipografía monoespaciada.
+- **Insignias Dinámicas**: Implementación de badges estilizados con bordes e intensidades variables para puntos y estados.
+
+### Modificado
+- **Consistencia Visual**: Unificación de todos los botones principales al estilo "Rounded Pill" con degradados y efectos `hover-lift`.
+- **Limpieza de UI**: Eliminación completa de la funcionalidad de "Modo Oscuro" para garantizar una estética Premium coherente y simplificada.
+- **Configuración Local**: Ajuste de `config/database.php` para compatibilidad inmediata con entornos XAMPP (`localhost`, `root`).
+- **Layout de Historiales**: Refinado el layout de `mis_registros.php` y `mis_canjes.php` a un sistema de rejilla moderno (2-3 columnas).
+
+### Corregido
+- **XAMPP Connection**: Corregido error de "Host desconocido" al intentar conectar con servidores externos en entorno de desarrollo local.
+- **Feedback de Carga**: Mejora de los "skeletons" de carga en las listas principales de la aplicación.
+
+---
+
 ### Seguridad
 
 - **`public/api/users.php`** — Cookie de sesión reforzada con los atributos `HttpOnly`, `SameSite: Lax` y `Secure` (activado automáticamente cuando el servidor usa HTTPS). Antes la cookie se creaba sin ninguna de estas protecciones.
