@@ -3,7 +3,16 @@
     "allow": [
       "Skill(browse)",
       "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
-      "mcp__plugin_context-mode_context-mode__ctx_search"
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "Bash(command -v magick)",
+      "Bash(command -v ffmpeg)",
+      "Bash(command -v cwebp)",
+      "Bash(command -v pngquant)",
+      "Bash(command -v optipng)",
+      "Read(//c/tmp/**)",
+      "Bash(npm install *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(node *)"
     ]
   }
 }

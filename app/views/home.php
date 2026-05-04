@@ -18,11 +18,14 @@ include __DIR__ . '/partials/header.php';
 
 <!-- ── Hero ──────────────────────────────────────────────────── -->
 <header class="px-4 py-5 my-5 text-center">
-    <img class="d-block mx-auto img-fluid animate-float mb-3"
-         src="img/LogoGreenPoints.png"
-         alt="Logo GreenPoints"
-         width="160" height="160"
-         loading="lazy">
+    <picture>
+        <source srcset="img/LogoGreenPoints.webp" type="image/webp">
+        <img class="d-block mx-auto img-fluid animate-float mb-3"
+             src="img/LogoGreenPoints.png"
+             alt="Logo GreenPoints"
+             width="160" height="160"
+             loading="lazy">
+    </picture>
 
     <h1 class="display-5 fw-bold text-gradient animate__animated animate__fadeInDown">
         GreenPoints

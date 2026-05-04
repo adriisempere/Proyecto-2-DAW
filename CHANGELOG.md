@@ -108,6 +108,12 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/views/registro_create.php`** — Los radio buttons de material se generan desde la constante `MATERIALES` en JS, que incluye los pts/kg de cada tipo, manteniéndose en sincronía con `PUNTOS_POR_MATERIAL` de la API.
 - **`app/views/registro_create.php`** — Tras registro exitoso, actualiza el badge de puntos del header y redirige al historial automáticamente.
 
+### Rendimiento
+
+- **`public/img/LogoGreenPoints.png`** — Comprimido de 1.1 MB a 11.8 KB (reducción del 99%). La imagen original era un PNG 1024×1024 sin optimizar.
+- **`public/img/LogoGreenPoints.webp`** — Nueva versión WebP del logo (5 KB). Los navegadores modernos la sirven automáticamente gracias al elemento `<picture>` en `home.php`.
+- **`app/views/home.php`** — El `<img>` del logo en el hero sustituido por `<picture>` con `<source type="image/webp">` y fallback PNG para navegadores sin soporte WebP.
+
 ### Corregido
 
 - **`public/index.php`** — `case 'logout'`: añadido `exit` tras `header('Location: ...')`. Sin él PHP seguía ejecutando el resto del script tras enviar el redirect, lo que podía exponer código de otras rutas.
