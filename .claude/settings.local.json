@@ -13,7 +13,10 @@
       "Bash(npm install *)",
       "Bash(echo \"EXIT: $?\")",
       "Bash(node *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(curl -s --connect-timeout 10 -u \"if0_41609770:OllJ5CCGubeoe\" \"ftp://ftpupload.net/\" --list-only)",
+      "Bash(curl *)",
+      "Bash(grep -E \"^public$|^app$|^config$\")"
     ]
   }
 }
