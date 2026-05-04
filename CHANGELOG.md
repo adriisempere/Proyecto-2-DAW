@@ -1,5 +1,21 @@
 # Changelog — GreenPoints
 
+## [Unreleased] — 2026-05-04
+
+### Diseño
+- Rediseño visual completo "Biopunk Eco": paleta oscura (`#06101a` base, `#00e5a0` acento, `#9d71ea` purple, `#f5c842` gold) en sustitución del esquema verde/blanco genérico
+- Tipografías distintivas: Syne (display/headings), Outfit (body), DM Mono (datos/badges) — importadas vía `@import` en custom.css
+- Navbar glassmorphism con `backdrop-filter: blur`, borde inferior degradado y transición al hacer scroll
+- Footer con franja de color degradada en la parte superior (accent → accent2 → purple)
+- Fondo ambiental con malla de gradientes radiales fijos (sin impacto en performance)
+- Podio de ranking con alturas diferenciadas y avatares con borde de color por posición
+- Cards de centros con barra de color superior animada al hover
+- Tags de materiales con color semántico por tipo (plástico/azul, vidrio/verde, etc.)
+- Stat-cards de perfil con hover glow
+- Cards de recompensas con glow purple al hover
+- Selector de material en registro con estilo de botones toggle destacados
+- Corrección: eliminado bloque HTML roto (`$totalCentros` e imagen inexistente) en home.php
+
 Todos los cambios relevantes del proyecto quedan registrados aquí.  
 El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/).
 

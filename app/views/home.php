@@ -196,6 +196,7 @@ include __DIR__ . '/partials/header.php';
 
         </div>
     </div>
+</section>
 
 <!-- ── CTA final ──────────────────────────────────────────────── -->
 <section class="py-5 bg-success text-white">
@@ -206,7 +207,7 @@ include __DIR__ . '/partials/header.php';
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
             <a href="index.php?action=register"
-               class="btn btn-light btn-lg px-5 rounded-pill text-success fw-bold">
+               class="btn btn-light btn-lg px-5 rounded-pill fw-bold">
                 <i class="bi bi-person-plus me-2"></i>Crear Cuenta Gratis
             </a>
             <a href="index.php?action=ranking"
@@ -215,25 +216,6 @@ include __DIR__ . '/partials/header.php';
             </a>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <h3><?= $totalCentros ?></h3>
-        <p>Centros registrados</p>
-    </div>
-
-</div>
-
-<div class="text-center mt-5">
-
-    <img
-        src="assets/img/impacto.jpg"
-        alt="Impacto ambiental GreenPoints"
-        class="img-fluid rounded shadow"
-        loading="lazy"
-    >
-
-</div>
-
 </section>
 
 <script>
