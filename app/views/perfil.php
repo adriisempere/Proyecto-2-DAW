@@ -16,6 +16,20 @@
 
 $pageTitle = 'Mi Perfil | GreenPoints';
 include __DIR__ . '/partials/header.php';
+
+$nombre = $_SESSION['usuario_nombre'] ?? 'Usuario';
+$email  = $_SESSION['usuario_email'] ?? 'No disponible';
+$puntos = (int)($_SESSION['usuario_puntos'] ?? 0);
+
+function calcularNivel($puntos){
+    if ($puntos > 5000) return 'Maestro Verde';
+    if ($puntos > 2000) return 'Experto';
+    if ($puntos > 500) return 'Avanzado';
+    return 'Principiante';
+}
+
+$nivel = calcularNivel($puntos);
+$inicial = strtoupper(substr($nombre ?: 'U',0,1));
 ?>
 
 <style>

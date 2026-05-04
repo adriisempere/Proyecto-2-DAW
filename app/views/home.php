@@ -151,6 +151,7 @@ include __DIR__ . '/partials/header.php';
 
         </div>
     </div>
+
 </section>
 
 <!-- ── Por qué GreenPoints ────────────────────────────────────── -->
@@ -192,7 +193,6 @@ include __DIR__ . '/partials/header.php';
 
         </div>
     </div>
-</section>
 
 <!-- ── CTA final ──────────────────────────────────────────────── -->
 <section class="py-5 bg-success text-white">
@@ -212,6 +212,25 @@ include __DIR__ . '/partials/header.php';
             </a>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <h3><?= $totalCentros ?></h3>
+        <p>Centros registrados</p>
+    </div>
+
+</div>
+
+<div class="text-center mt-5">
+
+    <img
+        src="assets/img/impacto.jpg"
+        alt="Impacto ambiental GreenPoints"
+        class="img-fluid rounded shadow"
+        loading="lazy"
+    >
+
+</div>
+
 </section>
 
 <script>
