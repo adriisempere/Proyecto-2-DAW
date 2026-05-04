@@ -524,7 +524,7 @@ header.py-5 .lead {
 }
 
 /* Podium */
-.podium-container { display: flex; align-items: flex-end; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+.podium-container, .podium { display: flex; align-items: flex-end; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
 .podium-item { text-align: center; flex: 1; max-width: 160px; }
 .podium-avatar {
     width: 70px; height: 70px;
@@ -659,7 +659,7 @@ header.py-5 .lead {
 }
 
 /* ── perfil ───────────────────────────────────────────────────── */
-.perfil-header {
+.perfil-header, .profile-header {
     background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
     border-bottom: 1px solid var(--border);
     padding: 3rem 0 2rem;
@@ -672,7 +672,7 @@ header.py-5 .lead {
     background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
 
-.perfil-avatar {
+.perfil-avatar, .profile-avatar {
     width: 90px; height: 90px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
