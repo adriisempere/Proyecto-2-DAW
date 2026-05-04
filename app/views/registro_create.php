@@ -29,62 +29,6 @@ $pageTitle = 'Registrar Reciclaje | GreenPoints';
 include __DIR__ . '/partials/header.php';
 ?>
 
-<style>
-    .material-label {
-        cursor: pointer;
-        border: 2px solid #dee2e6;
-        border-radius: 12px;
-        padding: 1rem 0.75rem;
-        text-align: center;
-        transition: all 0.2s;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-    }
-
-    .material-label:hover {
-        border-color: #28a745;
-        background: rgba(40,167,69,0.04);
-    }
-
-    .btn-check:checked + .material-label {
-        border-color: #28a745;
-        background: rgba(40,167,69,0.08);
-        color: #198754;
-        box-shadow: 0 0 0 3px rgba(40,167,69,0.15);
-    }
-
-    .material-icon { font-size: 1.6rem; }
-    .material-name { font-weight: 600; font-size: .9rem; }
-    .material-pts  { font-size: .75rem; color: #6c757d; }
-
-    .btn-check:checked + .material-label .material-pts {
-        color: #198754;
-        font-weight: 600;
-    }
-
-    .preview-box {
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        border-radius: 14px;
-        padding: 1.25rem 1.5rem;
-        transition: all 0.3s;
-    }
-
-    .preview-pts {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
-    }
-
-    .form-control:focus, .form-select:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.2);
-    }
-</style>
 
 <div class="container py-5">
     <div class="row justify-content-center">

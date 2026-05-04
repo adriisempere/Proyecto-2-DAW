@@ -114,6 +114,10 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/views/partials/header.php`** — El estado activo tiene estilo diferenciado del hover: `font-weight: 700` y `box-shadow` blanco inferior, para que el usuario identifique claramente dónde está.
 - **`app/views/partials/footer.php`** — Newsletter: reemplazado `alert()` por feedback inline. Muestra spinner durante 600ms, luego icono ✓ y mensaje de éxito en verde. Email inválido muestra aviso en amarillo sin enviar. Limpia el input tras suscripción. Sin backend (placeholder UX).
 
+### Mantenibilidad
+
+- **`public/css/custom.css`** — Migrados todos los bloques `<style>` inline de 7 vistas PHP (`header`, `login`, `register`, `perfil`, `tienda`, `registro_create`, `home`) a secciones con comentario en `custom.css`. El CSS ahora es cacheable por el navegador y se carga una sola vez por sesión en lugar de inyectarse en cada página.
+
 ### Rendimiento
 
 - **`public/img/LogoGreenPoints.png`** — Comprimido de 1.1 MB a 11.8 KB (reducción del 99%). La imagen original era un PNG 1024×1024 sin optimizar.

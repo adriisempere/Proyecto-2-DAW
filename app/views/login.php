@@ -19,64 +19,6 @@ $pageTitle = 'Iniciar Sesión | GreenPoints';
 include __DIR__ . '/partials/header.php';
 ?>
 
-<style>
-    body {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        min-height: 100vh;
-    }
-
-    .login-card {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .login-header {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 2.5rem;
-        text-align: center;
-    }
-
-    .login-body {
-        padding: 2.5rem;
-        background: white;
-    }
-
-    .form-control:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-    }
-
-    .btn-login {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        border: none;
-        padding: 12px;
-        font-weight: 600;
-        color: white;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
-        color: white;
-    }
-
-    .btn-login:disabled {
-        opacity: 0.7;
-        transform: none;
-    }
-
-    .invalid-feedback {
-        animation: fadeInError 0.2s ease-in;
-    }
-
-    @keyframes fadeInError {
-        from { opacity: 0; transform: translateY(-4px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-</style>
 
 <div class="container py-5">
     <div class="row justify-content-center">

@@ -286,10 +286,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<style>
-    @media (max-width: 768px) {
-        .col-lg-6.ps-lg-5 { padding-left: 0 !important; margin-top: 1.5rem; }
-    }
-</style>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>

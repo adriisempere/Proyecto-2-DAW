@@ -12,7 +12,8 @@
       "Read(//c/tmp/**)",
       "Bash(npm install *)",
       "Bash(echo \"EXIT: $?\")",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(python3 *)"
     ]
   }
 }
