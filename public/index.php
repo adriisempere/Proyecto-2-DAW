@@ -23,10 +23,9 @@ switch ($action) {
         include __DIR__ . '/../app/views/login.php';
         break;
     case 'logout':
-        // Logout simple
         session_destroy();
         header('Location: index.php?action=home');
-        break;
+        exit;
     case 'centros':
         include __DIR__ . '/../app/views/centros.php';
         break;
@@ -42,11 +41,11 @@ switch ($action) {
     case 'perfil':
         include __DIR__ . '/../app/views/perfil.php';
         break;
-    case 'tienda':      
-        include '../app/views/tienda.php';     
+    case 'tienda':
+        include __DIR__ . '/../app/views/tienda.php';
         break;
-    case 'mis_canjes':  
-        include '../app/views/mis_canjes.php';  
+    case 'mis_canjes':
+        include __DIR__ . '/../app/views/mis_canjes.php';
         break;
     default:
         http_response_code(404);
