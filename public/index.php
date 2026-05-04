@@ -42,6 +42,12 @@ switch ($action) {
     case 'perfil':
         include __DIR__ . '/../app/views/perfil.php';
         break;
+    case 'tienda':      
+        include '../app/views/tienda.php';     
+        break;
+    case 'mis_canjes':  
+        include '../app/views/mis_canjes.php';  
+        break;
     default:
         http_response_code(404);
         echo "Página no encontrada";

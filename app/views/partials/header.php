@@ -186,23 +186,30 @@
                             <i class="bi bi-geo-alt me-1"></i>Centros
                         </a>
                     </li>
+                    <?php if(isset($_SESSION['usuario_id'])): ?>
+                    <li class="nav-item animate-nav-item delay-4">
+                        <a class="nav-link" href="index.php?action=tienda">
+                            <i class="bi bi-gift me-1"></i>Recompensas
+                        </a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
                 
                 <div class="d-flex align-items-center animate__animated animate__fadeInRight">
                     <?php if(isset($_SESSION['usuario_id'])): ?>
-                        <!-- User Points Badge -->
+                        <!-- Puntos de usuario -->
                         <div class="badge-points rounded-pill px-3 py-2 text-white me-3 d-none d-md-flex align-items-center">
                             <i class="bi bi-star-fill text-warning me-2"></i>
                             <span class="fw-bold"><?= $_SESSION['usuario_puntos'] ?? 0 ?> pts</span>
                         </div>
 
-                        <!-- User Profile Dropdown -->
+                        <!-- Perfil de usuario Dropdown -->
                         <div class="dropdown">
                             <button class="user-profile-btn dropdown-toggle d-flex align-items-center text-decoration-none" 
                                     type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center me-2" 
                                      style="width: 32px; height: 32px; font-weight: bold;">
-                                    <?= strtoupper(substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1)) ?>
+                                    <?= mb_strtoupper(mb_substr($_SESSION['usuario_nombre'] ?? 'U', 0, 1, 'UTF-8'), 'UTF-8') ?>
                                 </div>
                                 <span class="d-none d-sm-inline"><?= htmlspecialchars($_SESSION['usuario_nombre'] ?? 'Usuario') ?></span>
                             </button>
@@ -229,10 +236,20 @@
                                         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=tienda">
+                                        <i class="bi bi-gift me-2 text-success"></i>Tienda de Recompensas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=mis_canjes">
+                                        <i class="bi bi-bag-check me-2 text-info"></i>Mis Recompensas Obtenidas
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     <?php else: ?>
-                        <!-- Login/Register Buttons -->
+                        <!-- Login/Register -->
                         <div class="d-flex gap-2">
                             <a href="index.php?action=login" class="btn btn-outline-light rounded-pill px-4">
                                 Login
