@@ -62,7 +62,7 @@ include __DIR__ . '/partials/header.php';
     </div>
 
     <!-- Tabla principal -->
-    <div class="card border-0 shadow-sm">
+    <div class="card border-0 shadow-sm ranking-table">
         <div class="card-body p-0">
             <div id="rankingContainer">
                 <!-- Esqueleto de carga -->
@@ -154,20 +154,20 @@ document.addEventListener('DOMContentLoaded', function () {
             data.forEach(u => {
                 const isMe = myUid && parseInt(u.id) === myUid;
                 const kg   = parseFloat(u.kg_reciclados || 0).toFixed(2);
+                const pos  = parseInt(u.posicion);
                 rows += `
-                    <tr class="${isMe ? 'table-success fw-semibold' : ''}">
-                        <td class="ps-4">${medal(u.posicion)}</td>
+                    <tr class="ranking-row ${isMe ? 'current-user fw-semibold' : ''}">
+                        <td class="ps-4"><span class="rank-number ${pos <= 3 ? 'top-3' : ''}">${medal(pos)}</span></td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <div class="rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center fw-bold flex-shrink-0"
-                                     style="width:36px;height:36px;font-size:.9rem">
+                                <div class="user-avatar-sm flex-shrink-0">
                                     ${esc(u.nombre.charAt(0).toUpperCase())}
                                 </div>
                                 <span>${esc(u.nombre)}</span>
                                 ${isMe ? '<span class="badge bg-success ms-1">Tú</span>' : ''}
                             </div>
                         </td>
-                        <td class="text-end fw-bold text-success">${esc(String(u.puntos_totales))}</td>
+                        <td class="text-end"><span class="pts-chip">${esc(String(u.puntos_totales))} pts</span></td>
                         <td class="text-end pe-4 d-none d-md-table-cell text-muted">${esc(kg)} kg</td>
                         <td class="text-end pe-4 d-none d-md-table-cell text-muted">${esc(String(u.total_reciclajes))}</td>
                     </tr>

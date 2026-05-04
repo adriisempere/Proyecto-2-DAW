@@ -36,12 +36,12 @@ include __DIR__ . '/partials/header.php';
             </h1>
             <p class="text-muted mb-0">Canjea tus puntos por tarjetas regalo</p>
         </div>
-        <div class="text-end">
-            <div class="fw-bold fs-5 text-success">
+        <div class="points-display text-end">
+            <div class="points-value">
                 <i class="bi bi-star-fill text-warning me-1"></i>
-                <span id="saldoDisplay"><?= number_format((int)$_SESSION['usuario_puntos']) ?></span> pts disponibles
+                <span id="saldoDisplay"><?= number_format((int)$_SESSION['usuario_puntos']) ?></span>
             </div>
-            <small class="text-muted">Tu saldo actual</small>
+            <small class="text-muted">pts disponibles</small>
         </div>
     </div>
 

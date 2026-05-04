@@ -145,13 +145,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         list.innerHTML = data.map(c => {
-            const badges = esc(c.tipos_residuos).split(',').map(t =>
-                `<span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25">${t.trim()}</span>`
-            ).join(' ');
+            const matClass = {
+                plastico:'material-plastico', plástico:'material-plastico',
+                papel:'material-papel', cartón:'material-papel', carton:'material-papel',
+                vidrio:'material-vidrio', metal:'material-metal',
+                orgánico:'material-organico', organico:'material-organico',
+                electrónico:'material-electronico', electronico:'material-electronico'
+            };
+            const badges = esc(c.tipos_residuos).split(',').map(t => {
+                const key = t.trim().toLowerCase();
+                const cls = Object.keys(matClass).find(k => key.includes(k));
+                return `<span class="material-tag ${cls ? matClass[cls] : ''}">${t.trim()}</span>`;
+            }).join(' ');
 
             return `
                 <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card h-100 border-0 shadow-sm hover-lift centro-card">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-start gap-3 mb-3">
                                 <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"

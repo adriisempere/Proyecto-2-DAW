@@ -37,8 +37,7 @@ include __DIR__ . '/partials/header.php';
             <div class="card border-0 shadow-lg animate__animated animate__fadeInUp">
 
                 <!-- Cabecera -->
-                <div class="card-header text-white text-center py-4 border-0"
-                     style="background: linear-gradient(135deg, #28a745, #20c997); border-radius: 0.375rem 0.375rem 0 0;">
+                <div class="card-header text-white text-center py-4 border-0 registro-header">
                     <h2 class="fw-bold mb-1">
                         <i class="bi bi-recycle me-2"></i>Registrar Reciclaje
                     </h2>
@@ -61,7 +60,7 @@ include __DIR__ . '/partials/header.php';
                             <label class="form-label fw-semibold">
                                 <i class="bi bi-tags me-1 text-success"></i>Tipo de Material
                             </label>
-                            <div class="row g-2" id="materialOptions">
+                            <div class="row g-2 material-selector" id="materialOptions">
                                 <!-- Generado por JS con los puntos/kg de cada material -->
                             </div>
                             <div id="materialError" class="text-danger small mt-1 d-none">

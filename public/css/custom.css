@@ -872,6 +872,63 @@ header.py-5 .lead {
     color: var(--accent);
 }
 
+/* ── Aliases for JS-rendered class names ─────────────────────── */
+
+/* mis_registros: JS renders cards with .registro-card */
+.registro-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius) !important;
+    border-left: 3px solid var(--accent) !important;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.registro-card:hover {
+    border-color: var(--border-glow) !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,.3) !important;
+}
+.registro-card .card-body { padding: 1.25rem !important; }
+
+/* ranking: podium uses id="podium" */
+#podium {
+    background: var(--bg-elevated);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem 0;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem !important;
+}
+#podium .col-auto > div:last-child {
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-size: 1.8rem !important;
+}
+#podium .fw-bold, #podium .fw-semibold { font-family: var(--font-display); color: var(--text); }
+#podium .text-muted { font-family: var(--font-mono); font-size: .75rem !important; }
+#podium .bg-warning { background: linear-gradient(to top, rgba(245,200,66,.35), rgba(245,200,66,.1)) !important; border: 1px solid rgba(245,200,66,.4); }
+#podium .bg-secondary { background: linear-gradient(to top, rgba(168,178,192,.25), rgba(168,178,192,.08)) !important; border: 1px solid rgba(168,178,192,.3); }
+#podium [style*="cd7f32"] { background: linear-gradient(to top, rgba(205,127,50,.25), rgba(205,127,50,.08)) !important; border: 1px solid rgba(205,127,50,.3); }
+
+/* registro_create: card header accent strip */
+.registro-header {
+    background: linear-gradient(135deg, #061c12, #0a2e1e) !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-radius: var(--radius) var(--radius) 0 0 !important;
+}
+
+/* Modal dark theme */
+.modal-content {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    color: var(--text) !important;
+}
+.modal-header {
+    border-bottom: 1px solid var(--border) !important;
+}
+.modal-footer {
+    border-top: 1px solid var(--border) !important;
+}
+.modal-title { font-family: var(--font-display); color: var(--text) !important; }
+.btn-close { filter: invert(1) brightness(.7); }
+
 /* ── Misc Utility ─────────────────────────────────────────────── */
 .rounded-pill { border-radius: var(--radius-pill) !important; }
 .rounded-4    { border-radius: var(--radius-lg) !important; }
@@ -921,6 +978,43 @@ header.py-5 .lead {
 .toast { background: var(--bg-elevated) !important; border: 1px solid var(--border) !important; border-radius: var(--radius) !important; }
 .toast-header { background: var(--bg-card) !important; color: var(--muted) !important; border-bottom: 1px solid var(--border) !important; }
 .toast-body { color: var(--text) !important; }
+
+/* ── Tienda brand filter ──────────────────────────────────────── */
+.brand-filter {
+    background: var(--bg-elevated) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--muted) !important;
+    font-size: .8rem;
+    transition: all var(--transition);
+}
+.brand-filter:hover, .brand-filter.active {
+    background: rgba(0,229,160,.12) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+}
+.opacity-60 { opacity: .6; }
+
+/* Cart drawer */
+.cart-drawer {
+    background: var(--bg-elevated) !important;
+    border-left: 1px solid var(--border) !important;
+    color: var(--text) !important;
+}
+.cart-footer { border-top: 1px solid var(--border) !important; }
+.cart-overlay { background: rgba(0,0,0,.6) !important; }
+
+/* Ranking table overrides */
+.ranking-table thead th {
+    background: var(--bg-elevated) !important;
+    color: var(--muted) !important;
+    font-family: var(--font-mono) !important;
+    font-size: .72rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: .08em !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+/* Remove Bootstrap table-light bg */
+.table-light > * { --bs-table-bg: transparent !important; --bs-table-color: var(--muted) !important; }
 
 /* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 768px) {

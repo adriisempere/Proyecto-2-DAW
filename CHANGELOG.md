@@ -15,6 +15,12 @@
 - Cards de recompensas con glow purple al hover
 - Selector de material en registro con estilo de botones toggle destacados
 - Corrección: eliminado bloque HTML roto (`$totalCentros` e imagen inexistente) en home.php
+- Ranking: filas JS actualizadas con `.ranking-row`, `.user-avatar-sm`, `.pts-chip`, `.current-user`; podio estilado con `#podium`
+- Centros: material tags con clases semánticas por tipo (`.material-tag.material-X`)
+- Tienda: saldo usa `.points-display`/`.points-value`; filtros de marca con `.brand-filter` y estado activo
+- registro_create: `.material-selector` aplicado al contenedor; header de card sin inline styles
+- mis_registros: tarjetas JS usan `.registro-card` (aliasado en CSS)
+- Modales: dark theme global vía `.modal-content`/`.modal-header`/`.modal-footer`
 
 Todos los cambios relevantes del proyecto quedan registrados aquí.  
 El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/).
