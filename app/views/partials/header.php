@@ -68,10 +68,17 @@
             transition: all 0.3s ease;
         }
         
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.2);
+        .nav-link:hover {
+            background: rgba(255,255,255,0.15);
             color: white !important;
             transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.25);
+            color: white !important;
+            font-weight: 700;
+            box-shadow: 0 2px 0 rgba(255,255,255,0.8);
         }
         
         /* User Profile Dropdown */
@@ -160,6 +167,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar">
+        <?php $currentAction = $_GET['action'] ?? 'home'; ?>
         <div class="container">
             <a class="navbar-brand animate__animated animate__fadeInLeft" href="index.php?action=home">
                 <i class="bi bi-recycle me-2"></i>GreenPoints
@@ -172,23 +180,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item animate-nav-item delay-1">
-                        <a class="nav-link" href="index.php?action=home">
+                        <a class="nav-link<?= $currentAction === 'home' ? ' active' : '' ?>" href="index.php?action=home"<?= $currentAction === 'home' ? ' aria-current="page"' : '' ?>>
                             <i class="bi bi-house-door me-1"></i>Inicio
                         </a>
                     </li>
                     <li class="nav-item animate-nav-item delay-2">
-                        <a class="nav-link" href="index.php?action=ranking">
+                        <a class="nav-link<?= $currentAction === 'ranking' ? ' active' : '' ?>" href="index.php?action=ranking"<?= $currentAction === 'ranking' ? ' aria-current="page"' : '' ?>>
                             <i class="bi bi-trophy me-1"></i>Ranking
                         </a>
                     </li>
                     <li class="nav-item animate-nav-item delay-3">
-                        <a class="nav-link" href="index.php?action=centros">
+                        <a class="nav-link<?= $currentAction === 'centros' ? ' active' : '' ?>" href="index.php?action=centros"<?= $currentAction === 'centros' ? ' aria-current="page"' : '' ?>>
                             <i class="bi bi-geo-alt me-1"></i>Centros
                         </a>
                     </li>
                     <?php if(isset($_SESSION['usuario_id'])): ?>
                     <li class="nav-item animate-nav-item delay-4">
-                        <a class="nav-link" href="index.php?action=tienda">
+                        <a class="nav-link<?= $currentAction === 'tienda' ? ' active' : '' ?>" href="index.php?action=tienda"<?= $currentAction === 'tienda' ? ' aria-current="page"' : '' ?>>
                             <i class="bi bi-gift me-1"></i>Recompensas
                         </a>
                     </li>

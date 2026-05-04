@@ -108,6 +108,11 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 - **`app/views/registro_create.php`** — Los radio buttons de material se generan desde la constante `MATERIALES` en JS, que incluye los pts/kg de cada tipo, manteniéndose en sincronía con `PUNTOS_POR_MATERIAL` de la API.
 - **`app/views/registro_create.php`** — Tras registro exitoso, actualiza el badge de puntos del header y redirige al historial automáticamente.
 
+### UX
+
+- **`app/views/partials/header.php`** — Navbar muestra el link activo según la página actual (`?action=`). Se añade clase `active` y atributo `aria-current="page"` al link correspondiente. Antes todos los links lucían igual independientemente de la página.
+- **`app/views/partials/header.php`** — El estado activo tiene estilo diferenciado del hover: `font-weight: 700` y `box-shadow` blanco inferior, para que el usuario identifique claramente dónde está.
+
 ### Rendimiento
 
 - **`public/img/LogoGreenPoints.png`** — Comprimido de 1.1 MB a 11.8 KB (reducción del 99%). La imagen original era un PNG 1024×1024 sin optimizar.
