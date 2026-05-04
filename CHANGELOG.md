@@ -112,6 +112,7 @@ El formato sigue el estándar [Keep a Changelog](https://keepachangelog.com/es-E
 
 - **`app/views/partials/header.php`** — Navbar muestra el link activo según la página actual (`?action=`). Se añade clase `active` y atributo `aria-current="page"` al link correspondiente. Antes todos los links lucían igual independientemente de la página.
 - **`app/views/partials/header.php`** — El estado activo tiene estilo diferenciado del hover: `font-weight: 700` y `box-shadow` blanco inferior, para que el usuario identifique claramente dónde está.
+- **`app/views/partials/footer.php`** — Newsletter: reemplazado `alert()` por feedback inline. Muestra spinner durante 600ms, luego icono ✓ y mensaje de éxito en verde. Email inválido muestra aviso en amarillo sin enviar. Limpia el input tras suscripción. Sin backend (placeholder UX).
 
 ### Rendimiento
 

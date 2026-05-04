@@ -117,24 +117,64 @@
                     Suscríbete para recibir noticias sobre sostenibilidad y novedades de GreenPoints.
                 </p>
                 
-                <form class="mb-4" onsubmit="event.preventDefault(); alert('¡Gracias por suscribirte!');">
+                <form class="mb-4" id="newsletterForm" novalidate>
                     <div class="input-group">
-                        <input 
-                            type="email" 
-                            class="form-control" 
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="newsletterEmail"
                             placeholder="tu@email.com"
                             style="border-radius: 25px 0 0 25px; border-right: none;"
                             required
                         >
-                        <button 
-                            class="btn btn-success" 
+                        <button
+                            class="btn btn-success"
                             type="submit"
+                            id="newsletterBtn"
                             style="border-radius: 0 25px 25px 0;"
+                            aria-label="Suscribirse"
                         >
-                            <i class="bi bi-send-fill"></i>
+                            <i class="bi bi-send-fill" id="nlIconSend"></i>
+                            <i class="bi bi-check-lg d-none" id="nlIconOk"></i>
+                            <span class="spinner-border spinner-border-sm d-none" id="nlSpinner"></span>
                         </button>
                     </div>
+                    <div id="newsletterMsg" class="mt-2 small d-none"></div>
                 </form>
+                <script>
+                (function () {
+                    var form    = document.getElementById('newsletterForm');
+                    var input   = document.getElementById('newsletterEmail');
+                    var btn     = document.getElementById('newsletterBtn');
+                    var msg     = document.getElementById('newsletterMsg');
+                    var iSend   = document.getElementById('nlIconSend');
+                    var iOk     = document.getElementById('nlIconOk');
+                    var spinner = document.getElementById('nlSpinner');
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        if (!input.value || !input.validity.valid) {
+                            msg.textContent = 'Introduce un correo válido.';
+                            msg.className   = 'mt-2 small text-warning';
+                            return;
+                        }
+                        btn.disabled = true;
+                        iSend.classList.add('d-none');
+                        spinner.classList.remove('d-none');
+                        setTimeout(function () {
+                            spinner.classList.add('d-none');
+                            iOk.classList.remove('d-none');
+                            input.value     = '';
+                            msg.textContent = '¡Suscrito! Gracias por unirte.';
+                            msg.className   = 'mt-2 small text-success';
+                            setTimeout(function () {
+                                iOk.classList.add('d-none');
+                                iSend.classList.remove('d-none');
+                                btn.disabled = false;
+                            }, 2000);
+                        }, 600);
+                    });
+                }());
+                </script>
                 
                 <!-- Información de contacto -->
                 <div class="contact-info">
