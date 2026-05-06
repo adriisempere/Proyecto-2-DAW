@@ -72,7 +72,7 @@ Proyecto-2-DAW/
 
 ## Demo
 
-https://sempere.infinityfree.me/public/index.php
+http://sempere-greenpoints.infinityfree.me/index.php?action=home
 
 ---
 
