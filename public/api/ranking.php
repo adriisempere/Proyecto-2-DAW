@@ -24,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -149,6 +149,33 @@ try {
                     'kg_reciclados'    => (float) ($stats['kg_reciclados']   ?? 0),
                 ],
             ]);
+
+        // ── Distribución por material del usuario autenticado ────
+        case 'stats_material':
+            if (empty($_SESSION['usuario_id'])) {
+                resp(false, 'No autenticado.');
+            }
+            $uid = (int) $_SESSION['usuario_id'];
+            $stmt = $db->prepare(
+                "SELECT tipo_material,
+                        COUNT(*)              AS cantidad_registros,
+                        IFNULL(SUM(cantidad), 0) AS kg_totales,
+                        IFNULL(SUM(puntos_ganados), 0) AS puntos_totales
+                   FROM registro_reciclaje
+                  WHERE usuario_id = ?
+                  GROUP BY tipo_material
+                  ORDER BY kg_totales DESC"
+            );
+            $stmt->bind_param('i', $uid);
+            $stmt->execute();
+            $out = [];
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $row['kg_totales']    = (float) $row['kg_totales'];
+                $row['puntos_totales'] = (int) $row['puntos_totales'];
+                $out[] = $row;
+            }
+            resp(true, 'Estadísticas por material obtenidas.', ['data' => $out]);
 
         default:
             resp(false, 'Acción no encontrada.');

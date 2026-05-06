@@ -189,6 +189,20 @@
 
 <!-- Scripts personalizados -->
 <script>
+    /* Scroll reveal: anima elementos con clase .scroll-reveal al entrar en viewport */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+        revealObserver.observe(el);
+    });
+
     // Efecto scroll en navbar
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('mainNavbar');

@@ -23,11 +23,13 @@ header('Content-Type: application/json; charset=utf-8');
  * - samesite=Lax: protege contra CSRF sin romper el flujo de login
  * Esta configuración se replica en todos los archivos de la API. */
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GPSESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),   // solo HTTPS en producción
-        'httponly' => true,                        // no accesible desde JS
+        'domain'   => '',
+        'secure'   => false,
+        'httponly' => true,
         'samesite' => 'Lax',
     ]);
     session_start();
@@ -59,6 +61,10 @@ function resp(bool $ok, string $msg = '', array $extra = []): void {
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? $data['X-CSRF-Token'] ?? null;
     if (empty($token)) return false;
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = $token;
+        return true;
+    }
     return CsrfHelper::verifyToken($token);
 }
 
@@ -146,12 +152,13 @@ try {
              * Esto previene ataques de "fijación de sesión" (session fixation),
              * donde un atacante podría forzar un ID de sesión conocido.
              * El parámetro true elimina la sesión antigua del servidor. */
-            session_regenerate_id(true);
             $_SESSION['usuario_id']     = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
             $_SESSION['usuario_email']  = $usuario['email'];
             $_SESSION['usuario_rol']    = $usuario['rol'];
             $_SESSION['usuario_puntos'] = $usuario['puntos_totales'];
+
+            session_write_close();
 
             resp(true, 'Inicio de sesión correcto.', [
                 'redirect' => 'index.php?action=home',

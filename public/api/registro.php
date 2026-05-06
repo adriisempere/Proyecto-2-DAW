@@ -26,7 +26,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -167,6 +167,31 @@ try {
                 $out[] = $row;
             }
             resp(true, 'Registros obtenidos.', ['data' => $out]);
+
+        // ── 5 registros más recientes ────────────────────────────
+        case 'recent':
+            requireAuth();
+
+            $uid  = (int) $_SESSION['usuario_id'];
+            $stmt = $db->prepare(
+                'SELECT r.id, r.tipo_material, r.cantidad, r.puntos_ganados, r.fecha,
+                        c.nombre AS centro_nombre
+                   FROM registro_reciclaje r
+                   LEFT JOIN centro_reciclaje c ON r.centro_id = c.id
+                  WHERE r.usuario_id = ?
+                  ORDER BY r.fecha DESC
+                  LIMIT 5'
+            );
+            $stmt->bind_param('i', $uid);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $out = [];
+            while ($row = $res->fetch_assoc()) {
+                $row['cantidad']       = (float) $row['cantidad'];
+                $row['puntos_ganados'] = (int)   $row['puntos_ganados'];
+                $out[] = $row;
+            }
+            resp(true, 'Registros recientes obtenidos.', ['data' => $out]);
 
         // ── Eliminar registro propio ──────────────────────────────
         case 'delete':

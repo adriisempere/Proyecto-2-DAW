@@ -221,24 +221,24 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="index.php?action=mis_registros">
-                                        <i class="bi bi-clock-history me-2 text-info"></i>Mis Registros
+                                    <a class="dropdown-item" href="index.php?action=registro_create">
+                                        <i class="bi bi-plus-circle me-2 text-success"></i>Registrar Puntos
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="index.php?action=registro_create">
-                                        <i class="bi bi-plus-circle me-2 text-success"></i>Registrar Puntos
+                                    <a class="dropdown-item" href="index.php?action=tienda">
+                                        <i class="bi bi-gift me-2 text-warning"></i>Canjear Puntos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="index.php?action=mis_registros">
+                                        <i class="bi bi-clock-history me-2 text-info"></i>Mis Registros
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a class="dropdown-item text-danger" href="index.php?action=logout">
                                         <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="index.php?action=tienda">
-                                        <i class="bi bi-gift me-2 text-success"></i>Tienda de Recompensas
                                     </a>
                                 </li>
                                 <li>

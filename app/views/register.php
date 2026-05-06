@@ -354,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const res  = await fetch('api/users.php?action=register', {
                 method:  'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(formData),
             });
