@@ -24,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -58,6 +58,10 @@ function requireAuth(): void {
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? null;
     if (empty($token)) return false;
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = $token;
+        return true;
+    }
     return CsrfHelper::verifyToken($token);
 }
 

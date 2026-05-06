@@ -3,8 +3,14 @@
  * sea accesible en toda la aplicación, independientemente
  * de la ruta URL donde se encuentre el usuario. */
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
-        'path' => '/',
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
     ]);
     session_start();
 }

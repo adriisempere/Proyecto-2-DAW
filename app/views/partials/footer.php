@@ -1,7 +1,7 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-dark text-white pt-5 pb-3 mt-5">
+<footer class="text-white pt-5 pb-3" style="background: linear-gradient(180deg, #1a1d20 0%, #212529 100%);">
     <div class="container">
         <div class="row g-4">
             <!-- Columna 1: Información de la marca -->
@@ -16,15 +16,15 @@
                 </p>
                 
                 <!-- Estadísticas rápidas -->
-                <div class="row text-center mb-4">
+                <div class="row text-center mb-4 g-2">
                     <div class="col-6">
-                        <div class="stat-box p-3 rounded" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3);">
+                        <div class="stat-box p-3 rounded-3" style="background: rgba(40, 167, 69, 0.1); border: 1px solid rgba(40, 167, 69, 0.2);">
                             <h5 class="text-success fw-bold mb-0">+10k</h5>
                             <small class="text-white-50">Usuarios</small>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="stat-box p-3 rounded" style="background: rgba(32, 201, 151, 0.15); border: 1px solid rgba(32, 201, 151, 0.3);">
+                        <div class="stat-box p-3 rounded-3" style="background: rgba(32, 201, 151, 0.1); border: 1px solid rgba(32, 201, 151, 0.2);">
                             <h5 class="text-success fw-bold mb-0">50 Ton</h5>
                             <small class="text-white-50">Reciclado</small>
                         </div>
@@ -173,10 +173,10 @@
         </div>
         
         <!-- Botón scroll to top -->
-        <button 
-            id="scrollTopBtn" 
-            class="btn btn-success rounded-circle position-fixed bottom-0 end-0 m-4 shadow-lg"
-            style="width: 50px; height: 50px; display: none; z-index: 1000;"
+        <button
+            id="scrollTopBtn"
+            class="btn btn-success rounded-circle position-fixed bottom-0 end-0 m-4 shadow"
+            style="width: 46px; height: 46px; display: none; z-index: 1000; transition: all 0.3s ease;"
             onclick="window.scrollTo({top: 0, behavior: 'smooth'});"
         >
             <i class="bi bi-arrow-up-short fs-4"></i>
@@ -189,7 +189,8 @@
 
 <!-- Scripts personalizados -->
 <script>
-    // Efecto scroll en navbar
+    /* Efecto scroll en navbar: al bajar más de 50px la barra
+     * se compacta y se vuelve semitransparente con blur */
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('mainNavbar');
         if (window.scrollY > 50) {
@@ -197,53 +198,56 @@
         } else {
             navbar.classList.remove('scrolled');
         }
-        
-        // Mostrar/ocultar botón scroll to top
+
+        /* Mostrar/ocultar botón scroll to top con transición suave */
         const scrollBtn = document.getElementById('scrollTopBtn');
         if (window.scrollY > 300) {
             scrollBtn.style.display = 'block';
+            /* Pequeño delay para que la transición CSS funcione */
+            requestAnimationFrame(() => {
+                scrollBtn.style.opacity = '1';
+                scrollBtn.style.transform = 'scale(1)';
+            });
         } else {
-            scrollBtn.style.display = 'none';
+            scrollBtn.style.opacity = '0';
+            scrollBtn.style.transform = 'scale(0.8)';
+            setTimeout(() => { scrollBtn.style.display = 'none'; }, 300);
         }
     });
-    
-    // Estilos para enlaces del footer
+
+    /* Efecto hover en enlaces del footer: cambian de color y se desplazan */
     document.querySelectorAll('.footer-link').forEach(link => {
         link.addEventListener('mouseenter', function() {
             this.style.color = '#ffffff';
             this.style.paddingLeft = '5px';
-            this.style.transition = 'all 0.3s';
         });
-        
         link.addEventListener('mouseleave', function() {
             this.style.color = 'rgba(255,255,255,0.7)';
             this.style.paddingLeft = '0';
         });
     });
-    
-    // Animación para enlaces de redes sociales
+
+    /* Animación para enlaces de redes sociales */
     document.querySelectorAll('.social-link').forEach(link => {
         link.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px) scale(1.1)';
+            this.style.transform = 'translateY(-4px) scale(1.1)';
             this.style.color = '#28a745';
-            this.style.transition = 'all 0.3s';
         });
-        
         link.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
             this.style.color = '';
         });
     });
-    
-    // Auto-cerrar alertas después de 5 segundos
+
+    /* Auto-cerrar alertas después de 5 segundos */
     document.querySelectorAll('.alert').forEach(alert => {
         setTimeout(() => {
             const bsAlert = new bootstrap.Alert(alert);
             bsAlert.close();
         }, 5000);
     });
-    
-    // Marcar enlace activo en el navbar
+
+    /* Marcar enlace activo en el navbar */
     const currentPage = window.location.href;
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.href === currentPage) {

@@ -289,11 +289,8 @@ $inicial = strtoupper(substr($nombre ?: 'U',0,1));
         <!-- Información personal -->
         <div class="col-lg-8 animate__animated animate__fadeInLeft" style="animation-delay:.5s">
             <div class="card info-card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <span><i class="bi bi-person-lines-fill text-success me-2"></i>Información Personal</span>
-                    <button class="btn btn-sm btn-outline-success rounded-pill" disabled title="Próximamente">
-                        <i class="bi bi-pencil-square me-1"></i>Editar
-                    </button>
                 </div>
                 <div class="card-body px-4">
 
@@ -310,16 +307,6 @@ $inicial = strtoupper(substr($nombre ?: 'U',0,1));
                         <div class="info-content">
                             <span class="label">Correo electrónico</span>
                             <span class="value"><?= htmlspecialchars($email) ?></span>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="info-icon"><i class="bi bi-calendar-check"></i></div>
-                        <div class="info-content">
-                            <span class="label">Miembro desde</span>
-                            <span class="value" id="fechaRegistro">
-                                <span class="placeholder col-4 rounded"></span>
-                            </span>
                         </div>
                     </div>
 
@@ -449,20 +436,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('posicionRanking').textContent = '—';
         });
 
-    // Cargar fecha de registro desde la API de usuario
-    fetch('api/users.php?action=me')
-        .then(r => r.json())
-        .then(json => {
-            if (!json.success || !json.data.creado_at) return;
-            const fecha = new Date(json.data.creado_at);
-            document.getElementById('fechaRegistro').textContent =
-                isNaN(fecha) ? '—' : fecha.toLocaleDateString('es-ES', {
-                    day: 'numeric', month: 'long', year: 'numeric'
-                });
-        })
-        .catch(() => {
-            document.getElementById('fechaRegistro').textContent = '—';
-        });
 });
 </script>
 <?php endif; ?>

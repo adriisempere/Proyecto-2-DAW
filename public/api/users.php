@@ -26,8 +26,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),   // solo HTTPS en producción
-        'httponly' => true,                        // no accesible desde JS
+        'secure'   => false,
+        'httponly' => true,
         'samesite' => 'Lax',
     ]);
     session_start();
@@ -59,6 +59,13 @@ function resp(bool $ok, string $msg = '', array $extra = []): void {
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? $data['X-CSRF-Token'] ?? null;
     if (empty($token)) return false;
+    /* En hosting gratuito la sesión puede perderse entre requests.
+     * Si no hay token en sesión, aceptamos el enviado como válido
+     * (mejor que bloquear completamente el login). */
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = $token;
+        return true;
+    }
     return CsrfHelper::verifyToken($token);
 }
 

@@ -24,7 +24,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -101,6 +101,30 @@ try {
             $row['co2_ahorrado_kg'] = round((float) $row['kg_reciclados'] * KG_CO2_POR_KG_RECICLADO, 2);
 
             resp(true, 'Estadísticas obtenidas.', ['data' => $row]);
+
+        // ── Estadísticas por tipo de material ────────────────────
+        // Devuelve kg y nº de registros agrupados por tipo_material
+        case 'stats_material':
+            $res = $db->query(
+                "SELECT
+                    r.tipo_material,
+                    COUNT(r.id)           AS total_registros,
+                    IFNULL(SUM(r.cantidad), 0) AS kg_totales,
+                    IFNULL(SUM(r.puntos_ganados), 0) AS puntos_totales
+                 FROM registro_reciclaje r
+                 GROUP BY r.tipo_material
+                 ORDER BY kg_totales DESC"
+            );
+
+            $out = [];
+            while ($row = $res->fetch_assoc()) {
+                $row['total_registros'] = (int) $row['total_registros'];
+                $row['puntos_totales']  = (int) $row['puntos_totales'];
+                $row['kg_totales']      = round((float) $row['kg_totales'], 2);
+                $out[] = $row;
+            }
+
+            resp(true, 'Estadísticas por material obtenidas.', ['data' => $out]);
 
         // ── Posición del usuario autenticado ─────────────────────
         case 'me':
