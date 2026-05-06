@@ -30,7 +30,7 @@
             --dark-color: #343a40;
             --light-color: #f8fdf9;
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-color);
@@ -38,87 +38,86 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
+
         main {
             flex: 1;
         }
-        
+
         /* Estilos de la barra de navegación */
         .navbar {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            padding: 0.85rem 0;
+            transition: all 0.35s cubic-bezier(.25,.8,.25,1);
         }
-        
+
         .navbar-brand {
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 1.45rem;
             color: white !important;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: -0.3px;
         }
-        
+
         .nav-link {
-            color: rgba(255,255,255,0.9) !important;
+            color: rgba(255,255,255,0.88) !important;
             font-weight: 500;
-            padding: 0.5rem 1rem !important;
+            padding: 0.45rem 0.9rem !important;
             border-radius: 50px;
-            transition: all 0.3s ease;
+            transition: all 0.25s cubic-bezier(.25,.8,.25,1);
         }
-        
+
         .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.18);
             color: white !important;
-            transform: translateY(-2px);
         }
-        
+
         /* Botón desplegable del perfil de usuario */
         .user-profile-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
             color: white;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.9rem;
             border-radius: 50px;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
         }
-        
+
         .user-profile-btn:hover {
             background: white;
             color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         /* Estilos de insignias (badges) */
         .badge-points {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
         }
 
         /* Efecto glassmorphism para los menús desplegables */
         .dropdown-menu {
             border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-radius: 15px;
-            padding: 1rem;
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-radius: 14px;
+            padding: 0.75rem;
+            animation: fadeIn 0.25s ease;
         }
-        
+
         .dropdown-item {
-            border-radius: 10px;
-            padding: 0.7rem 1rem;
-            transition: all 0.2s;
+            border-radius: 8px;
+            padding: 0.55rem 0.85rem;
+            transition: all 0.15s ease;
+            font-size: 0.9rem;
         }
-        
+
         .dropdown-item:hover {
-            background-color: #f8f9fa;
+            background-color: #f0faf3;
             color: var(--primary-color);
-            transform: translateX(5px);
         }
-        
+
         .dropdown-item:active {
             background-color: var(--primary-color);
             color: white;
@@ -127,32 +126,35 @@
         /* Botón toggler para vista móvil */
         .navbar-toggler {
             border: none;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
+            padding: 0.4rem 0.6rem;
         }
-        
+
         .navbar-toggler:focus {
             box-shadow: none;
         }
 
         /* Animaciones de entrada */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        
+
         .animate-nav-item {
             animation: fadeIn 0.5s ease backwards;
         }
-        
+
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
-        
+        .delay-4 { animation-delay: 0.4s; }
+
         /* Efecto de la navbar al hacer scroll: se reduce el padding y se vuelve semitransparente */
         .navbar.scrolled {
             padding: 0.5rem 0;
             background: rgba(40, 167, 69, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
     </style>
 </head>

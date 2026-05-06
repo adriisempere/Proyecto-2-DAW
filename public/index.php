@@ -3,7 +3,11 @@
  * sea accesible en toda la aplicación, independientemente
  * de la ruta URL donde se encuentre el usuario. */
 if (session_status() === PHP_SESSION_NONE) {
+<<<<<<< HEAD
     session_name('GPSESSID');
+=======
+    session_name('GREENPOINTS_SESSID');
+>>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',

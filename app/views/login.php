@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Envío del formulario vía fetch ────────────────────────────
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
+        console.log('Formulario enviado');
 
         // Validar todos los campos antes de enviar
         let valid = true;
@@ -240,15 +241,25 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+<<<<<<< HEAD
             console.log('Enviando a:', 'api/users.php?action=login');
+=======
+            console.log('Enviando login a:', 'api/users.php?action=login');
+>>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
             const res  = await fetch('api/users.php?action=login', {
                 method:  'POST',
                 credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(formData),
             });
+<<<<<<< HEAD
             const text = await res.text();
             console.log('Respuesta:', res.status, text);
+=======
+            console.log('Respuesta status:', res.status);
+            const text = await res.text();
+            console.log('Respuesta body:', text);
+>>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
             const json = JSON.parse(text);
 
             if (json.success) {
@@ -259,8 +270,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
             }
-        } catch {
-            showAlert('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+        } catch (err) {
+            console.error('Error en fetch:', err);
+            showAlert('Error de red: ' + err.message);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
         }

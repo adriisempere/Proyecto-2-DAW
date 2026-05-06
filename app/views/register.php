@@ -334,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Envío del formulario vía fetch ────────────────────────────
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
+        console.log('Formulario registro enviado');
 
         let valid = true;
         form.querySelectorAll('input[required]').forEach(input => {
@@ -352,13 +353,17 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+            console.log('Enviando registro a:', 'api/users.php?action=register');
             const res  = await fetch('api/users.php?action=register', {
                 method:  'POST',
                 credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(formData),
             });
-            const json = await res.json();
+            console.log('Respuesta status:', res.status);
+            const text = await res.text();
+            console.log('Respuesta body:', text);
+            const json = JSON.parse(text);
 
             if (json.success) {
                 showAlert('¡Cuenta creada! Redirigiendo al login…', 'success');
@@ -368,8 +373,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Crear Cuenta';
             }
-        } catch {
-            showAlert('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+        } catch (err) {
+            console.error('Error en fetch:', err);
+            showAlert('Error de red: ' + err.message);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Crear Cuenta';
         }

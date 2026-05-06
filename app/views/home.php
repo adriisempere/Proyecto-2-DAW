@@ -17,7 +17,14 @@
  * ---------------------------------------------------------------
  */
 
-$pageTitle = 'GreenPoints | Recicla y Gana';
+$logueado = isset($_SESSION['usuario_id']);
+
+if ($logueado) {
+    $pageTitle = 'GreenPoints | Mi Panel';
+} else {
+    $pageTitle = 'GreenPoints | Recicla y Gana';
+}
+
 include __DIR__ . '/partials/header.php';
 
 $logueado = isset($_SESSION['usuario_id']);
@@ -52,7 +59,16 @@ $nivel = calcularNivel($puntos);
         <h1 class="display-4 fw-bold text-white animate__animated animate__fadeInDown">
             GreenPoints
         </h1>
+        <h1 class="display-4 fw-bold text-white animate__animated animate__fadeInDown">
+            GreenPoints
+        </h1>
 
+        <div class="col-lg-6 mx-auto animate__animated animate__fadeInUp delay-200">
+            <p class="lead mb-4 text-white-50">
+                Fomentamos el reciclaje a través de un sistema de puntos y recompensas.
+                Registra tus actividades, escala en el ranking y compite con tu comunidad.
+            </p>
+            <p class="lead fw-semibold mb-4 text-white">¡Empieza a reciclar hoy mismo!</p>
         <div class="col-lg-6 mx-auto animate__animated animate__fadeInUp delay-200">
             <p class="lead mb-4 text-white-50">
                 Fomentamos el reciclaje a través de un sistema de puntos y recompensas.
@@ -61,14 +77,18 @@ $nivel = calcularNivel($puntos);
             <p class="lead fw-semibold mb-4 text-white">¡Empieza a reciclar hoy mismo!</p>
 
             <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <div class="d-flex gap-2 justify-content-center flex-wrap">
                 <a href="index.php?action=register"
+                   class="btn btn-light btn-lg px-5 rounded-pill text-success fw-bold btn-pulse">
                    class="btn btn-light btn-lg px-5 rounded-pill text-success fw-bold btn-pulse">
                     <i class="bi bi-person-plus me-2"></i>Registro
                 </a>
                 <a href="index.php?action=login"
                    class="btn btn-outline-light btn-lg px-4 rounded-pill">
+                   class="btn btn-outline-light btn-lg px-4 rounded-pill">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
                 </a>
+            </div>
             </div>
         </div>
     </div>
@@ -194,12 +214,13 @@ $nivel = calcularNivel($puntos);
         </div>
     </div>
 </section>
+</section>
 
 <!-- ── CTA final ─────────────────────────────────────────────── -->
 <section class="py-5 bg-success text-white">
     <div class="container text-center py-4 scroll-reveal">
         <h2 class="display-4 fw-bold mb-3">¿Listo para hacer la diferencia?</h2>
-        <p class="lead mb-4 opacity-75">
+        <p class="lead mb-4" style="opacity:0.85;">
             Únete a la comunidad de usuarios que ya están transformando el mundo.
         </p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
@@ -410,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const d = json.data;
             const kg  = parseFloat(d.kg_reciclados || 0);
             const kgLabel = kg >= 1000 ? (kg / 1000).toFixed(1) + ' Ton' : kg.toFixed(1) + ' kg';
+            const kgLabel = kg >= 1000 ? (kg / 1000).toFixed(1) + ' Ton' : kg.toFixed(1) + ' kg';
             const co2  = parseFloat(d.co2_ahorrado_kg || 0);
             const co2Label = co2 >= 1000 ? (co2 / 1000).toFixed(1) + ' Ton CO₂' : co2.toFixed(1) + ' kg CO₂';
             const stats = [
@@ -418,14 +440,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 { valor: co2Label, label: 'CO₂ Ahorrado' },
             ];
             const row = document.getElementById('statsRow');
-            row.innerHTML = stats.map((s, i) => `
-                <div class="col-md-4 col-sm-6">
-                    <div class="py-3 animate__animated animate__zoomIn" style="animation-delay:${i * 0.1}s">
-                        <h3 class="fw-bold text-success mb-1">${s.valor}</h3>
-                        <p class="text-muted mb-0">${s.label}</p>
+            if (row) {
+                row.innerHTML = stats.map((s, i) => `
+                    <div class="col-md-4 col-sm-6">
+                        <div class="py-3 animate__animated animate__zoomIn" style="animation-delay:${i * 0.1}s">
+                            <h3 class="fw-bold text-success mb-1">${s.valor}</h3>
+                            <p class="text-muted mb-0">${s.label}</p>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         })
         .catch(() => {
             document.getElementById('statsRow').innerHTML =
@@ -559,6 +583,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         });
 });
+<?php endif; ?>
 <?php endif; ?>
 </script>
 
@@ -708,3 +733,4 @@ document.addEventListener('DOMContentLoaded', function () {
 </style>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
+
