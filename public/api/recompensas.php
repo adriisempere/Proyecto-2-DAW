@@ -21,6 +21,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 // ── Sesión segura ────────────────────────────────────────────────
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
@@ -57,10 +58,8 @@ function requireAuth(): void {
 /** Valida token CSRF del array de datos recibido. */
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? null;
-    if (empty($token)) return false;
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = $token;
-        return true;
+    if (empty($token) || empty($_SESSION['csrf_token'])) {
+        return false;
     }
     return CsrfHelper::verifyToken($token);
 }

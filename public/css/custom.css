@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-/* ══════════════════════════════════════════════════════════════
-   ANIMACIONES Y ESTILOS PERSONALIZADOS — GreenPoints
+﻿/* ══════════════════════════════════════════════════════════════
+   ESTILOS Y ANIMACIONES PERSONALIZADOS — GreenPoints
    ══════════════════════════════════════════════════════════════ */
 
-/* ── Flotación suave (logo del hero) ────────────────────────── */
-=======
 /* ── Animación de flotación suave (logo del hero) ──────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50%      { transform: translateY(-20px); }
@@ -15,11 +11,7 @@
     animation: float 6s ease-in-out infinite;
 }
 
-<<<<<<< HEAD
-/* ── Entrada desde abajo ────────────────────────────────────── */
-=======
 /* ── Entrada desde abajo con fade ──────────────────────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 @keyframes fadeInUpSuave {
     from { opacity: 0; transform: translate3d(0, 40px, 0); }
     to   { opacity: 1; transform: translate3d(0, 0, 0); }
@@ -34,17 +26,7 @@
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 
-<<<<<<< HEAD
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
-
-/* ── Elevación al hover (tarjetas) ──────────────────────────── */
-=======
 /* ── Elevación al hover (tarjetas) ─────────────────────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 .hover-lift {
     transition: transform 0.35s cubic-bezier(.25,.8,.25,1),
                 box-shadow 0.35s cubic-bezier(.25,.8,.25,1);
@@ -54,11 +36,7 @@
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08) !important;
 }
 
-<<<<<<< HEAD
-/* ── Gradiente en texto ─────────────────────────────────────── */
-=======
 /* ── Texto con gradiente verde ─────────────────────────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 .text-gradient {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     -webkit-background-clip: text;
@@ -66,39 +44,24 @@
     background-clip: text;
 }
 
-<<<<<<< HEAD
-/* ── Pulso suave (botón CTA) ────────────────────────────────── */
-@keyframes pulsoSuave {
-    0%   { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
-    70%  { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
-=======
 /* ── Pulso suave (botón CTA) ───────────────────────────────── */
 @keyframes pulsoSuave {
     0%   { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.35); }
     70%  { box-shadow: 0 0 0 12px rgba(40, 167, 69, 0); }
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
     100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
 }
 .btn-pulse {
     animation: pulsoSuave 2s infinite;
 }
 
-<<<<<<< HEAD
-/* ── Glassmorphism ───────────────────────────────────────────── */
-=======
 /* ── Glassmorphism ─────────────────────────────────────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 .glass-card {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-<<<<<<< HEAD
-/* ── Stagger animations ──────────────────────────────────────── */
-=======
 /* ── Animaciones escalonadas (stagger) ─────────────────────── */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
 .stagger-item {
     opacity: 0;
     animation: fadeInUpSuave 0.5s ease-out forwards;
@@ -107,63 +70,53 @@
 .stagger-2 { animation-delay: 0.2s; }
 .stagger-3 { animation-delay: 0.3s; }
 
-<<<<<<< HEAD
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-
-/* ── Shimmer loading effect ─────────────────────────────────── */
+/* ── Efecto shimmer de carga ───────────────────────────────── */
 @keyframes shimmer {
     0%   { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
-
 .shimmer {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
 
-/* ── Bounce in ───────────────────────────────────────────────── */
+/* ── Entrada con rebote ────────────────────────────────────── */
 @keyframes bounceIn {
     0%   { transform: scale(0.3); opacity: 0; }
     50%  { transform: scale(1.05); }
     70%  { transform: scale(0.9); }
     100% { transform: scale(1); opacity: 1; }
 }
-
 .animate-bounce-in {
     animation: bounceIn 0.6s ease-out;
 }
 
-/* ── Fade in from left ──────────────────────────────────────── */
+/* ── Entrada desde la izquierda ────────────────────────────── */
 @keyframes fadeInLeft {
     from { opacity: 0; transform: translateX(-30px); }
     to   { opacity: 1; transform: translateX(0); }
 }
-
 .animate-fade-left {
     animation: fadeInLeft 0.5s ease-out forwards;
     opacity: 0;
 }
 
-/* ── Fade in from right ─────────────────────────────────────── */
+/* ── Entrada desde la derecha ──────────────────────────────── */
 @keyframes fadeInRight {
     from { opacity: 0; transform: translateX(30px); }
     to   { opacity: 1; transform: translateX(0); }
 }
-
 .animate-fade-right {
     animation: fadeInRight 0.5s ease-out forwards;
     opacity: 0;
 }
 
-/* ── Ripple effect on buttons ────────────────────────────────── */
+/* ── Efecto ripple en botones ─────────────────────────────── */
 .btn-ripple {
     position: relative;
     overflow: hidden;
 }
-
 .btn-ripple::after {
     content: '';
     position: absolute;
@@ -176,59 +129,32 @@
     transform: translate(-50%, -50%);
     transition: width 0.6s, height 0.6s;
 }
-
 .btn-ripple:active::after {
     width: 300px;
     height: 300px;
 }
 
-/* ── Glow effect ─────────────────────────────────────────────── */
+/* ── Efecto glow verde ────────────────────────────────────── */
 @keyframes glow {
     0%, 100% { box-shadow: 0 0 5px rgba(40, 167, 69, 0.3); }
     50%      { box-shadow: 0 0 20px rgba(40, 167, 69, 0.6); }
 }
-
 .glow {
     animation: glow 2s ease-in-out infinite;
 }
 
-/* ── Smooth scroll ───────────────────────────────────────────── */
+/* ── Estilos globales y mejoras visuales ───────────────────── */
 html {
     scroll-behavior: smooth;
 }
-
-/* ── Transition utilities ────────────────────────────────────── */
-.transition-all {
-    transition: all 0.3s ease;
-}
-
-.transition-transform {
-    transition: transform 0.3s ease;
-}
-
-.transition-shadow {
-    transition: box-shadow 0.3s ease;
-=======
-/* ── Mejoras generales sutiles ─────────────────────────────── */
-
-/* Scroll suave para toda la página */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Selección de texto con color verde sutil */
 ::selection {
     background: rgba(40, 167, 69, 0.2);
     color: #155d27;
 }
 
-/* Barra de scroll personalizada (Chrome, Edge, Safari) */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
+/* Scroll personalizado para navegadores WebKit */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, #28a745, #20c997);
     border-radius: 4px;
@@ -237,49 +163,41 @@ html {
     background: linear-gradient(180deg, #218838, #1baa80);
 }
 
-/* Transición suave en todos los botones */
 .btn {
     transition: all 0.25s cubic-bezier(.25,.8,.25,1);
 }
-
-/* Sombras más suaves y modernas para las cards */
 .card {
     border-radius: 16px;
 }
-
 .card.shadow-sm {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04) !important;
 }
-
-/* Efecto de foco accesible y elegante */
 .form-control:focus,
 .form-select:focus {
     border-color: #28a745;
     box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
 }
-
-/* Botones con bordes redondeados más pronunciados */
 .rounded-pill {
     border-radius: 50rem !important;
 }
-
-/* Animación sutil al cargar imágenes */
 img {
     transition: opacity 0.3s ease;
 }
-
-/* Separadores horizontales más sutiles */
 hr {
     opacity: 0.08;
 }
-
-/* Pequeño efecto de brillo en enlaces al hover */
 a {
     transition: color 0.2s ease, background-color 0.2s ease;
 }
-
-/* Contenedor principal con espaciado consistente */
 .container {
     max-width: 1200px;
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
+}
+.transition-all {
+    transition: all 0.3s ease;
+}
+.transition-transform {
+    transition: transform 0.3s ease;
+}
+.transition-shadow {
+    transition: box-shadow 0.3s ease;
 }

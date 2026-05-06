@@ -21,6 +21,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 // ── Sesión segura (mismo patrón que el resto de APIs) ────────────
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',

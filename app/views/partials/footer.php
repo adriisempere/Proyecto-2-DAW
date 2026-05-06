@@ -189,7 +189,6 @@
 
 <!-- Scripts personalizados -->
 <script>
-<<<<<<< HEAD
     /* Scroll reveal: anima elementos con clase .scroll-reveal al entrar en viewport */
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -204,11 +203,8 @@
         revealObserver.observe(el);
     });
 
-    // Efecto scroll en navbar
-=======
     /* Efecto scroll en navbar: al bajar más de 50px la barra
      * se compacta y se vuelve semitransparente con blur */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('mainNavbar');
         if (window.scrollY > 50) {

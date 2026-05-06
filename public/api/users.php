@@ -23,14 +23,11 @@ header('Content-Type: application/json; charset=utf-8');
  * - samesite=Lax: protege contra CSRF sin romper el flujo de login
  * Esta configuración se replica en todos los archivos de la API. */
 if (session_status() === PHP_SESSION_NONE) {
-    session_name('GPSESSID');
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-<<<<<<< HEAD
         'domain'   => '',
-=======
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
         'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
@@ -63,16 +60,8 @@ function resp(bool $ok, string $msg = '', array $extra = []): void {
 /** Valida el token CSRF recibido en la petición. */
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? $data['X-CSRF-Token'] ?? null;
-    if (empty($token)) return false;
-<<<<<<< HEAD
-=======
-    /* En hosting gratuito la sesión puede perderse entre requests.
-     * Si no hay token en sesión, aceptamos el enviado como válido
-     * (mejor que bloquear completamente el login). */
->>>>>>> 556ea03812908b9576d562ee821fa7a26c33b923
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = $token;
-        return true;
+    if (empty($token) || empty($_SESSION['csrf_token'])) {
+        return false;
     }
     return CsrfHelper::verifyToken($token);
 }
