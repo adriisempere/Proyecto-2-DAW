@@ -21,6 +21,13 @@ $nombre = $_SESSION['usuario_nombre'] ?? 'Usuario';
 $email  = $_SESSION['usuario_email'] ?? 'No disponible';
 $puntos = (int)($_SESSION['usuario_puntos'] ?? 0);
 
+/* Calcula el nivel del usuario según sus puntos totales.
+ * Los umbrales son:
+ *   - Principiante: 0-500 pts
+ *   - Avanzado:     501-2000 pts
+ *   - Experto:      2001-5000 pts
+ *   - Maestro Verde: >5000 pts
+ */
 function calcularNivel($puntos){
     if ($puntos > 5000) return 'Maestro Verde';
     if ($puntos > 2000) return 'Experto';

@@ -38,6 +38,8 @@ $action = $_GET['action'] ?? null;
 
 // ── Factor de conversión kg reciclados → CO₂ ahorrado (kg) ──────
 // Estimación media ponderada entre materiales comunes.
+// Este valor se usa tanto en stats globales como en el perfil personal
+// para mostrar el impacto ambiental del reciclaje del usuario.
 const KG_CO2_POR_KG_RECICLADO = 1.5;
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -108,7 +110,10 @@ try {
 
             $uid = (int) $_SESSION['usuario_id'];
 
-            // Calcular posición contando cuántos usuarios tienen más puntos
+            /* Calcular la posición del usuario contando cuántos usuarios
+             * tienen MÁS puntos que él. Si 5 usuarios tienen más puntos,
+             * su posición es 6 (5 + 1). En caso de empate de puntos,
+             * varios usuarios compartirán la misma posición. */
             $stmt = $db->prepare(
                 "SELECT COUNT(*) AS posicion
                    FROM usuario

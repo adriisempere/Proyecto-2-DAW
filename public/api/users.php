@@ -17,7 +17,11 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-// ── Sesión segura ────────────────────────────────────────────────
+/* ── Configuración de sesión segura ─────────────────────────────
+ * - secure: la cookie solo se envía por HTTPS (en producción)
+ * - httponly: la cookie no es accesible desde JavaScript (previene XSS)
+ * - samesite=Lax: protege contra CSRF sin romper el flujo de login
+ * Esta configuración se replica en todos los archivos de la API. */
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
@@ -39,7 +43,13 @@ $data   = json_decode($raw, true) ?: $_POST;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
-/** Envía respuesta JSON y termina la ejecución. */
+/**
+ * Helper para enviar respuestas JSON consistentes en todas las APIs.
+ * Todas las respuestas siguen el mismo esquema:
+ *   { success: bool, message: string, ...extras }
+ * El exit() posterior asegura que no se ejecute más código después
+ * de enviar la respuesta.
+ */
 function resp(bool $ok, string $msg = '', array $extra = []): void {
     echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
     exit;
@@ -125,12 +135,17 @@ try {
             $stmt->execute();
             $usuario = $stmt->get_result()->fetch_assoc();
 
-            // Mismo mensaje para usuario inexistente o contraseña incorrecta
-            // (evita enumerar emails)
+            /* Usamos el mismo mensaje genérico tanto si el email no existe
+             * como si la contraseña es incorrecta. Esto evita que un atacante
+             * pueda enumerar qué emails están registrados en el sistema. */
             if (!$usuario || !password_verify($password, $usuario['password'])) {
                 resp(false, 'Credenciales incorrectas.');
             }
 
+            /* Regenerar el ID de sesión después del login exitoso.
+             * Esto previene ataques de "fijación de sesión" (session fixation),
+             * donde un atacante podría forzar un ID de sesión conocido.
+             * El parámetro true elimina la sesión antigua del servidor. */
             session_regenerate_id(true);
             $_SESSION['usuario_id']     = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];

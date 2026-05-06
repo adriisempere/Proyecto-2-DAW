@@ -100,7 +100,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let pendingDeleteCard = null;
     const csrfToken = document.querySelector('[name="csrf_token"]')?.value ?? '';
 
-    // ── Escapar HTML para prevenir XSS ───────────────────────────
+    /* Escapar texto para prevenir XSS al inyectar datos en innerHTML.
+     * Cada registro se renderiza como HTML dinámico, por lo que es
+     * crítico escapar todos los valores que vienen de la API. */
     function esc(str) {
         const d = document.createElement('div');
         d.textContent = str ?? '';
@@ -228,6 +230,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ── Confirmar eliminación ─────────────────────────────────────
+    // Al confirmar en el modal, se envía la petición DELETE a la API.
+    // Si tiene éxito: elimina la tarjeta del DOM, actualiza los datos
+    // locales, recalcula el resumen y actualiza el badge de puntos
+    // del header sin recargar la página.
     confirmBtn.addEventListener('click', async function () {
         if (!pendingDeleteId) return;
 

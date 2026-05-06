@@ -1,5 +1,7 @@
 <?php
-// Sesión sencilla con path común para todo el proyecto
+/* Configuración de sesión con path '/' para que la cookie
+ * sea accesible en toda la aplicación, independientemente
+ * de la ruta URL donde se encuentre el usuario. */
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'path' => '/',
@@ -11,7 +13,10 @@ require_once __DIR__ . '/../config/database.php';
 
 $action = $_GET['action'] ?? 'home';
 
-// Rutas simplificadas: las operaciones con datos se realizan mediante las APIs en public/api/
+/* Router principal: mapea cada action a su vista correspondiente.
+ * Las vistas se incluyen como archivos PHP y reciben acceso a la
+ * variable $action y a la sesión activa. Las operaciones con datos
+ * se delegan a las APIs en public/api/ (patrón front-controller). */
 switch ($action) {
     case 'home':
         include __DIR__ . '/../app/views/home.php';
@@ -23,7 +28,9 @@ switch ($action) {
         include __DIR__ . '/../app/views/login.php';
         break;
     case 'logout':
-        // Logout simple
+        /* Logout simple: destruye la sesión y redirige al inicio.
+         * Para un logout completo se recomienda también limpiar
+         * la cookie de sesión (ver public/api/users.php?action=logout). */
         session_destroy();
         header('Location: index.php?action=home');
         break;

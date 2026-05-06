@@ -44,7 +44,7 @@
             flex: 1;
         }
         
-        /* Navbar Styles */
+        /* Estilos de la barra de navegación */
         .navbar {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -74,7 +74,7 @@
             transform: translateY(-2px);
         }
         
-        /* User Profile Dropdown */
+        /* Botón desplegable del perfil de usuario */
         .user-profile-btn {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
@@ -91,14 +91,14 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Badge Styles */
+        /* Estilos de insignias (badges) */
         .badge-points {
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             backdrop-filter: blur(5px);
         }
 
-        /* Glassmorphism for Dropdowns */
+        /* Efecto glassmorphism para los menús desplegables */
         .dropdown-menu {
             border: none;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -124,7 +124,7 @@
             color: white;
         }
 
-        /* Mobile Toggle */
+        /* Botón toggler para vista móvil */
         .navbar-toggler {
             border: none;
             background: rgba(255,255,255,0.2);
@@ -134,7 +134,7 @@
             box-shadow: none;
         }
 
-        /* Animations */
+        /* Animaciones de entrada */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -148,7 +148,7 @@
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
         
-        /* Navbar scroll effect */
+        /* Efecto de la navbar al hacer scroll: se reduce el padding y se vuelve semitransparente */
         .navbar.scrolled {
             padding: 0.5rem 0;
             background: rgba(40, 167, 69, 0.95);

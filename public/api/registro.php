@@ -42,6 +42,9 @@ $raw    = file_get_contents('php://input');
 $data   = json_decode($raw, true) ?: $_POST;
 
 // ── Puntos por kg según tipo de material ─────────────────────────
+// Estos valores deben coincidir con los mostrados en el frontend
+// (registro_create.php y api-registro.js). El cálculo es:
+//   puntos_ganados = cantidad(kg) * PUNTOS_POR_MATERIAL[tipo]
 const PUNTOS_POR_MATERIAL = [
     'plastico' => 10,
     'papel'    => 5,
@@ -52,7 +55,10 @@ const PUNTOS_POR_MATERIAL = [
 
 // ── Helpers ──────────────────────────────────────────────────────
 
-/** Envía respuesta JSON y termina la ejecución. */
+/**
+ * Envía respuesta JSON y termina la ejecución.
+ * Todas las respuestas siguen el esquema: { success, message, ...extras }
+ */
 function resp(bool $ok, string $msg = '', array $extra = []): void {
     echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
     exit;
@@ -98,7 +104,11 @@ try {
 
             $puntos = (int) ($cantidad * PUNTOS_POR_MATERIAL[$tipo]);
 
-            // Transacción: insertar registro + actualizar puntos del usuario
+            /* Transacción atómica: ambas operaciones deben ejecutarse juntas.
+             * Si falla alguna de las dos, se hace rollback para mantener la
+             * consistencia entre puntos_ganados del registro y puntos_totales del usuario.
+             * Sin transacción, podría darse el caso de que se inserte el registro
+             * pero no se actualicen los puntos (o viceversa) si hay un error intermedio. */
             $db->begin_transaction();
             try {
                 $stmt = $db->prepare(
@@ -110,6 +120,8 @@ try {
                 $stmt->execute();
                 $nuevo_id = $db->insert_id;
 
+                /* Actualizamos los puntos_totales del usuario sumando los puntos
+                 * ganados en este nuevo registro de reciclaje. */
                 $stmt2 = $db->prepare(
                     'UPDATE usuario SET puntos_totales = puntos_totales + ? WHERE id = ?'
                 );
@@ -186,7 +198,11 @@ try {
 
             $puntos_a_descontar = (int) $registro['puntos_ganados'];
 
-            // Transacción: borrar registro + descontar puntos
+            /* Transacción atómica para la eliminación:
+             * 1. Borramos el registro de reciclaje
+             * 2. Descontamos los puntos del usuario usando GREATEST(0, ...)
+             *    para evitar que los puntos_totales puedan quedar negativos
+             *    en caso de inconsistencia de datos. */
             $db->begin_transaction();
             try {
                 $stmt = $db->prepare('DELETE FROM registro_reciclaje WHERE id = ?');

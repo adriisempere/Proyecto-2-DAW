@@ -234,7 +234,11 @@ include __DIR__ . '/partials/header.php';
 </section>
 
 <script>
-// ── Carga dinámica de estadísticas globales ─────────────────────
+/* Carga dinámica de estadísticas globales:
+ * Al cargar la página, se hace una petición fetch a la API de ranking
+ * para obtener los datos reales (usuarios activos, kg reciclados, CO2).
+ * Mientras tanto, se muestran esqueletos de carga (placeholders).
+ * Si la API falla, se muestran guiones como fallback sin romper la página. */
 document.addEventListener('DOMContentLoaded', function () {
     fetch('api/ranking.php?action=stats')
         .then(r => r.json())

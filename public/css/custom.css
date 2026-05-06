@@ -1,3 +1,4 @@
+/* Animación de flotación suave: se usa en el logo del hero */
 @keyframes float {
     0% {
         transform: translateY(0px);
@@ -16,6 +17,8 @@
     animation: float 6s ease-in-out infinite;
 }
 
+/* Animación de entrada desde abajo con fade: se aplica a secciones
+ * y elementos que aparecen al cargar la página */
 @keyframes fadeInUpSuave {
     from {
         opacity: 0;
@@ -53,6 +56,8 @@
     animation-delay: 0.5s;
 }
 
+/* Efecto de elevación al pasar el ratón: se usa en las tarjetas
+ * de servicios y centros para dar sensación de interactividad */
 .hover-lift {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -62,6 +67,8 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* Texto con gradiente verde: se aplica al título "GreenPoints" del hero
+ * Usa background-clip: text para que el gradiente solo se vea en las letras */
 .text-gradient {
     background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     -webkit-background-clip: text;
@@ -69,6 +76,9 @@
     background-clip: text;
 }
 
+/* Animación de pulso suave: se aplica al botón principal (CTA) del hero
+ * para llamar la atención del usuario. El efecto de box-shadow "pulsa"
+ * creando un halo verde que se expande y desvanece */
 @keyframes pulsoSuave {
     0% {
         box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
@@ -87,12 +97,17 @@
     animation: pulsoSuave 2s infinite;
 }
 
+/* Efecto glassmorphism: fondo semitransparente con desenfoque (blur)
+ * Se usa en elementos que necesitan un efecto de cristal moderno */
 .glass-card {
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Animaciones escalonadas (stagger): se usan para que los elementos
+ * aparezcan secuencialmente con retrasos progresivos, creando un
+ * efecto de cascada visual más atractivo */
 .stagger-item {
     opacity: 0;
     animation: fadeInUpSuave 0.5s ease-out forwards;

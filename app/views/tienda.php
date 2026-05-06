@@ -25,7 +25,14 @@ include __DIR__ . '/partials/header.php';
 ?>
 
 <style>
-    /* ── Carrito lateral ─────────────────────────────────────── */
+    /* ── Carrito lateral (drawer) ───────────────────────────────
+     * Panel deslizable que aparece desde la derecha al pulsar el
+     * botón flotante del carrito. Usa transform: translateX(100%)
+     * para estar oculto fuera de la pantalla y translateX(0) para
+     * mostrarse. La transición cubic-bezier da un efecto suave.
+     * El overlay oscuro de fondo bloquea la interacción con el
+     * contenido principal mientras el carrito está abierto.
+     */
     .cart-drawer {
         position: fixed;
         top: 0; right: 0;
@@ -95,7 +102,12 @@ include __DIR__ . '/partials/header.php';
         flex-shrink: 0;
     }
 
-    /* ── Tarjetas del catálogo ───────────────────────────────── */
+    /* ── Tarjetas del catálogo ─────────────────────────────────
+     * Cada recompensa se muestra como una tarjeta con efecto hover
+     * que la eleva y resalta con borde verde. Si el usuario no tiene
+     * puntos suficientes, la tarjeta se atenúa (opacity-60) y el
+     * botón de añadir se deshabilita.
+     */
     .reward-card {
         border: 2px solid transparent;
         border-radius: 16px;
@@ -174,7 +186,11 @@ include __DIR__ . '/partials/header.php';
 
     .code-box.just-copied .code-copied { opacity: 1; }
 
-    /* ── Botón flotante del carrito ──────────────────────────── */
+    /* ── Botón flotante del carrito (FAB) ──────────────────────
+     * Botón circular fijo en la esquina inferior derecha que muestra
+     * el badge con el número de ítems. Se hace visible solo cuando
+     * hay productos en el carrito.
+     */
     .cart-fab {
         position: fixed;
         bottom: 1.5rem;
@@ -364,15 +380,21 @@ include __DIR__ . '/partials/header.php';
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Estado ────────────────────────────────────────────────────
+    // ── Estado global de la tienda ──────────────────────────────
+    // catalogo: array de recompensas cargadas desde la API
+    // carrito: array en memoria con los ítems seleccionados [{recompensa, cantidad}]
+    // saldo: puntos actuales del usuario, se actualiza tras cada canje exitoso
     let catalogo = [];
-    let carrito  = []; // [{ recompensa, cantidad }]
+    let carrito  = [];
     let saldo    = <?= (int)$_SESSION['usuario_puntos'] ?>;
 
     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
     const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
-    // ── Escapar HTML ──────────────────────────────────────────────
+    /* Escapa texto para prevenir ataques XSS al insertar datos
+     * dinámicos con innerHTML. Crea un elemento div, asigna el
+     * texto como textContent (que el navegador escapa automáticamente)
+     * y devuelve su innerHTML ya sanitizado. */
     function esc(str) {
         const d = document.createElement('div');
         d.textContent = str ?? '';
@@ -466,7 +488,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
     }
 
-    // ── Gestión del carrito ───────────────────────────────────────
+    /* Gestión del carrito en memoria (sin persistencia en servidor).
+     * El carrito solo existe en el navegador durante la sesión actual.
+     * Si el usuario recarga la página, el carrito se pierde.
+     * addToCart: añade un ítem o incrementa su cantidad
+     * changeQty: modifica la cantidad, eliminando el ítem si llega a 0 */
     window.addToCart = function (id) {
         const r = catalogo.find(x => x.id == id);
         if (!r) return;
@@ -495,6 +521,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return carrito.reduce((s, i) => s + i.recompensa.puntos_coste * i.cantidad, 0);
     }
 
+    /* Actualiza toda la UI del carrito: badge flotante, lista de ítems,
+     * totales y estado del botón de checkout. Se llama después de cada
+     * modificación del carrito (añadir, quitar, vaciar). */
     function updateCart() {
         const total   = calcTotal();
         const items   = carrito.reduce((s, i) => s + i.cantidad, 0);
@@ -580,6 +609,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ── Checkout — modal de confirmación ─────────────────────────
+    // Al pulsar "Confirmar Canje" se muestra un resumen del pedido
+    // con el desglose de cada ítem, total de puntos a descontar y
+    // saldo resultante. El usuario debe confirmar en este modal antes
+    // de que se envíe la petición a la API.
     document.getElementById('checkoutBtn').addEventListener('click', function () {
         const total = calcTotal();
         const tras  = saldo - total;
@@ -607,6 +640,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ── Checkout — envío a la API ─────────────────────────────────
+    // Envía el carrito completo al servidor. Si el canje es exitoso:
+    // 1. Actualiza el saldo mostrado en pantalla y el badge del header
+    // 2. Vacía el carrito
+    // 3. Muestra el modal de éxito con los códigos generados
+    // 4. Re-renderiza el catálogo con el nuevo saldo
     document.getElementById('confirmCheckoutBtn').addEventListener('click', async function () {
         const btn = this;
         btn.disabled = true;

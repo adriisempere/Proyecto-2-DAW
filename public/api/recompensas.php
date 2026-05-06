@@ -63,7 +63,14 @@ function verifyCsrf(array $data): bool {
 
 /**
  * Genera un código de canje ficticio con formato realista.
+ * El formato es GP-XXXX-XXXX-XXXX donde cada X es un carácter
+ * alfanumérico (mayúsculas y dígitos, excluyendo caracteres
+ * ambiguos como O, 0, I, 1 para facilitar la lectura manual).
  * Ejemplo: GP-A3F2-9K1X-B7QZ
+ *
+ * Estos códigos son de demostración. En producción se deberían
+ * generar códigos únicos verificables contra una base de datos
+ * real de tarjetas regalo de cada marca.
  */
 function generarCodigo(): string {
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -132,8 +139,10 @@ try {
 
             $puntos_disponibles = (int) $usuario['puntos_totales'];
 
-            // Calcular coste total verificando cada recompensa en BD
-            // (nunca confiamos en el precio enviado desde el cliente)
+            /* Calcular coste total verificando cada recompensa directamente en BD.
+             * NUNCA confiamos en el precio enviado desde el cliente (podría ser
+             * manipulado). Consultamos puntos_coste desde la base de datos para
+             * cada recompensa y verificamos que siga activa (activa = 1). */
             $total_puntos = 0;
             $items_validados = [];
 
@@ -168,7 +177,12 @@ try {
                 ]);
             }
 
-            // Transacción: descontar puntos + insertar canjes
+            /* Transacción atómica de checkout:
+             * 1. Descontar los puntos totales del usuario de una sola vez
+             * 2. Insertar un registro de canje por cada unidad canjeada,
+             *    generando un código único para cada tarjeta regalo.
+             * Si falla cualquier inserción, se revierte todo (incluido
+             * el descuento de puntos) mediante rollback. */
             $db->begin_transaction();
             try {
                 // Descontar puntos del usuario

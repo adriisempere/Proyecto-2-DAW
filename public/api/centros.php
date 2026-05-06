@@ -44,7 +44,11 @@ function resp(bool $ok, string $msg = '', array $extra = []): void {
     exit;
 }
 
-/** Comprueba que hay sesión activa con rol admin. */
+/**
+ * Comprueba que hay sesión activa con rol admin.
+ * Si el usuario no está autenticado o no es admin, termina la
+ * ejecución enviando una respuesta de acceso no autorizado.
+ */
 function requireAdmin(): void {
     if (empty($_SESSION['usuario_rol']) || $_SESSION['usuario_rol'] !== 'admin') {
         resp(false, 'Acceso no autorizado.');
