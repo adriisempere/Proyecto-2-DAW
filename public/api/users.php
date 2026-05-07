@@ -21,6 +21,7 @@ header("Content-Type: application/json; charset=utf-8");
 // HttpOnly + Secure + SameSite=Lax protegen contra XSS, secuestro
 // de sesión y CSRF. La cookie solo viaja por HTTPS en producción.
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         "lifetime" => 0,
         "path" => "/",

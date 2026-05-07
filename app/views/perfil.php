@@ -363,7 +363,7 @@ $inicial = strtoupper(substr($nombre ?: "U", 0, 1));
         <!-- Sección de información personal del usuario -->
         <div class="col-lg-8 animate__animated animate__fadeInLeft" style="animation-delay:.5s">
             <div class="card info-card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header">
                     <span><i class="bi bi-person-lines-fill text-success me-2"></i>Información Personal</span>
                     <button class="btn btn-sm rounded-pill fw-semibold" id="btnEditarPerfil"
                             style="background:linear-gradient(135deg,#16a34a,#0d9488);color:#fff;border:none;padding:.35rem 1rem;">

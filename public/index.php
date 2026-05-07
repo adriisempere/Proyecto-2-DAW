@@ -1,8 +1,14 @@
 <?php
 // Sesión con path común para compartirla entre todas las páginas del proyecto
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
-        'path' => '/',
+        'lifetime' => 0,
+        'path'     => '/',
+        'domain'   => '',
+        'secure'   => false,
+        'httponly' => true,
+        'samesite' => 'Lax',
     ]);
     session_start();
 }
@@ -25,7 +31,9 @@ switch ($action) {
         include __DIR__ . '/../app/views/login.php';
         break;
     case 'logout':
-        // Logout simple
+        /* Logout simple: destruye la sesión y redirige al inicio.
+         * Para un logout completo se recomienda también limpiar
+         * la cookie de sesión (ver public/api/users.php?action=logout). */
         session_destroy();
         header('Location: index.php?action=home');
         break;

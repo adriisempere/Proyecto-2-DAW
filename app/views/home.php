@@ -920,7 +920,6 @@ html { scroll-behavior: smooth; }
                     </p>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -1005,7 +1004,6 @@ html { scroll-behavior: smooth; }
                 </a>
                 <?php endif; ?>
             </div>
-
         </div>
     </div>
 </section>
@@ -1138,6 +1136,190 @@ html { scroll-behavior: smooth; }
     </div>
 </section>
 
+<?php else: ?>
+
+<!-- ════════════════════════════════════════════════════════════
+     HOME PERSONALIZADO (usuario logueado)
+     ════════════════════════════════════════════════════════════ -->
+
+<!-- ── Banner de bienvenida ──────────────────────────────────── -->
+<header class="hero-auth px-4 py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <div class="welcome-avatar">
+                    <?= htmlspecialchars($inicial) ?>
+                </div>
+            </div>
+            <div class="col">
+                <h1 class="display-6 fw-bold text-white mb-1">
+                    ¡Hola, <?= htmlspecialchars($nombre) ?>!
+                </h1>
+                <p class="mb-0 text-white-50">
+                    Nivel: <span class="badge bg-warning text-dark fw-bold"><?= htmlspecialchars($nivel) ?></span>
+                    &nbsp;·&nbsp;
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <span id="userPointsHeader"><?= number_format($puntos) ?> puntos</span>
+                </p>
+            </div>
+            <div class="col-auto d-none d-md-block">
+                <a href="index.php?action=registro_create"
+                   class="btn btn-light btn-lg rounded-pill text-success fw-bold btn-pulse">
+                    <i class="bi bi-plus-circle me-2"></i>Registrar Reciclaje
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ── Estadísticas personales ───────────────────────────────── -->
+<section class="py-5 bg-white shadow-sm">
+    <div class="container">
+        <h5 class="fw-bold text-muted mb-4 text-center scroll-reveal">Tu Progreso</h5>
+        <div class="row g-3">
+            <div class="col-6 col-md-3 scroll-reveal">
+                <div class="stat-card text-center p-4">
+                    <div class="stat-icon"><i class="bi bi-star-fill"></i></div>
+                    <div class="stat-value counter" id="statPuntos"><?= $puntos ?></div>
+                    <div class="stat-label">Puntos Totales</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 scroll-reveal">
+                <div class="stat-card text-center p-4">
+                    <div class="stat-icon"><i class="bi bi-recycle"></i></div>
+                    <div class="stat-value" id="statKg">
+                        <span class="placeholder col-6 rounded"></span>
+                    </div>
+                    <div class="stat-label">Kg Reciclados</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 scroll-reveal">
+                <div class="stat-card text-center p-4">
+                    <div class="stat-icon"><i class="bi bi-wind"></i></div>
+                    <div class="stat-value" id="statCo2">
+                        <span class="placeholder col-6 rounded"></span>
+                    </div>
+                    <div class="stat-label">CO₂ Ahorrado</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 scroll-reveal">
+                <div class="stat-card text-center p-4">
+                    <div class="stat-icon"><i class="bi bi-trophy-fill"></i></div>
+                    <div class="stat-value" id="statRank">
+                        <span class="placeholder col-4 rounded"></span>
+                    </div>
+                    <div class="stat-label">Posición Ranking</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Acciones rápidas ──────────────────────────────────────── -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h5 class="fw-bold text-muted mb-4 text-center scroll-reveal">Acciones Rápidas</h5>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3 scroll-reveal">
+                <a href="index.php?action=registro_create" class="action-card card h-100 border-0 shadow-sm text-decoration-none">
+                    <div class="card-body text-center p-4">
+                        <div class="action-icon bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-plus-circle-fill text-success fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Registrar Reciclaje</h6>
+                        <p class="text-muted small mb-0">Añade un nuevo registro</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3 scroll-reveal">
+                <a href="index.php?action=tienda" class="action-card card h-100 border-0 shadow-sm text-decoration-none">
+                    <div class="card-body text-center p-4">
+                        <div class="action-icon bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-gift-fill text-warning fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Canjear Puntos</h6>
+                        <p class="text-muted small mb-0">Recompensas disponibles</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3 scroll-reveal">
+                <a href="index.php?action=ranking" class="action-card card h-100 border-0 shadow-sm text-decoration-none">
+                    <div class="card-body text-center p-4">
+                        <div class="action-icon bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-trophy-fill text-primary fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Ver Ranking</h6>
+                        <p class="text-muted small mb-0">Clasificación general</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3 scroll-reveal">
+                <a href="index.php?action=centros" class="action-card card h-100 border-0 shadow-sm text-decoration-none">
+                    <div class="card-body text-center p-4">
+                        <div class="action-icon bg-info bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                            <i class="bi bi-geo-alt-fill text-info fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Centros</h6>
+                        <p class="text-muted small mb-0">Puntos de reciclaje</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Distribución por material ─────────────────────────────── -->
+<section class="py-5">
+    <div class="container">
+        <h5 class="fw-bold text-muted mb-4 text-center scroll-reveal">Tu Reciclaje por Material</h5>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 scroll-reveal">
+                <div class="card border-0 shadow-sm p-4">
+                    <div id="materialBars">
+                        <div class="placeholder-glow">
+                            <?php for ($i = 0; $i < 5; $i++): ?>
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <span class="placeholder rounded" style="width:90px;height:28px;"></span>
+                                <span class="placeholder flex-grow-1 rounded" style="height:28px;"></span>
+                            </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Actividad reciente ────────────────────────────────────── -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h5 class="fw-bold text-muted mb-4 text-center scroll-reveal">Actividad Reciente</h5>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 scroll-reveal">
+                <div class="card border-0 shadow-sm" id="recentActivity">
+                    <div class="card-body p-4">
+                        <?php for ($i = 0; $i < 3; $i++): ?>
+                        <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                            <div class="placeholder rounded-circle" style="width:40px;height:40px;"></div>
+                            <div class="flex-grow-1">
+                                <span class="placeholder col-6 rounded"></span>
+                            </div>
+                            <span class="placeholder col-2 rounded"></span>
+                        </div>
+                        <?php endfor; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php endif; ?>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════ -->
 <script>
 /* ═════════════════════════════════════════════════════════════
    HOME — Carga dinámica de datos reales desde la base de datos
@@ -1198,8 +1380,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span class="stat-value">${s.valor}</span>
                         <p class="text-muted fw-medium mb-0">${s.label}</p>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
         })
         .catch(() => {
             const row = document.getElementById('statsRow');
@@ -1280,6 +1462,133 @@ document.addEventListener('DOMContentLoaded', function () {
 <?php endif; ?>
 
 });
+<?php else: ?>
+/* Estadísticas personales y actividad */
+const MATERIALES_INFO = {
+    'plastico': { label: 'Plástico', color: '#0d6efd', icon: 'bi-cup' },
+    'papel':    { label: 'Papel',    color: '#fd7e14', icon: 'bi-file-earmark' },
+    'vidrio':   { label: 'Vidrio',   color: '#198754', icon: 'bi-cup-straw' },
+    'metal':    { label: 'Metal',    color: '#6c757d', icon: 'bi-gear' },
+    'organico': { label: 'Orgánico', color: '#20c997', icon: 'bi-apple' },
+};
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    fetch('api/ranking.php?action=me')
+        .then(r => r.json())
+        .then(json => {
+            if (!json.success) return;
+            const d = json.data;
+
+            const kg = parseFloat(d.kg_reciclados || 0);
+            document.getElementById('statKg').textContent =
+                kg >= 1000 ? (kg / 1000).toFixed(1) + ' t' : kg.toFixed(2) + ' kg';
+
+            const co2 = kg * 1.5;
+            document.getElementById('statCo2').textContent =
+                co2 >= 1000 ? (co2 / 1000).toFixed(1) + ' t' : co2.toFixed(2) + ' kg';
+
+            document.getElementById('statRank').textContent = '#' + d.posicion;
+
+            document.getElementById('userPointsHeader').textContent =
+                (parseInt(d.puntos_totales) || <?= $puntos ?>).toLocaleString('es-ES') + ' puntos';
+        })
+        .catch(() => {
+            document.getElementById('statKg').textContent  = '—';
+            document.getElementById('statCo2').textContent = '—';
+            document.getElementById('statRank').textContent = '—';
+        });
+
+    fetch('api/ranking.php?action=stats_material')
+        .then(r => r.json())
+        .then(json => {
+            const barsContainer = document.getElementById('materialBars');
+            if (!json.success || !json.data || json.data.length === 0) {
+                barsContainer.innerHTML = '<p class="text-muted text-center mb-0">Aún no has registrado reciclaje.</p>';
+                return;
+            }
+            const data = json.data;
+            const maxKg = Math.max(...data.map(d => parseFloat(d.kg_totales)), 1);
+            barsContainer.innerHTML = data.map((d, i) => {
+                const info = MATERIALES_INFO[d.tipo_material] || { label: d.tipo_material, color: '#6c757d' };
+                const pct  = Math.max((d.kg_totales / maxKg) * 100, 4);
+                const kgStr = d.kg_totales >= 1000
+                    ? (d.kg_totales / 1000).toFixed(1) + ' Ton'
+                    : d.kg_totales.toFixed(1) + ' kg';
+                return `
+                    <div class="d-flex align-items-center gap-3 mb-3 animate__animated animate__fadeInLeft" style="animation-delay:${i * 0.08}s">
+                        <div class="flex-shrink-0 text-end" style="width:80px;">
+                            <span class="small fw-semibold text-dark">${esc(info.label)}</span>
+                        </div>
+                        <div class="flex-grow-1 position-relative" style="height:28px;background:#e9ecef;border-radius:14px;overflow:hidden;">
+                            <div style="width:${pct}%;height:100%;background:linear-gradient(90deg,${info.color},${info.color}dd);border-radius:14px;transition:width 1s ease;min-width:28px;"></div>
+                            <span class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-end pe-3">
+                                <span class="small fw-bold text-dark">${esc(kgStr)}</span>
+                            </span>
+                        </div>
+                    </div>`;
+            }).join('');
+        })
+        .catch(() => {
+            const barsContainer = document.getElementById('materialBars');
+            barsContainer.innerHTML = '<p class="text-muted text-center mb-0">No se pudo cargar la información.</p>';
+        });
+
+    fetch('api/registro.php?action=recent')
+        .then(r => r.json())
+        .then(json => {
+            const container = document.getElementById('recentActivity');
+            if (!json.success || !json.data || json.data.length === 0) {
+                container.innerHTML = `
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-clock-history text-muted fs-1 mb-3 d-block"></i>
+                        <p class="text-muted mb-0">Aún no tienes registros. ¡Empieza a reciclar!</p>
+                        <a href="index.php?action=registro_create" class="btn btn-success btn-sm rounded-pill mt-3">
+                            <i class="bi bi-plus-circle me-1"></i>Registrar Reciclaje
+                        </a>
+                    </div>`;
+                return;
+            }
+            const iconMap = {
+                'plastico': 'bi-cup-fill text-primary',
+                'papel': 'bi-file-earmark-fill text-warning',
+                'vidrio': 'bi-cup-straw-fill text-success',
+                'metal': 'bi-gear-fill text-secondary',
+                'organico': 'bi-apple text-info',
+            };
+            container.innerHTML = `<div class="card-body p-4">` +
+                json.data.slice(0, 5).map((r, i) => {
+                    const fecha = new Date(r.fecha).toLocaleDateString('es-ES', {
+                        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+                    });
+                    const icon = iconMap[r.tipo_material] || 'bi-recycle text-success';
+                    return `
+                        <div class="d-flex align-items-center gap-3 mb-3 pb-3${i < json.data.length - 1 ? ' border-bottom' : ''} animate__animated animate__fadeInUp" style="animation-delay:${i * 0.08}s">
+                            <div class="bg-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                <i class="bi ${icon}"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="fw-semibold d-block">${esc(r.tipo_material)}</span>
+                                <span class="small text-muted">${esc(fecha)}</span>
+                            </div>
+                            <div class="text-end">
+                                <span class="fw-bold text-success">+${parseInt(r.puntos_ganados)} pts</span>
+                                <span class="small text-muted d-block">${parseFloat(r.cantidad).toFixed(1)} kg</span>
+                            </div>
+                        </div>`;
+                }).join('') + `</div>`;
+        })
+        .catch(() => {
+            document.getElementById('recentActivity').innerHTML = `
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-0">No se pudo cargar la actividad reciente.</p>
+                </div>`;
+        });
+});
+<?php endif; ?>
+<?php endif; ?>
 </script>
 
 <?php include __DIR__ . "/partials/footer.php"; ?>

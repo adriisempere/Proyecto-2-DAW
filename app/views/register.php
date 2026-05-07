@@ -641,8 +641,10 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+            console.log('Enviando registro a:', 'api/users.php?action=register');
             const res  = await fetch('api/users.php?action=register', {
                 method:  'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(formData),
             });
@@ -655,8 +657,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Crear Cuenta';
             }
-        } catch {
-            showAlert('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+        } catch (err) {
+            console.error('Error en fetch:', err);
+            showAlert('Error de red: ' + err.message);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Crear Cuenta';
         }

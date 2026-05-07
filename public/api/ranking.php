@@ -21,6 +21,7 @@ header("Content-Type: application/json; charset=utf-8");
 
 // ── Sesión segura (mismo patrón que el resto de APIs) ────────────
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         "lifetime" => 0,
         "path" => "/",
@@ -108,6 +109,30 @@ try {
             );
 
             resp(true, "Estadísticas obtenidas.", ["data" => $row]);
+
+        // ── Estadísticas por tipo de material ────────────────────
+        // Devuelve kg y nº de registros agrupados por tipo_material
+        case 'stats_material':
+            $res = $db->query(
+                "SELECT
+                    r.tipo_material,
+                    COUNT(r.id)           AS total_registros,
+                    IFNULL(SUM(r.cantidad), 0) AS kg_totales,
+                    IFNULL(SUM(r.puntos_ganados), 0) AS puntos_totales
+                 FROM registro_reciclaje r
+                 GROUP BY r.tipo_material
+                 ORDER BY kg_totales DESC"
+            );
+
+            $out = [];
+            while ($row = $res->fetch_assoc()) {
+                $row['total_registros'] = (int) $row['total_registros'];
+                $row['puntos_totales']  = (int) $row['puntos_totales'];
+                $row['kg_totales']      = round((float) $row['kg_totales'], 2);
+                $out[] = $row;
+            }
+
+            resp(true, 'Estadísticas por material obtenidas.', ['data' => $out]);
 
         // ── Posición del usuario autenticado ─────────────────────
         case "me":
@@ -221,6 +246,33 @@ try {
                     "por_material" => $materiales,
                 ],
             ]);
+
+        // ── Distribución por material del usuario autenticado ────
+        case 'stats_material':
+            if (empty($_SESSION['usuario_id'])) {
+                resp(false, 'No autenticado.');
+            }
+            $uid = (int) $_SESSION['usuario_id'];
+            $stmt = $db->prepare(
+                "SELECT tipo_material,
+                        COUNT(*)              AS cantidad_registros,
+                        IFNULL(SUM(cantidad), 0) AS kg_totales,
+                        IFNULL(SUM(puntos_ganados), 0) AS puntos_totales
+                   FROM registro_reciclaje
+                  WHERE usuario_id = ?
+                  GROUP BY tipo_material
+                  ORDER BY kg_totales DESC"
+            );
+            $stmt->bind_param('i', $uid);
+            $stmt->execute();
+            $out = [];
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $row['kg_totales']    = (float) $row['kg_totales'];
+                $row['puntos_totales'] = (int) $row['puntos_totales'];
+                $out[] = $row;
+            }
+            resp(true, 'Estadísticas por material obtenidas.', ['data' => $out]);
 
         default:
             resp(false, "Acción no encontrada.");

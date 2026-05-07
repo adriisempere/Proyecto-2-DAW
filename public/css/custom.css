@@ -744,15 +744,19 @@ svg {
    8. ELEMENTOS ESCALONADOS
    ──────────────────────────────────────────────────────────── */
 
+/* ── Animaciones escalonadas (stagger) ─────────────────────── */
 .stagger-item {
     opacity: 0;
     animation: fadeInUpSuave 0.6s ease-out forwards;
 }
 .stagger-1 {
-    animation-delay: 0.1s;
+  animation-delay: 0.1s;
 }
 .stagger-2 {
-    animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
 }
 .stagger-3 {
     animation-delay: 0.3s;

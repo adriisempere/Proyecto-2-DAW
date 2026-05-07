@@ -699,6 +699,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Enviar credenciales mediante fetch a la API ─────────────────
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
+        console.log('Formulario enviado');
 
         // Validar todos los campos antes de enviar
         let valid = true;
@@ -718,12 +719,16 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
+            console.log('Enviando a:', 'api/users.php?action=login');
             const res  = await fetch('api/users.php?action=login', {
                 method:  'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(formData),
             });
-            const json = await res.json();
+            const text = await res.text();
+            console.log('Respuesta:', res.status, text);
+            const json = JSON.parse(text);
 
             if (json.success) {
                 showAlert('¡Inicio de sesión correcto! Redirigiendo…', 'success');
@@ -733,8 +738,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
             }
-        } catch {
-            showAlert('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
+        } catch (err) {
+            console.error('Error en fetch:', err);
+            showAlert('Error de red: ' + err.message);
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión';
         }

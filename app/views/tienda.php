@@ -635,6 +635,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return carrito.reduce((s, i) => s + i.recompensa.puntos_coste * i.cantidad, 0);
     }
 
+    /* Actualiza toda la UI del carrito: badge flotante, lista de ítems,
+     * totales y estado del botón de checkout. Se llama después de cada
+     * modificación del carrito (añadir, quitar, vaciar). */
     function updateCart() {
         const total  = calcTotal();
         const items  = carrito.reduce((s, i) => s + i.cantidad, 0);

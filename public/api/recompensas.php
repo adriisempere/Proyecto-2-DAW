@@ -21,10 +21,11 @@ header('Content-Type: application/json; charset=utf-8');
 
 // ── Sesión segura ────────────────────────────────────────────────
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -57,13 +58,22 @@ function requireAuth(): void {
 /** Valida token CSRF del array de datos recibido. */
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? null;
-    if (empty($token)) return false;
+    if (empty($token) || empty($_SESSION['csrf_token'])) {
+        return false;
+    }
     return CsrfHelper::verifyToken($token);
 }
 
 /**
  * Genera un código de canje ficticio con formato realista.
+ * El formato es GP-XXXX-XXXX-XXXX donde cada X es un carácter
+ * alfanumérico (mayúsculas y dígitos, excluyendo caracteres
+ * ambiguos como O, 0, I, 1 para facilitar la lectura manual).
  * Ejemplo: GP-A3F2-9K1X-B7QZ
+ *
+ * Estos códigos son de demostración. En producción se deberían
+ * generar códigos únicos verificables contra una base de datos
+ * real de tarjetas regalo de cada marca.
  */
 function generarCodigo(): string {
     // random_int() es criptográficamente seguro (a diferencia de rand())

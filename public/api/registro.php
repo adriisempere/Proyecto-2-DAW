@@ -23,10 +23,11 @@ header('Content-Type: application/json; charset=utf-8');
 
 // ── Sesión segura (mismo patrón que el resto de APIs) ────────────
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('GREENPOINTS_SESSID');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -42,6 +43,9 @@ $raw    = file_get_contents('php://input');
 $data   = json_decode($raw, true) ?: $_POST;
 
 // ── Puntos por kg según tipo de material ─────────────────────────
+// Estos valores deben coincidir con los mostrados en el frontend
+// (registro_create.php y api-registro.js). El cálculo es:
+//   puntos_ganados = cantidad(kg) * PUNTOS_POR_MATERIAL[tipo]
 const PUNTOS_POR_MATERIAL = [
     'plastico' => 10,
     'papel'    => 5,
@@ -52,7 +56,10 @@ const PUNTOS_POR_MATERIAL = [
 
 // ── Helpers ──────────────────────────────────────────────────────
 
-/** Envía respuesta JSON y termina la ejecución. */
+/**
+ * Envía respuesta JSON y termina la ejecución.
+ * Todas las respuestas siguen el esquema: { success, message, ...extras }
+ */
 function resp(bool $ok, string $msg = '', array $extra = []): void {
     echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
     exit;
@@ -68,7 +75,9 @@ function requireAuth(): void {
 /** Valida el token CSRF del array de datos recibido. */
 function verifyCsrf(array $data): bool {
     $token = $data['csrf_token'] ?? null;
-    if (empty($token)) return false;
+    if (empty($token) || empty($_SESSION['csrf_token'])) {
+        return false;
+    }
     return CsrfHelper::verifyToken($token);
 }
 
@@ -113,6 +122,8 @@ try {
                 $stmt->execute();
                 $nuevo_id = $db->insert_id;
 
+                /* Actualizamos los puntos_totales del usuario sumando los puntos
+                 * ganados en este nuevo registro de reciclaje. */
                 $stmt2 = $db->prepare(
                     'UPDATE usuario SET puntos_totales = puntos_totales + ? WHERE id = ?'
                 );
@@ -159,6 +170,31 @@ try {
             }
             resp(true, 'Registros obtenidos.', ['data' => $out]);
 
+        // ── 5 registros más recientes ────────────────────────────
+        case 'recent':
+            requireAuth();
+
+            $uid  = (int) $_SESSION['usuario_id'];
+            $stmt = $db->prepare(
+                'SELECT r.id, r.tipo_material, r.cantidad, r.puntos_ganados, r.fecha,
+                        c.nombre AS centro_nombre
+                   FROM registro_reciclaje r
+                   LEFT JOIN centro_reciclaje c ON r.centro_id = c.id
+                  WHERE r.usuario_id = ?
+                  ORDER BY r.fecha DESC
+                  LIMIT 5'
+            );
+            $stmt->bind_param('i', $uid);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $out = [];
+            while ($row = $res->fetch_assoc()) {
+                $row['cantidad']       = (float) $row['cantidad'];
+                $row['puntos_ganados'] = (int)   $row['puntos_ganados'];
+                $out[] = $row;
+            }
+            resp(true, 'Registros recientes obtenidos.', ['data' => $out]);
+
         // ── Eliminar registro propio ──────────────────────────────
         case 'delete':
             requireAuth();
@@ -189,7 +225,11 @@ try {
 
             $puntos_a_descontar = (int) $registro['puntos_ganados'];
 
-            // Transacción: borrar registro + descontar puntos
+            /* Transacción atómica para la eliminación:
+             * 1. Borramos el registro de reciclaje
+             * 2. Descontamos los puntos del usuario usando GREATEST(0, ...)
+             *    para evitar que los puntos_totales puedan quedar negativos
+             *    en caso de inconsistencia de datos. */
             $db->begin_transaction();
             try {
                 $stmt = $db->prepare('DELETE FROM registro_reciclaje WHERE id = ?');
