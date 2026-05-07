@@ -85,6 +85,7 @@ try {
             }
 
             $usuario_id = (int) $_SESSION['usuario_id'];
+            // centro_id puede ser null si el reciclaje se realizó fuera de un centro registrado
             $centro_id  = !empty($data['centro_id']) ? (int) $data['centro_id'] : null;
             $tipo       = $data['tipo_material'] ?? '';
             $cantidad   = (float) ($data['cantidad'] ?? 0);
@@ -98,7 +99,9 @@ try {
 
             $puntos = (int) ($cantidad * PUNTOS_POR_MATERIAL[$tipo]);
 
-            // Transacción: insertar registro + actualizar puntos del usuario
+            // Transacción: insertar registro E actualizar puntos son una sola unidad.
+            // Si falla cualquiera de las dos, se revierte todo (rollback)
+            // para evitar datos inconsistentes (puntos sin registro o viceversa).
             $db->begin_transaction();
             try {
                 $stmt = $db->prepare(
@@ -193,6 +196,8 @@ try {
                 $stmt->bind_param('i', $registro_id);
                 $stmt->execute();
 
+                // GREATEST(0, ...) evita que los puntos totales bajen de cero
+                // ante posibles inconsistencias o múltiples eliminaciones del mismo registro
                 $stmt2 = $db->prepare(
                     'UPDATE usuario
                         SET puntos_totales = GREATEST(0, puntos_totales - ?)

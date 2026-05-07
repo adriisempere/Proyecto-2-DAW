@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const materialContainer = document.getElementById('materialOptions');
     const registroForm = document.getElementById('registroForm');
 
-    // Materiales y sus puntos por kg
+    // Materiales reciclables y sus puntos por kg
+    // Cada material tiene un icono de Bootstrap y un valor en puntos
     const materiales = {
         plastico: { icon: 'bi-box-seam', puntos: 10 },
         papel:    { icon: 'bi-file-earmark-text', puntos: 5 },
@@ -28,7 +29,9 @@ document.addEventListener('DOMContentLoaded', function(){
             centroSelect.innerHTML = '<option value="" disabled>Error cargando centros</option>';
         });
 
-    // Generar botones de material
+    // Generar botones de selección de material tipo tarjeta visual
+    // Usamos input[type="radio"] + label para que Bootstrap los estilice
+    // como botones seleccionables (btn-check + btn-outline-success)
     Object.keys(materiales).forEach(m => {
         const icon = materiales[m].icon;
         const pts = materiales[m].puntos;
@@ -44,12 +47,16 @@ document.addEventListener('DOMContentLoaded', function(){
         materialContainer.appendChild(col);
     });
 
-    // Envío por fetch
+    // Envío mediante fetch API al endpoint de registro
+    // Se construye un objeto JSON a partir del FormData y se envía
+    // con Content-Type application/json para que el servidor lo procese
     if (registroForm) {
         registroForm.addEventListener('submit', async function(e){
             e.preventDefault();
             if (!registroForm.checkValidity()) { registroForm.classList.add('was-validated'); return; }
 
+            // Convertir FormData a objeto JSON para enviar por fetch
+            // FormData maneja campos de formulario HTML5 incluyendo radios y checks
             const formData = new FormData(registroForm);
             const payload = {};
             formData.forEach((v,k)=> payload[k]=v);
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 });
                 const json = await res.json();
                 if (json.success) {
-                    // mostrar mensaje y redirigir
+                    // Mostrar mensaje de éxito y redirigir al inicio
                     alert(json.message || 'Registrado');
                     window.location = 'index.php?action=home';
                 } else {

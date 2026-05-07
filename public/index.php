@@ -1,5 +1,5 @@
 <?php
-// Sesión sencilla con path común para todo el proyecto
+// Sesión con path común para compartirla entre todas las páginas del proyecto
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'path' => '/',
@@ -11,7 +11,9 @@ require_once __DIR__ . '/../config/database.php';
 
 $action = $_GET['action'] ?? 'home';
 
-// Rutas simplificadas: las operaciones con datos se realizan mediante las APIs en public/api/
+// Enrutador simple: cada acción carga una vista diferente.
+// La lógica de negocio y modificación de datos se maneja via API (public/api/),
+// mientras que este router solo se encarga de incluir la vista correspondiente.
 switch ($action) {
     case 'home':
         include __DIR__ . '/../app/views/home.php';
@@ -43,10 +45,10 @@ switch ($action) {
         include __DIR__ . '/../app/views/perfil.php';
         break;
     case 'tienda':      
-        include '../app/views/tienda.php';     
+        include __DIR__ . '/../app/views/tienda.php';
         break;
     case 'mis_canjes':  
-        include '../app/views/mis_canjes.php';  
+        include __DIR__ . '/../app/views/mis_canjes.php';
         break;
     default:
         http_response_code(404);

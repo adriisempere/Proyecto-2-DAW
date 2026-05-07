@@ -44,7 +44,10 @@ function resp(bool $ok, string $msg = '', array $extra = []): void {
     exit;
 }
 
-/** Comprueba que hay sesión activa con rol admin. */
+/** Verifica que el usuario autenticado tenga rol de administrador. */
+// Combina la comprobación de autenticación y rol en un solo paso.
+// Cualquier operación de escritura (crear, actualizar, eliminar centros)
+// debe pasar por esta guarda para garantizar que solo el admin pueda ejecutarla.
 function requireAdmin(): void {
     if (empty($_SESSION['usuario_rol']) || $_SESSION['usuario_rol'] !== 'admin') {
         resp(false, 'Acceso no autorizado.');
@@ -59,6 +62,8 @@ function verifyCsrf(array $data): bool {
 }
 
 // ── Router ───────────────────────────────────────────────────────
+// Las operaciones de escritura (store, update, delete) requieren
+// autenticación de administrador + token CSRF para protección.
 try {
     switch ($action) {
 

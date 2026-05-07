@@ -1,251 +1,540 @@
 <?php
 /**
  * Vista de Registro — GreenPoints
- * ---------------------------------------------------------------
- * Formulario de creación de cuenta. Si el usuario ya tiene sesión
- * activa se le redirige directamente al inicio.
- * El registro se delega a la API: public/api/users.php?action=register
- * Incluye validación en cliente (feedback inmediato) y en servidor
- * (fuente de verdad). El token CSRF se genera aquí y se verifica
- * en la API.
- * ---------------------------------------------------------------
+ * Formulario de creación de cuenta con diseño de panel dividido.
  */
-
-// Redirigir si ya está autenticado
-if (isset($_SESSION['usuario_id'])) {
-    header('Location: index.php?action=home');
-    exit;
+if (isset($_SESSION["usuario_id"])) {
+    header("Location: index.php?action=home");
+    exit();
 }
-
-$pageTitle = 'Crear Cuenta | GreenPoints';
-include __DIR__ . '/partials/header.php';
+$pageTitle = "Crear Cuenta | GreenPoints";
+include __DIR__ . "/partials/header.php";
 ?>
 
 <style>
-    body {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        min-height: 100vh;
-        padding: 2rem 0;
-    }
+/* ── Base de la página de autenticación ─────────────────────── */
+body         { background: #f0fdf4; }
+main         { display: flex; flex-direction: column; }
+body > .gp-footer { margin-top: 0 !important; }
 
-    .register-card {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
+/* ── Contenedor principal ───────────────────────────────────── */
+.auth-page-wrapper {
+    flex: 1;
+    display: flex;
+    min-height: calc(100vh - 70px);
+}
 
-    .register-header {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 2.5rem;
-        text-align: center;
-    }
+/* ── Panel decorativo izquierdo ─────────────────────────────── */
+.auth-left-panel {
+    width: 42%;
+    background: linear-gradient(145deg, #064e3b 0%, #065f46 22%, #047857 55%, #0d9488 100%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+}
 
-    .register-body {
-        padding: 2.5rem;
-        background: white;
-    }
+.auth-left-panel::before {
+    content: '';
+    position: absolute;
+    inset: -60%;
+    background: conic-gradient(
+        from 180deg at 50% 50%,
+        rgba(52,211,153,.12) 0deg,
+        rgba(16,185,129,.04) 120deg,
+        rgba(52,211,153,.12) 240deg,
+        rgba(16,185,129,.04) 360deg
+    );
+    animation: panelSpin 24s linear infinite;
+    pointer-events: none;
+}
+@keyframes panelSpin { to { transform: rotate(360deg); } }
 
-    .form-control:focus {
-        border-color: #28a745;
-        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-    }
+/* Elementos decorativos flotantes */
+.auth-blob { position: absolute; border-radius: 50%; pointer-events: none; }
+.auth-blob-1 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(110,231,183,.22) 0%, transparent 68%);
+    top: -120px; left: -120px;
+    animation: drift1 16s ease-in-out infinite;
+}
+.auth-blob-2 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(52,211,153,.18) 0%, transparent 68%);
+    bottom: -100px; right: -100px;
+    animation: drift2 13s ease-in-out infinite;
+}
+.auth-blob-3 {
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(167,243,208,.18) 0%, transparent 68%);
+    top: 40%; left: 55%;
+    animation: drift3 18s ease-in-out infinite;
+}
 
-    .btn-register {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        border: none;
-        padding: 12px;
-        font-weight: 600;
-        color: white;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
+@keyframes drift1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(22px,-25px) scale(1.06); }
+    66%      { transform: translate(-16px,16px) scale(.94); }
+}
+@keyframes drift2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50%      { transform: translate(-22px,-18px) scale(1.08); }
+}
+@keyframes drift3 {
+    0%,100% { transform: translate(0,0); }
+    25%      { transform: translate(14px,-16px); }
+    75%      { transform: translate(-12px,12px); }
+}
 
-    .btn-register:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
-        color: white;
-    }
+.auth-left-content {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    text-align: center;
+    max-width: 360px;
+    width: 100%;
+}
 
-    .btn-register:disabled {
-        opacity: 0.7;
-        transform: none;
-    }
+.auth-brand-icon {
+    font-size: 4rem;
+    display: inline-block;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,.28));
+    animation: iconPulse 3.5s ease-in-out infinite;
+}
+@keyframes iconPulse {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    50%      { transform: scale(1.09) rotate(-5deg); }
+}
 
-    /* Barra de fuerza de contraseña */
-    .strength-bar {
-        height: 5px;
-        border-radius: 3px;
-        transition: width 0.3s, background-color 0.3s;
-        width: 0;
-    }
+.auth-left-content h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -.5px;
+    text-shadow: 0 2px 16px rgba(0,0,0,.3);
+    margin-bottom: .2rem;
+}
+.auth-tagline {
+    font-size: .78rem;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    opacity: .68;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
 
-    .strength-weak   { background: #dc3545; width: 33%; }
-    .strength-medium { background: #ffc107; width: 66%; }
-    .strength-strong { background: #28a745; width: 100%; }
+/* Tarjetas de beneficios */
+.auth-benefit-item {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    text-align: left;
+    padding: .8rem 1rem;
+    background: rgba(255,255,255,.07);
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,.1);
+    backdrop-filter: blur(6px);
+    transition: background .3s, transform .3s;
+    margin-bottom: .65rem;
+}
+.auth-benefit-item:hover { background: rgba(255,255,255,.13); transform: translateX(4px); }
+.auth-benefit-item:last-child { margin-bottom: 0; }
+.benefit-icon-circle {
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,.13);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,.16);
+}
+.benefit-text strong { display: block; font-size: .865rem; font-weight: 600; margin-bottom: 1px; }
+.benefit-text small  { font-size: .78rem; opacity: .68; }
 
-    .invalid-feedback {
-        animation: fadeInError 0.2s ease-in;
-    }
+/* ── Panel derecho (formulario) ─────────────────────────────── */
+.auth-right-panel {
+    flex: 1;
+    background: #f0fdf4;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+}
+.auth-right-inner { width: 100%; max-width: 500px; }
 
-    @keyframes fadeInError {
-        from { opacity: 0; transform: translateY(-4px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
+/* Encabezado de marca para móviles */
+.auth-mobile-brand {
+    display: none;
+    align-items: center;
+    gap: .6rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+.auth-mobile-brand .m-brand-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1rem;
+}
+.auth-mobile-brand .m-brand-name { font-weight: 800; font-size: 1.3rem; color: #065f46; }
 
-    .benefit-icon {
-        font-size: 2.5rem;
-        opacity: 0.9;
-    }
+/* ── Tarjeta de autenticación ───────────────────────────────── */
+.auth-card {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(6,78,59,.12), 0 1px 0 rgba(255,255,255,.6) inset;
+}
+
+.auth-card-header {
+    background: linear-gradient(135deg, #065f46 0%, #047857 45%, #0d9488 100%);
+    padding: 2rem 2rem 1.8rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.auth-card-header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -30%;
+    width: 160%; height: 200%;
+    background: radial-gradient(ellipse, rgba(255,255,255,.08) 0%, transparent 65%);
+    pointer-events: none;
+}
+
+.auth-header-icon {
+    width: 64px; height: 64px;
+    background: rgba(255,255,255,.15);
+    border: 2px solid rgba(255,255,255,.3);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    color: #fff;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    animation: iconPulse 3.5s ease-in-out infinite;
+}
+.auth-card-header h2 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: .25rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.auth-card-header p { color: rgba(255,255,255,.78); font-size: .875rem; margin: 0; }
+
+.auth-card-body { padding: 1.75rem 2rem 2rem; }
+
+/* ── Controles del formulario ───────────────────────────────── */
+.auth-form-label {
+    font-weight: 600;
+    font-size: .85rem;
+    color: #374151;
+    margin-bottom: .4rem;
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+}
+.auth-form-label i { color: #059669; font-size: .9rem; }
+
+.form-control-glass {
+    background: rgba(240,253,244,.8);
+    border: 1.5px solid #d1fae5;
+    border-radius: 12px;
+    padding: .7rem 1rem;
+    font-size: .9rem;
+    font-family: 'Poppins', sans-serif;
+    color: #1f2937;
+    transition: all .25s ease;
+    width: 100%;
+}
+.form-control-glass::placeholder { color: #9ca3af; }
+.form-control-glass:focus {
+    outline: none;
+    border-color: #059669;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(5,150,105,.12);
+}
+.form-control-glass.is-invalid { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+.form-control-glass.is-valid   { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.1); }
+
+.input-group > .form-control-glass:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn-eye {
+    background: rgba(240,253,244,.8);
+    border: 1.5px solid #d1fae5;
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+    padding: 0 .85rem;
+    color: #6b7280;
+    transition: all .2s;
+    cursor: pointer;
+}
+.btn-eye:hover { background: #dcfce7; color: #059669; }
+.btn-eye:focus { outline: none; box-shadow: none; }
+
+/* Barra de fortaleza de contraseña */
+.strength-bar {
+    height: 4px;
+    border-radius: 3px;
+    transition: width .35s ease, background-color .35s ease;
+    width: 0;
+    background: transparent;
+}
+.strength-weak   { width: 33%; background: #ef4444; }
+.strength-medium { width: 66%; background: #f59e0b; }
+.strength-strong { width: 100%; background: #22c55e; }
+
+/* ── Botón de envío ─────────────────────────────────────────── */
+.btn-auth {
+    width: 100%;
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+    border: none;
+    border-radius: 12px;
+    padding: .85rem 1.5rem;
+    font-weight: 700;
+    font-size: .95rem;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+    box-shadow: 0 6px 20px rgba(5,150,105,.35);
+    font-family: 'Poppins', sans-serif;
+}
+.btn-auth::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.14), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity .3s;
+}
+.btn-auth:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(5,150,105,.48); }
+.btn-auth:hover::after { opacity: 1; }
+.btn-auth:active { transform: translateY(0); }
+.btn-auth:disabled { opacity: .65; transform: none; cursor: not-allowed; }
+
+/* ── Alerta ──────────────────────────────────────────────────── */
+.auth-alert {
+    border-radius: 12px;
+    font-size: .875rem;
+    border: none;
+    padding: .85rem 1rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .auth-left-panel  { display: none; }
+    .auth-right-panel { padding: 1.5rem 1rem; background: linear-gradient(160deg, #f0fdf4 0%, #ecfdf5 100%); }
+    .auth-card-body   { padding: 1.5rem; }
+    .auth-card-header { padding: 1.75rem 1.5rem; }
+    .auth-mobile-brand { display: flex; }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+    .auth-left-panel { width: 38%; }
+}
 </style>
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<div class="auth-page-wrapper">
 
-            <div class="register-card animate__animated animate__fadeInUp">
+    <!-- ── Panel decorativo izquierdo ──────────────────────────── -->
+    <div class="auth-left-panel">
+        <div class="auth-blob auth-blob-1"></div>
+        <div class="auth-blob auth-blob-2"></div>
+        <div class="auth-blob auth-blob-3"></div>
 
-                <!-- Cabecera -->
-                <div class="register-header">
-                    <i class="bi bi-leaf-fill fs-1 mb-3 d-block animate__animated animate__pulse animate__infinite"></i>
-                    <h2 class="fw-bold mb-1">Únete a GreenPoints</h2>
-                    <p class="mb-0 opacity-75">Comienza tu viaje hacia un planeta más verde</p>
+        <div class="auth-left-content animate__animated animate__fadeInLeft">
+            <div class="auth-brand-icon mb-3">
+                <i class="bi bi-recycle"></i>
+            </div>
+            <h1>GreenPoints</h1>
+            <p class="auth-tagline">Recicla · Gana · Impacta</p>
+
+            <div class="mb-4 text-start">
+                <div class="auth-benefit-item stagger-item stagger-1">
+                    <div class="benefit-icon-circle"><i class="bi bi-trophy-fill text-warning"></i></div>
+                    <div class="benefit-text">
+                        <strong>Compite en rankings</strong>
+                        <small>Escala posiciones reciclando más</small>
+                    </div>
+                </div>
+                <div class="auth-benefit-item stagger-item stagger-2">
+                    <div class="benefit-icon-circle"><i class="bi bi-gift-fill" style="color:#f9a8d4;"></i></div>
+                    <div class="benefit-text">
+                        <strong>Gana recompensas</strong>
+                        <small>Canjea puntos por descuentos reales</small>
+                    </div>
+                </div>
+                <div class="auth-benefit-item stagger-item stagger-3">
+                    <div class="benefit-icon-circle"><i class="bi bi-graph-up-arrow" style="color:#86efac;"></i></div>
+                    <div class="benefit-text">
+                        <strong>Mide tu impacto</strong>
+                        <small>Visualiza el CO₂ que has ahorrado</small>
+                    </div>
+                </div>
+                <div class="auth-benefit-item stagger-item stagger-4">
+                    <div class="benefit-icon-circle"><i class="bi bi-people-fill" style="color:#7dd3fc;"></i></div>
+                    <div class="benefit-text">
+                        <strong>Comunidad activa</strong>
+                        <small>+10.000 recicladores comprometidos</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Panel derecho (formulario) ─────────────────────── -->
+    <div class="auth-right-panel">
+        <div class="auth-right-inner">
+
+            <!-- Marca para móviles -->
+            <div class="auth-mobile-brand animate__animated animate__fadeInDown">
+                <div class="m-brand-icon"><i class="bi bi-recycle"></i></div>
+                <span class="m-brand-name">GreenPoints</span>
+            </div>
+
+            <!-- Tarjeta de autenticación -->
+            <div class="auth-card animate__animated animate__fadeInUp">
+
+                <!-- Encabezado -->
+                <div class="auth-card-header">
+                    <div class="auth-header-icon">
+                        <i class="bi bi-person-plus-fill"></i>
+                    </div>
+                    <h2>Únete a GreenPoints</h2>
+                    <p>Comienza tu viaje hacia un planeta más verde</p>
                 </div>
 
                 <!-- Cuerpo -->
-                <div class="register-body">
+                <div class="auth-card-body">
 
-                    <!-- Alerta dinámica -->
-                    <div id="registerAlert" class="alert d-none" role="alert"></div>
+                    <!-- Contenedor para alertas dinámicas -->
+                    <div id="registerAlert" class="auth-alert d-none mb-3" role="alert"></div>
 
                     <form id="registerForm" novalidate>
                         <?php
-                        require_once __DIR__ . '/../helpers/CsrfHelper.php';
+                        require_once __DIR__ . "/../helpers/CsrfHelper.php";
                         echo CsrfHelper::getTokenField();
                         ?>
 
-                        <!-- Nombre -->
+                        <!-- Campo de nombre completo -->
                         <div class="mb-3">
-                            <label for="nombre" class="form-label fw-semibold">
-                                <i class="bi bi-person me-1"></i>Nombre completo
+                            <label for="nombre" class="auth-form-label">
+                                <i class="bi bi-person"></i>Nombre completo
                             </label>
-                            <input type="text" class="form-control form-control-lg"
+                            <input type="text"
+                                   class="form-control-glass"
                                    id="nombre" name="nombre"
-                                   placeholder="Tu nombre"
+                                   placeholder="Tu nombre completo"
                                    required minlength="3"
                                    autocomplete="name"
-                                   value="<?= htmlspecialchars($_SESSION['old_data']['nombre'] ?? '') ?>">
-                            <div class="invalid-feedback">
-                                Introduce tu nombre completo (mínimo 3 caracteres).
-                            </div>
+                                   value="<?= htmlspecialchars(
+                                       $_SESSION["old_data"]["nombre"] ?? "",
+                                   ) ?>">
+                            <div class="invalid-feedback">Introduce tu nombre completo (mínimo 3 caracteres).</div>
                         </div>
 
-                        <!-- Email -->
+                        <!-- Campo de correo electrónico -->
                         <div class="mb-3">
-                            <label for="email" class="form-label fw-semibold">
-                                <i class="bi bi-envelope me-1"></i>Correo electrónico
+                            <label for="email" class="auth-form-label">
+                                <i class="bi bi-envelope"></i>Correo electrónico
                             </label>
-                            <input type="email" class="form-control form-control-lg"
+                            <input type="email"
+                                   class="form-control-glass"
                                    id="email" name="email"
                                    placeholder="tu@email.com"
                                    required autocomplete="email"
-                                   value="<?= htmlspecialchars($_SESSION['old_data']['email'] ?? '') ?>">
-                            <div class="invalid-feedback">
-                                Introduce un correo electrónico válido.
-                            </div>
+                                   value="<?= htmlspecialchars(
+                                       $_SESSION["old_data"]["email"] ?? "",
+                                   ) ?>">
+                            <div class="invalid-feedback">Introduce un correo electrónico válido.</div>
                         </div>
 
-                        <!-- Contraseña -->
+                        <!-- Campo de contraseña con visibilidad alternable -->
                         <div class="mb-3">
-                            <label for="password" class="form-label fw-semibold">
-                                <i class="bi bi-lock me-1"></i>Contraseña
+                            <label for="password" class="auth-form-label">
+                                <i class="bi bi-lock"></i>Contraseña
                             </label>
-                            <div class="input-group">
-                                <input type="password" class="form-control form-control-lg"
+                            <div class="input-group" style="gap:0;">
+                                <input type="password"
+                                       class="form-control-glass"
                                        id="password" name="password"
                                        placeholder="••••••••"
                                        required minlength="6"
                                        autocomplete="new-password">
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword" tabindex="-1" title="Mostrar/ocultar contraseña">
+                                <button class="btn-eye" type="button" id="togglePassword" tabindex="-1">
                                     <i class="bi bi-eye" id="toggleIcon"></i>
                                 </button>
                             </div>
+                            <!-- Barra indicadora de fortaleza -->
                             <div class="strength-bar mt-2" id="strengthBar"></div>
                             <div class="d-flex justify-content-between mt-1">
-                                <small class="text-muted">Mínimo 6 caracteres</small>
-                                <small id="strengthLabel" class="text-muted"></small>
+                                <small class="text-muted" style="font-size:.74rem;">Mínimo 6 caracteres</small>
+                                <small id="strengthLabel" class="text-muted" style="font-size:.74rem;"></small>
                             </div>
-                            <div class="invalid-feedback">
-                                La contraseña debe tener al menos 6 caracteres.
-                            </div>
+                            <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
                         </div>
 
-                        <!-- Confirmar contraseña -->
-                        <div class="mb-4">
-                            <label for="password_confirm" class="form-label fw-semibold">
-                                <i class="bi bi-lock-fill me-1"></i>Confirmar contraseña
+                        <!-- Confirmación de contraseña -->
+                        <div class="mb-3">
+                            <label for="password_confirm" class="auth-form-label">
+                                <i class="bi bi-lock-fill"></i>Confirmar contraseña
                             </label>
-                            <input type="password" class="form-control form-control-lg"
+                            <input type="password"
+                                   class="form-control-glass"
                                    id="password_confirm" name="password_confirm"
                                    placeholder="••••••••"
                                    required autocomplete="new-password">
-                            <div class="invalid-feedback">
-                                Las contraseñas no coinciden.
-                            </div>
+                            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
                         </div>
 
-                        <!-- Términos -->
-                        <div class="mb-4 form-check">
-                            <input type="checkbox" class="form-check-input" id="terms" required>
-                            <label class="form-check-label small" for="terms">
-                                Acepto los <a href="#" class="text-success text-decoration-none">términos y condiciones</a>
-                                y la <a href="#" class="text-success text-decoration-none">política de privacidad</a>
+                        <!-- Aceptación de términos y condiciones -->
+                        <div class="mb-4 d-flex align-items-start gap-2">
+                            <input type="checkbox" class="form-check-input mt-1 flex-shrink-0" id="terms" required
+                                   style="border-color:#059669; accent-color:#059669;">
+                            <label class="form-check-label small text-secondary" for="terms" style="font-size:.82rem;">
+                                Acepto los <a href="#" class="text-success fw-semibold text-decoration-none">términos y condiciones</a>
+                                y la <a href="#" class="text-success fw-semibold text-decoration-none">política de privacidad</a>
                             </label>
-                            <div class="invalid-feedback">
-                                Debes aceptar los términos y condiciones.
-                            </div>
                         </div>
 
-                        <!-- Submit -->
-                        <button type="submit" class="btn btn-register w-100 btn-lg mb-3" id="submitBtn">
+                        <!-- Botón de envío del formulario -->
+                        <button type="submit" class="btn-auth mb-3" id="submitBtn">
                             <i class="bi bi-person-plus me-2"></i>Crear Cuenta
                         </button>
 
                         <div class="text-center">
-                            <p class="text-muted mb-1 small">¿Ya tienes cuenta?</p>
-                            <a href="index.php?action=login" class="fw-semibold text-success text-decoration-none">
-                                Inicia sesión aquí
+                            <p class="text-muted mb-1" style="font-size:.85rem;">¿Ya tienes cuenta?</p>
+                            <a href="index.php?action=login" class="fw-bold text-success text-decoration-none">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Inicia sesión aquí
                             </a>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-3" style="border-color:#d1fae5;">
 
                         <div class="text-center">
-                            <a href="index.php?action=home" class="text-muted text-decoration-none small">
+                            <a href="index.php?action=home" class="text-muted text-decoration-none" style="font-size:.82rem;">
                                 <i class="bi bi-arrow-left me-1"></i>Volver al inicio
                             </a>
                         </div>
-                    </form>
-                </div>
-            </div>
 
-            <!-- Beneficios -->
-            <div class="row mt-4 text-white text-center">
-                <div class="col-4">
-                    <i class="bi bi-trophy benefit-icon d-block mb-1"></i>
-                    <p class="small mb-0">Compite en rankings</p>
-                </div>
-                <div class="col-4">
-                    <i class="bi bi-gift benefit-icon d-block mb-1"></i>
-                    <p class="small mb-0">Gana recompensas</p>
-                </div>
-                <div class="col-4">
-                    <i class="bi bi-graph-up benefit-icon d-block mb-1"></i>
-                    <p class="small mb-0">Mide tu impacto</p>
+                    </form>
                 </div>
             </div>
 
         </div>
     </div>
+
 </div>
 
 <script>
@@ -260,14 +549,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleBtn   = document.getElementById('togglePassword');
     const toggleIcon  = document.getElementById('toggleIcon');
 
-    // ── Mostrar / ocultar contraseña ─────────────────────────────
+    // Alternar visibilidad de la contraseña
     toggleBtn.addEventListener('click', function () {
         const visible = passInput.type === 'text';
         passInput.type = visible ? 'password' : 'text';
         toggleIcon.className = visible ? 'bi bi-eye' : 'bi bi-eye-slash';
     });
 
-    // ── Indicador de fuerza de contraseña ────────────────────────
+    // Indicador visual de fortaleza de la contraseña
+    // Sistema de puntuación: evalúa longitud, mayúsculas, dígitos y símbolos
     passInput.addEventListener('input', function () {
         const val = this.value;
         let score = 0;
@@ -282,35 +572,35 @@ document.addEventListener('DOMContentLoaded', function () {
             strengthLbl.textContent = '';
         } else if (score <= 2) {
             strengthBar.classList.add('strength-weak');
-            strengthLbl.textContent = 'Débil';
-            strengthLbl.className = 'text-danger small';
+            strengthLbl.textContent = 'Debil';
+            strengthLbl.className = 'text-danger';
+            strengthLbl.style.fontSize = '.74rem';
         } else if (score <= 4) {
             strengthBar.classList.add('strength-medium');
             strengthLbl.textContent = 'Media';
-            strengthLbl.className = 'text-warning small';
+            strengthLbl.className = 'text-warning';
+            strengthLbl.style.fontSize = '.74rem';
         } else {
             strengthBar.classList.add('strength-strong');
             strengthLbl.textContent = 'Fuerte';
-            strengthLbl.className = 'text-success small';
+            strengthLbl.className = 'text-success';
+            strengthLbl.style.fontSize = '.74rem';
         }
     });
 
-    // ── Validación de campo individual ───────────────────────────
+    // Validación individual de cada campo del formulario
     function validateField(input) {
         let valid = true;
-
         if (input.id === 'password_confirm') {
             valid = input.value !== '' && input.value === passInput.value;
         } else {
             valid = input.checkValidity();
         }
-
         input.classList.toggle('is-invalid', !valid);
         input.classList.toggle('is-valid',    valid);
         return valid;
     }
 
-    // Validación en tiempo real al perder foco o mientras se escribe si ya hay error
     form.querySelectorAll('input[required]').forEach(input => {
         input.addEventListener('blur',  () => validateField(input));
         input.addEventListener('input', () => {
@@ -318,23 +608,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Revalidar confirmación al cambiar la contraseña principal
     passInput.addEventListener('input', () => {
         if (confirmPass.classList.contains('is-invalid') || confirmPass.classList.contains('is-valid')) {
             validateField(confirmPass);
         }
     });
 
-    // ── Mostrar alerta dinámica ───────────────────────────────────
+    // Mostrar alerta de retroalimentación al usuario
     function showAlert(msg, type = 'danger') {
-        alertBox.className = `alert alert-${type} animate__animated animate__fadeIn`;
+        alertBox.className = `alert alert-${type} auth-alert animate__animated animate__fadeIn`;
         alertBox.innerHTML = `<i class="bi bi-${type === 'danger' ? 'exclamation-triangle' : 'check-circle'}-fill me-2"></i>${msg}`;
     }
 
-    // ── Envío del formulario vía fetch ────────────────────────────
+    // Envío asíncrono del formulario mediante fetch API
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
-
         let valid = true;
         form.querySelectorAll('input[required]').forEach(input => {
             if (!validateField(input)) valid = false;
@@ -344,6 +632,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creando cuenta…';
 
+        // Construcción del payload con token CSRF para protección contra falsificación
         const formData = {
             csrf_token: form.querySelector('[name="csrf_token"]').value,
             nombre:     form.querySelector('#nombre').value.trim(),
@@ -358,9 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 body:    JSON.stringify(formData),
             });
             const json = await res.json();
-
             if (json.success) {
-                showAlert('¡Cuenta creada! Redirigiendo al login…', 'success');
+                showAlert('\u00a1Cuenta creada! Redirigiendo al login\u2026', 'success');
                 setTimeout(() => { window.location.href = 'index.php?action=login'; }, 1200);
             } else {
                 showAlert(json.message || 'Error al crear la cuenta.');
@@ -376,4 +664,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<?php include __DIR__ . '/partials/footer.php'; ?>
+<?php include __DIR__ . "/partials/footer.php"; ?>

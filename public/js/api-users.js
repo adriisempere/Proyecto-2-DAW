@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Función auxiliar para mostrar alertas de Bootstrap dinámicamente
+    // Inserta un alert dismissible al inicio del formulario y lo auto-cierra
+    // después de 5 segundos usando la API de Bootstrap.
     function showAlert(container, message, type = 'danger') {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = `
@@ -30,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const json = await resp.json();
             if (json.success) {
+                // Redirigir al usuario tras login exitoso, usando la URL
+                // proporcionada por el servidor o la página principal por defecto
                 window.location = json.redirect || 'index.php?action=home';
             } else {
                 showAlert(loginForm, json.message || 'Error al iniciar sesión');
@@ -54,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const json = await resp.json();
             if (json.success) {
+                // Mostrar mensaje de éxito y redirigir al login tras 1.2s
+                // para que el usuario pueda leer la confirmación
                 showAlert(registerForm, json.message || 'Registrado correctamente', 'success');
                 setTimeout(() => window.location = 'index.php?action=login', 1200);
             } else {

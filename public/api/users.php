@@ -15,184 +15,311 @@
  * ---------------------------------------------------------------
  */
 
-header('Content-Type: application/json; charset=utf-8');
+header("Content-Type: application/json; charset=utf-8");
 
-// ── Sesión segura ────────────────────────────────────────────────
+// ── Configuración de sesión segura ───────────────────────────────
+// HttpOnly + Secure + SameSite=Lax protegen contra XSS, secuestro
+// de sesión y CSRF. La cookie solo viaja por HTTPS en producción.
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
-        'lifetime' => 0,
-        'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),   // solo HTTPS en producción
-        'httponly' => true,                        // no accesible desde JS
-        'samesite' => 'Lax',
+        "lifetime" => 0,
+        "path" => "/",
+        "secure" => isset($_SERVER["HTTPS"]), // solo HTTPS en producción
+        "httponly" => true, // no accesible desde JS
+        "samesite" => "Lax",
     ]);
     session_start();
 }
 
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../app/helpers/CsrfHelper.php';
+require_once __DIR__ . "/../../config/database.php";
+require_once __DIR__ . "/../../app/helpers/CsrfHelper.php";
 
-$db     = getConnection();
-$action = $_GET['action'] ?? null;
-$raw    = file_get_contents('php://input');
-$data   = json_decode($raw, true) ?: $_POST;
+$db = getConnection();
+$action = $_GET["action"] ?? null;
+$raw = file_get_contents("php://input");
+$data = json_decode($raw, true) ?: $_POST;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
 /** Envía respuesta JSON y termina la ejecución. */
-function resp(bool $ok, string $msg = '', array $extra = []): void {
-    echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
-    exit;
+// Todas las respuestas siguen el mismo esquema: { success, message, ...extras }
+function resp(bool $ok, string $msg = "", array $extra = []): void
+{
+    echo json_encode(
+        array_merge(["success" => $ok, "message" => $msg], $extra),
+    );
+    exit();
 }
 
 /** Valida el token CSRF recibido en la petición. */
-function verifyCsrf(array $data): bool {
-    $token = $data['csrf_token'] ?? $data['X-CSRF-Token'] ?? null;
-    if (empty($token)) return false;
+// El token CSRF evita que un atacante pueda ejecutar acciones no autorizadas
+// aprovechando la sesión activa del usuario (falsificación de petición entre sitios).
+function verifyCsrf(array $data): bool
+{
+    $token = $data["csrf_token"] ?? ($data["X-CSRF-Token"] ?? null);
+    if (empty($token)) {
+        return false;
+    }
     return CsrfHelper::verifyToken($token);
 }
 
 /** Devuelve true si hay un usuario con sesión activa. */
-function isAuthenticated(): bool {
-    return !empty($_SESSION['usuario_id']);
+function isAuthenticated(): bool
+{
+    return !empty($_SESSION["usuario_id"]);
 }
 
 /** Devuelve true si el usuario autenticado tiene rol admin. */
-function isAdmin(): bool {
-    return ($_SESSION['usuario_rol'] ?? '') === 'admin';
+function isAdmin(): bool
+{
+    return ($_SESSION["usuario_rol"] ?? "") === "admin";
 }
 
 // ── Router ───────────────────────────────────────────────────────
 try {
     switch ($action) {
-
         // ── Registro ─────────────────────────────────────────────
-        case 'register':
+        case "register":
             if (!verifyCsrf($data)) {
-                resp(false, 'Token CSRF inválido. Recarga la página e inténtalo de nuevo.');
+                resp(
+                    false,
+                    "Token CSRF inválido. Recarga la página e inténtalo de nuevo.",
+                );
             }
 
-            $nombre   = trim($data['nombre'] ?? '');
-            $email    = trim($data['email'] ?? '');
-            $password = $data['password'] ?? '';
+            $nombre = trim($data["nombre"] ?? "");
+            $email = trim($data["email"] ?? "");
+            $password = $data["password"] ?? "";
 
             // Validaciones básicas
-            if ($nombre === '' || $email === '' || $password === '') {
-                resp(false, 'Todos los campos son obligatorios.');
+            if ($nombre === "" || $email === "" || $password === "") {
+                resp(false, "Todos los campos son obligatorios.");
             }
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                resp(false, 'El formato del email no es válido.');
+                resp(false, "El formato del email no es válido.");
             }
             if (mb_strlen($password) < 6) {
-                resp(false, 'La contraseña debe tener al menos 6 caracteres.');
+                resp(false, "La contraseña debe tener al menos 6 caracteres.");
             }
 
             // Comprobar duplicado
-            $stmt = $db->prepare('SELECT id FROM usuario WHERE email = ?');
-            $stmt->bind_param('s', $email);
+            $stmt = $db->prepare("SELECT id FROM usuario WHERE email = ?");
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             if ($stmt->get_result()->num_rows > 0) {
-                resp(false, 'Este correo ya está registrado.');
+                resp(false, "Este correo ya está registrado.");
             }
 
-            // Insertar
+            // Insertar nuevo usuario con hash bcrypt (incluye salt automático
+            // y es resistente a ataques de fuerza bruta por su costo computacional)
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $db->prepare('INSERT INTO usuario (nombre, email, password) VALUES (?, ?, ?)');
-            $stmt->bind_param('sss', $nombre, $email, $hash);
+            $stmt = $db->prepare(
+                "INSERT INTO usuario (nombre, email, password) VALUES (?, ?, ?)",
+            );
+            $stmt->bind_param("sss", $nombre, $email, $hash);
             if ($stmt->execute()) {
-                resp(true, '¡Cuenta creada correctamente! Ya puedes iniciar sesión.');
+                resp(
+                    true,
+                    "¡Cuenta creada correctamente! Ya puedes iniciar sesión.",
+                );
             }
-            resp(false, 'No se pudo registrar el usuario. Inténtalo más tarde.');
+            resp(
+                false,
+                "No se pudo registrar el usuario. Inténtalo más tarde.",
+            );
 
         // ── Login ────────────────────────────────────────────────
-        case 'login':
+        case "login":
             if (!verifyCsrf($data)) {
-                resp(false, 'Token CSRF inválido. Recarga la página e inténtalo de nuevo.');
+                resp(
+                    false,
+                    "Token CSRF inválido. Recarga la página e inténtalo de nuevo.",
+                );
             }
 
-            $email    = trim($data['email'] ?? '');
-            $password = $data['password'] ?? '';
+            $email = trim($data["email"] ?? "");
+            $password = $data["password"] ?? "";
 
-            if ($email === '' || $password === '') {
-                resp(false, 'Email y contraseña son obligatorios.');
+            if ($email === "" || $password === "") {
+                resp(false, "Email y contraseña son obligatorios.");
             }
 
             $stmt = $db->prepare(
                 'SELECT id, nombre, email, password, rol, puntos_totales
-                   FROM usuario WHERE email = ? LIMIT 1'
+                   FROM usuario WHERE email = ? LIMIT 1',
             );
-            $stmt->bind_param('s', $email);
+            $stmt->bind_param("s", $email);
             $stmt->execute();
             $usuario = $stmt->get_result()->fetch_assoc();
 
-            // Mismo mensaje para usuario inexistente o contraseña incorrecta
-            // (evita enumerar emails)
-            if (!$usuario || !password_verify($password, $usuario['password'])) {
-                resp(false, 'Credenciales incorrectas.');
+            // Mensaje idéntico para ambos casos (usuario no existe o contraseña incorrecta)
+            // Esto evita que un atacante pueda enumerar qué emails están registrados
+            if (
+                !$usuario ||
+                !password_verify($password, $usuario["password"])
+            ) {
+                resp(false, "Credenciales incorrectas.");
             }
 
+            // Regeneramos el ID de sesión para prevenir fijación de sesión (session fixation)
             session_regenerate_id(true);
-            $_SESSION['usuario_id']     = $usuario['id'];
-            $_SESSION['usuario_nombre'] = $usuario['nombre'];
-            $_SESSION['usuario_email']  = $usuario['email'];
-            $_SESSION['usuario_rol']    = $usuario['rol'];
-            $_SESSION['usuario_puntos'] = $usuario['puntos_totales'];
+            $_SESSION["usuario_id"] = $usuario["id"];
+            $_SESSION["usuario_nombre"] = $usuario["nombre"];
+            $_SESSION["usuario_email"] = $usuario["email"];
+            $_SESSION["usuario_rol"] = $usuario["rol"];
+            $_SESSION["usuario_puntos"] = $usuario["puntos_totales"];
 
-            resp(true, 'Inicio de sesión correcto.', [
-                'redirect' => 'index.php?action=home',
-                'rol'      => $usuario['rol'],
+            resp(true, "Inicio de sesión correcto.", [
+                "redirect" => "index.php?action=home",
+                "rol" => $usuario["rol"],
             ]);
 
         // ── Logout ───────────────────────────────────────────────
-        case 'logout':
+        case "logout":
             // Limpiar datos de sesión y destruir
             $_SESSION = [];
-            if (ini_get('session.use_cookies')) {
+            if (ini_get("session.use_cookies")) {
                 $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params['path'], $params['domain'],
-                    $params['secure'], $params['httponly']
+                setcookie(
+                    session_name(),
+                    "",
+                    time() - 42000,
+                    $params["path"],
+                    $params["domain"],
+                    $params["secure"],
+                    $params["httponly"],
                 );
             }
             session_destroy();
-            resp(true, 'Sesión cerrada.', ['redirect' => 'index.php?action=home']);
+            resp(true, "Sesión cerrada.", [
+                "redirect" => "index.php?action=home",
+            ]);
 
         // ── Datos del usuario autenticado ────────────────────────
-        case 'me':
+        case "me":
             if (!isAuthenticated()) {
-                resp(false, 'No autenticado.', ['redirect' => 'index.php?action=login']);
+                resp(false, "No autenticado.", [
+                    "redirect" => "index.php?action=login",
+                ]);
             }
-            resp(true, 'Datos del usuario.', [
-                'data' => [
-                    'id'             => $_SESSION['usuario_id'],
-                    'nombre'         => $_SESSION['usuario_nombre'],
-                    'email'          => $_SESSION['usuario_email'],
-                    'rol'            => $_SESSION['usuario_rol'],
-                    'puntos_totales' => $_SESSION['usuario_puntos'],
+            resp(true, "Datos del usuario.", [
+                "data" => [
+                    "id" => $_SESSION["usuario_id"],
+                    "nombre" => $_SESSION["usuario_nombre"],
+                    "email" => $_SESSION["usuario_email"],
+                    "rol" => $_SESSION["usuario_rol"],
+                    "puntos_totales" => $_SESSION["usuario_puntos"],
                 ],
             ]);
 
         // ── Listado de usuarios (solo admin) ─────────────────────
-        case 'list':
+        case "list":
             if (!isAuthenticated() || !isAdmin()) {
-                resp(false, 'Acceso no autorizado.');
+                resp(false, "Acceso no autorizado.");
             }
             $out = [];
             $q = $db->query(
                 'SELECT id, nombre, email, rol, puntos_totales, creado_at
-                   FROM usuario ORDER BY puntos_totales DESC'
+                   FROM usuario ORDER BY puntos_totales DESC',
             );
             while ($row = $q->fetch_assoc()) {
                 $out[] = $row;
             }
-            resp(true, 'Lista obtenida.', ['data' => $out]);
+            resp(true, "Lista obtenida.", ["data" => $out]);
+
+        // ── Actualizar perfil del usuario autenticado ─────────────
+        case "update":
+            if (!isAuthenticated()) {
+                resp(false, "No autenticado.", [
+                    "redirect" => "index.php?action=login",
+                ]);
+            }
+            if (!verifyCsrf($data)) {
+                resp(
+                    false,
+                    "Token CSRF inválido. Recarga la página e inténtalo de nuevo.",
+                );
+            }
+
+            $uid = (int) $_SESSION["usuario_id"];
+            $nombre = trim($data["nombre"] ?? "");
+            $email = trim($data["email"] ?? "");
+
+            if ($nombre === "" || $email === "") {
+                resp(false, "El nombre y el email son obligatorios.");
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                resp(false, "El formato del email no es válido.");
+            }
+            if (mb_strlen($nombre) < 3) {
+                resp(false, "El nombre debe tener al menos 3 caracteres.");
+            }
+
+            // Comprobar que el email no esté en uso por otro usuario
+            $stmt = $db->prepare(
+                "SELECT id FROM usuario WHERE email = ? AND id != ?",
+            );
+            $stmt->bind_param("si", $email, $uid);
+            $stmt->execute();
+            if ($stmt->get_result()->num_rows > 0) {
+                resp(false, "Ese email ya está en uso por otra cuenta.");
+            }
+
+            // ¿Se quiere cambiar la contraseña?
+            $nuevaPass = $data["nueva_password"] ?? "";
+            $passActual = $data["password_actual"] ?? "";
+
+            if ($nuevaPass !== "") {
+                // Verificar contraseña actual
+                $stmt2 = $db->prepare(
+                    "SELECT password FROM usuario WHERE id = ?",
+                );
+                $stmt2->bind_param("i", $uid);
+                $stmt2->execute();
+                $row = $stmt2->get_result()->fetch_assoc();
+                if (!$row || !password_verify($passActual, $row["password"])) {
+                    resp(false, "La contraseña actual no es correcta.");
+                }
+                if (mb_strlen($nuevaPass) < 6) {
+                    resp(
+                        false,
+                        "La nueva contraseña debe tener al menos 6 caracteres.",
+                    );
+                }
+                $hash = password_hash($nuevaPass, PASSWORD_DEFAULT);
+                $stmt3 = $db->prepare(
+                    "UPDATE usuario SET nombre = ?, email = ?, password = ? WHERE id = ?",
+                );
+                $stmt3->bind_param("sssi", $nombre, $email, $hash, $uid);
+            } else {
+                $stmt3 = $db->prepare(
+                    "UPDATE usuario SET nombre = ?, email = ? WHERE id = ?",
+                );
+                $stmt3->bind_param("ssi", $nombre, $email, $uid);
+            }
+
+            if (!$stmt3->execute()) {
+                resp(
+                    false,
+                    "No se pudo actualizar el perfil. Inténtalo más tarde.",
+                );
+            }
+
+            // Actualizar sesión
+            $_SESSION["usuario_nombre"] = $nombre;
+            $_SESSION["usuario_email"] = $email;
+
+            resp(true, "¡Perfil actualizado correctamente!", [
+                "nombre" => $nombre,
+                "email" => $email,
+            ]);
 
         default:
-            resp(false, 'Acción no encontrada.');
+            resp(false, "Acción no encontrada.");
     }
-
 } catch (Exception $e) {
-    // No exponemos detalles del error en producción
-    error_log('[users.php] ' . $e->getMessage());
-    resp(false, 'Error interno del servidor. Inténtalo más tarde.');
+    // No mostramos detalles del error al cliente para evitar filtrar
+    // información sensible (rutas del servidor, estructura de la BD, etc.)
+    error_log("[users.php] " . $e->getMessage());
+    resp(false, "Error interno del servidor. Inténtalo más tarde.");
 }

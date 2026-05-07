@@ -17,44 +17,48 @@
  * ---------------------------------------------------------------
  */
 
-header('Content-Type: application/json; charset=utf-8');
+header("Content-Type: application/json; charset=utf-8");
 
 // ── Sesión segura (mismo patrón que el resto de APIs) ────────────
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
-        'lifetime' => 0,
-        'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
-        'httponly' => true,
-        'samesite' => 'Lax',
+        "lifetime" => 0,
+        "path" => "/",
+        "secure" => isset($_SERVER["HTTPS"]),
+        "httponly" => true,
+        "samesite" => "Lax",
     ]);
     session_start();
 }
 
-require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . "/../../config/database.php";
 
-$db     = getConnection();
-$action = $_GET['action'] ?? null;
+$db = getConnection();
+$action = $_GET["action"] ?? null;
 
 // ── Factor de conversión kg reciclados → CO₂ ahorrado (kg) ──────
-// Estimación media ponderada entre materiales comunes.
+// Estimación media ponderada entre materiales comunes (plástico, papel, vidrio, metal, etc.).
+// 1 kg de residuo reciclado ahorra ~1.5 kg de emisiones de CO₂ equivalente.
 const KG_CO2_POR_KG_RECICLADO = 1.5;
 
 // ── Helpers ──────────────────────────────────────────────────────
 
 /** Envía respuesta JSON y termina la ejecución. */
-function resp(bool $ok, string $msg = '', array $extra = []): void {
-    echo json_encode(array_merge(['success' => $ok, 'message' => $msg], $extra));
-    exit;
+function resp(bool $ok, string $msg = "", array $extra = []): void
+{
+    echo json_encode(
+        array_merge(["success" => $ok, "message" => $msg], $extra),
+    );
+    exit();
 }
 
 // ── Router ───────────────────────────────────────────────────────
 try {
     switch ($action) {
-
-        // ── Top 100 usuarios ─────────────────────────────────────
-        case 'list':
-            $res = $db->query(
+            // ── Top 100 usuarios ─────────────────────────────────────
+            // LEFT JOIN para incluir usuarios sin reciclajes (total_reciclajes = 0)
+            case "list":
+                $res = $db->query(
                 "SELECT
                     u.id,
                     u.nombre,
@@ -67,59 +71,68 @@ try {
                  WHERE u.rol = 'usuario'
                  GROUP BY u.id
                  ORDER BY u.puntos_totales DESC
-                 LIMIT 100"
+                 LIMIT 100",
             );
 
             $out = [];
             $pos = 1;
             while ($row = $res->fetch_assoc()) {
-                $row['posicion'] = $pos++;
+                $row["posicion"] = $pos++;
                 $out[] = $row;
             }
 
             // Si no hay usuarios todavía, devolvemos array vacío sin error
-            resp(true, 'Ranking obtenido.', [
-                'data'  => $out,
-                'total' => count($out),
+            resp(true, "Ranking obtenido.", [
+                "data" => $out,
+                "total" => count($out),
             ]);
 
         // ── Estadísticas globales de la plataforma ───────────────
-        case 'stats':
-            $row = $db->query(
-                "SELECT
+        case "stats":
+            $row = $db
+                ->query(
+                    "SELECT
                     COUNT(DISTINCT u.id)       AS usuarios_activos,
                     COUNT(r.id)                AS total_reciclajes,
                     IFNULL(SUM(r.cantidad), 0) AS kg_reciclados,
                     IFNULL(SUM(r.puntos_ganados), 0) AS puntos_repartidos
                  FROM usuario u
                  LEFT JOIN registro_reciclaje r ON u.id = r.usuario_id
-                 WHERE u.rol = 'usuario'"
-            )->fetch_assoc();
+                 WHERE u.rol = 'usuario'",
+                )
+                ->fetch_assoc();
 
-            $row['co2_ahorrado_kg'] = round((float) $row['kg_reciclados'] * KG_CO2_POR_KG_RECICLADO, 2);
+            $row["co2_ahorrado_kg"] = round(
+                (float) $row["kg_reciclados"] * KG_CO2_POR_KG_RECICLADO,
+                2,
+            );
 
-            resp(true, 'Estadísticas obtenidas.', ['data' => $row]);
+            resp(true, "Estadísticas obtenidas.", ["data" => $row]);
 
         // ── Posición del usuario autenticado ─────────────────────
-        case 'me':
-            if (empty($_SESSION['usuario_id'])) {
-                resp(false, 'No autenticado.', ['redirect' => 'index.php?action=login']);
+        case "me":
+            if (empty($_SESSION["usuario_id"])) {
+                resp(false, "No autenticado.", [
+                    "redirect" => "index.php?action=login",
+                ]);
             }
 
-            $uid = (int) $_SESSION['usuario_id'];
+            $uid = (int) $_SESSION["usuario_id"];
 
-            // Calcular posición contando cuántos usuarios tienen más puntos
+            // Posición = cantidad de usuarios con más puntos + 1
+            // Si hay 0 usuarios por encima → el usuario está en 1.ª posición
             $stmt = $db->prepare(
                 "SELECT COUNT(*) AS posicion
                    FROM usuario
                   WHERE rol = 'usuario'
                     AND puntos_totales > (
                         SELECT puntos_totales FROM usuario WHERE id = ?
-                    )"
+                    )",
             );
-            $stmt->bind_param('i', $uid);
+            $stmt->bind_param("i", $uid);
             $stmt->execute();
-            $posicion = (int) $stmt->get_result()->fetch_assoc()['posicion'] + 1;
+            $posicion =
+                (int) $stmt->get_result()->fetch_assoc()["posicion"] + 1;
 
             // Estadísticas personales
             $stmt2 = $db->prepare(
@@ -130,26 +143,89 @@ try {
                  FROM usuario u
                  LEFT JOIN registro_reciclaje r ON u.id = r.usuario_id
                  WHERE u.id = ?
-                 GROUP BY u.id"
+                 GROUP BY u.id",
             );
-            $stmt2->bind_param('i', $uid);
+            $stmt2->bind_param("i", $uid);
             $stmt2->execute();
             $stats = $stmt2->get_result()->fetch_assoc();
 
-            resp(true, 'Posición obtenida.', [
-                'data' => [
-                    'posicion'         => $posicion,
-                    'puntos_totales'   => (int)   ($stats['puntos_totales']  ?? 0),
-                    'total_reciclajes' => (int)   ($stats['total_reciclajes'] ?? 0),
-                    'kg_reciclados'    => (float) ($stats['kg_reciclados']   ?? 0),
+            resp(true, "Posición obtenida.", [
+                "data" => [
+                    "posicion" => $posicion,
+                    "puntos_totales" => (int) ($stats["puntos_totales"] ?? 0),
+                    "total_reciclajes" =>
+                        (int) ($stats["total_reciclajes"] ?? 0),
+                    "kg_reciclados" => (float) ($stats["kg_reciclados"] ?? 0),
+                ],
+            ]);
+
+        // ── Estadísticas extendidas (impacto real + desglose) ──────
+        // Agrega datos de múltiples tablas (usuario, registro_reciclaje, canje, centro_reciclaje)
+        case "stats_extended":
+            // Totales globales de la plataforma
+            $totales = $db
+                ->query(
+                    "SELECT
+                    COUNT(DISTINCT u.id)            AS total_usuarios,
+                    COUNT(r.id)                     AS total_reciclajes,
+                    IFNULL(SUM(r.cantidad), 0)      AS kg_reciclados,
+                    IFNULL(SUM(r.puntos_ganados),0) AS puntos_repartidos
+                 FROM usuario u
+                 LEFT JOIN registro_reciclaje r ON u.id = r.usuario_id
+                 WHERE u.rol = 'usuario'",
+                )
+                ->fetch_assoc();
+
+            // Desglose por tipo de material
+            $matRes = $db->query(
+                "SELECT
+                    tipo_material,
+                    COUNT(*)               AS total_registros,
+                    IFNULL(SUM(cantidad),0) AS kg_total,
+                    IFNULL(SUM(puntos_ganados),0) AS puntos_total
+                 FROM registro_reciclaje
+                 GROUP BY tipo_material
+                 ORDER BY kg_total DESC",
+            );
+            $materiales = [];
+            while ($m = $matRes->fetch_assoc()) {
+                $materiales[] = $m;
+            }
+
+            // Total canjes de recompensas
+            $canjes = $db
+                ->query("SELECT COUNT(*) AS total FROM canje")
+                ->fetch_assoc();
+
+            // Total centros activos
+            $centros = $db
+                ->query("SELECT COUNT(*) AS total FROM centro_reciclaje")
+                ->fetch_assoc();
+
+            $kg = (float) ($totales["kg_reciclados"] ?? 0);
+
+            resp(true, "Estadísticas extendidas obtenidas.", [
+                "data" => [
+                    "total_usuarios" => (int) ($totales["total_usuarios"] ?? 0),
+                    "total_reciclajes" =>
+                        (int) ($totales["total_reciclajes"] ?? 0),
+                    "kg_reciclados" => $kg,
+                    "co2_ahorrado_kg" => round(
+                        $kg * KG_CO2_POR_KG_RECICLADO,
+                        2,
+                    ),
+                    "puntos_repartidos" =>
+                        (int) ($totales["puntos_repartidos"] ?? 0),
+                    "total_canjes" => (int) ($canjes["total"] ?? 0),
+                    "total_centros" => (int) ($centros["total"] ?? 0),
+                    "por_material" => $materiales,
                 ],
             ]);
 
         default:
-            resp(false, 'Acción no encontrada.');
+            resp(false, "Acción no encontrada.");
     }
-
 } catch (Exception $e) {
-    error_log('[ranking.php] ' . $e->getMessage());
-    resp(false, 'Error interno del servidor. Inténtalo más tarde.');
+    error_log("[ranking.php] " . $e->getMessage());
+    resp(false, "Error interno del servidor. Inténtalo más tarde.");
 }

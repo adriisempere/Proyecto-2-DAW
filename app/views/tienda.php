@@ -1,229 +1,352 @@
 <?php
 /**
- * Vista de Tienda de Recompensas — GreenPoints
+ * Vista de la Tienda de Recompensas — GreenPoints
  * ---------------------------------------------------------------
  * Permite al usuario canjear sus puntos por tarjetas regalo.
  * Requiere sesión activa; redirige al login si no la hay.
  *
  * Flujo:
  *   1. Carga el catálogo desde api/recompensas.php?action=list
- *   2. El usuario añade tarjetas al carrito (estado en memoria)
- *   3. El carrito lateral muestra ítems, total en puntos y saldo
+ *   2. El usuario añade tarjetas al carrito (estado en memoria JS)
+ *   3. El carrito lateral muestra los ítems, total en puntos y saldo
  *   4. Al hacer checkout se muestra un modal de confirmación
- *   5. Si se confirma, llama a api/recompensas.php?action=checkout
- *   6. Modal de éxito revela los códigos generados para copiar
+ *   5. Si se confirma, envía la petición a api/recompensas.php?action=checkout
+ *   6. Modal de éxito revela los códigos generados para copiar al portapapeles
  * ---------------------------------------------------------------
  */
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: index.php?action=login');
-    exit;
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: index.php?action=login");
+    exit();
 }
 
-$pageTitle = 'Tienda de Recompensas | GreenPoints';
-include __DIR__ . '/partials/header.php';
+$pageTitle = "Tienda de Recompensas | GreenPoints";
+include __DIR__ . "/partials/header.php";
 ?>
 
 <style>
-    /* ── Carrito lateral ─────────────────────────────────────── */
-    .cart-drawer {
-        position: fixed;
-        top: 0; right: 0;
-        width: 360px;
-        max-width: 95vw;
-        height: 100vh;
-        background: white;
-        box-shadow: -4px 0 30px rgba(0,0,0,0.12);
-        z-index: 1050;
-        transform: translateX(100%);
-        transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-        display: flex;
-        flex-direction: column;
-    }
-    .cart-drawer.open { transform: translateX(0); }
+/* ── Carrito lateral con efecto glass ──────────────────────────── */
+.cart-drawer {
+    position: fixed;
+    top: 0; right: 0;
+    width: 380px;
+    max-width: 96vw;
+    height: 100vh;
+    /* Fondo oscuro opaco SIN backdrop-filter para evitar problemas de stacking context */
+    background: #0d2e16;
+    border-left: 1px solid rgba(255,255,255,.1);
+    box-shadow: -8px 0 48px rgba(0,0,0,.4);
+    /* z-index: 1045 → por debajo del modal de Bootstrap (1055) para que los modales sean visibles */
+    z-index: 1045;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+.cart-drawer.open { transform: translateX(0); }
 
-    .cart-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.35);
-        z-index: 1049;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-    }
-    .cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.55);
+    /* z-index: 1040 → por debajo del modal de Bootstrap (1055) para que el modal sea accesible */
+    z-index: 1040;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    /* SIN backdrop-filter: incluso con opacity:0 puede difuminar toda la pantalla en Safari/Chrome */
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
 
-    .cart-header {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #f0f0f0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
-    }
+.cart-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(22,163,74,.2), rgba(13,148,136,.2));
+}
+.cart-header h5 { color: #fff; font-weight: 700; }
 
-    .cart-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem 1.5rem;
-    }
+.cart-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,.15) transparent;
+}
+.cart-body::-webkit-scrollbar { width: 4px; }
+.cart-body::-webkit-scrollbar-track { background: transparent; }
+.cart-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
 
-    .cart-footer {
-        padding: 1.25rem 1.5rem;
-        border-top: 1px solid #f0f0f0;
-        flex-shrink: 0;
-        background: #fafafa;
-    }
+.cart-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+    flex-shrink: 0;
+    background: rgba(0,0,0,.2);
+}
 
-    .cart-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #f5f5f5;
-    }
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.cart-item:last-child { border-bottom: none; }
 
-    .cart-item:last-child { border-bottom: none; }
+.cart-item-img {
+    width: 44px; height: 44px;
+    object-fit: contain;
+    border-radius: 10px;
+    background: rgba(255,255,255,.1);
+    padding: 6px;
+    flex-shrink: 0;
+}
 
-    .cart-item-img {
-        width: 44px;
-        height: 44px;
-        object-fit: contain;
-        border-radius: 8px;
-        background: #f8f8f8;
-        padding: 6px;
-        flex-shrink: 0;
-    }
+/* Totales y saldo tras el canje */
+.cart-total-row { color: rgba(255,255,255,.7); font-size: .88rem; }
+.cart-total-row strong { color: #fff; }
 
-    /* ── Tarjetas del catálogo ───────────────────────────────── */
-    .reward-card {
-        border: 2px solid transparent;
-        border-radius: 16px;
-        transition: all 0.25s;
-        cursor: pointer;
-        height: 100%;
-    }
+/* Botón para confirmar el canje desde el carrito */
+.btn-checkout {
+    width: 100%;
+    background: linear-gradient(135deg, #22c55e, #0d9488);
+    border: none;
+    border-radius: 12px;
+    padding: 0.85rem;
+    font-weight: 700;
+    font-size: .95rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all .25s ease;
+    box-shadow: 0 6px 20px rgba(34,197,94,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+.btn-checkout:hover { box-shadow: 0 10px 28px rgba(34,197,94,.55); transform: translateY(-2px); }
+.btn-checkout:disabled { opacity: .6; transform: none; cursor: not-allowed; }
 
-    .reward-card:hover {
-        border-color: #28a745;
-        transform: translateY(-4px);
-        box-shadow: 0 10px 28px rgba(40,167,69,0.15) !important;
-    }
+.btn-clear-cart {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(239,68,68,.35);
+    border-radius: 10px;
+    padding: 0.55rem;
+    font-size: .84rem;
+    color: rgba(239,68,68,.8);
+    cursor: pointer;
+    transition: all .2s;
+    margin-top: 0.6rem;
+}
+.btn-clear-cart:hover { background: rgba(239,68,68,.15); color: #f87171; border-color: #f87171; }
 
-    .reward-card .brand-logo {
-        height: 52px;
-        object-fit: contain;
-        filter: grayscale(20%);
-        transition: filter 0.2s;
-    }
+/* Tarjetas de recompensa del catálogo */
+.reward-card {
+    border: 1.5px solid rgba(22,163,74,.15);
+    border-radius: 18px;
+    transition: all 0.25s cubic-bezier(.175,.885,.32,1.275);
+    cursor: pointer;
+    height: 100%;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+.reward-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #22c55e, #0d9488);
+    opacity: 0;
+    transition: opacity .25s;
+}
+.reward-card:hover {
+    border-color: rgba(22,163,74,.45);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(22,163,74,.18) !important;
+}
+.reward-card:hover::before { opacity: 1; }
+.reward-card.in-cart {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34,197,94,.15);
+}
+.reward-card.in-cart::before { opacity: 1; }
 
-    .reward-card:hover .brand-logo { filter: none; }
+.reward-card .brand-logo {
+    height: 52px; object-fit: contain;
+    filter: grayscale(20%);
+    transition: filter .2s;
+    display: block; margin: 0 auto;
+}
+.reward-card:hover .brand-logo { filter: none; }
 
-    .pts-badge {
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        border-radius: 20px;
-        padding: 0.3rem 0.85rem;
-        font-weight: 700;
-        font-size: .85rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
+.pts-badge {
+    background: linear-gradient(135deg, #16a34a, #0d9488);
+    color: white;
+    border-radius: 20px;
+    padding: 0.3rem 0.85rem;
+    font-weight: 700;
+    font-size: .82rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    box-shadow: 0 3px 10px rgba(22,163,74,.3);
+}
+.pts-badge.insufficient {
+    background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+    color: #6b7280;
+    box-shadow: none;
+}
 
-    .pts-badge.insufficient {
-        background: #dee2e6;
-        color: #6c757d;
-    }
+/* Caja de código generado tras el canje exitoso */
+.code-box {
+    background: #f0fdf4;
+    border: 2px dashed #16a34a;
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: #15803d;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    user-select: all;
+}
+.code-box:hover { background: #dcfce7; border-style: solid; }
 
-    /* ── Código revelado ─────────────────────────────────────── */
-    .code-box {
-        background: #f8f9fa;
-        border: 2px dashed #28a745;
-        border-radius: 10px;
-        padding: 0.85rem 1rem;
-        font-family: 'Courier New', monospace;
-        font-size: 1.15rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: #198754;
-        text-align: center;
-        cursor: pointer;
-        transition: background 0.2s;
-        position: relative;
-    }
+.code-copied {
+    position: absolute;
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
+    background: #16a34a;
+    color: white;
+    font-size: .7rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0;
+    font-weight: 600;
+    pointer-events: none;
+}
+.code-box.just-copied .code-copied { opacity: 1; }
 
-    .code-box:hover { background: #e8f5e9; }
+/* Botón flotante del carrito (FAB) */
+.cart-fab {
+    position: fixed;
+    bottom: 5rem; /* Por encima del scroll-to-top */
+    right: 1.5rem;
+    z-index: 1048;
+    width: 58px; height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #16a34a, #0d9488);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 24px rgba(22,163,74,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+}
+.cart-fab:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 10px 32px rgba(22,163,74,.65); }
 
-    .code-copied {
-        position: absolute;
-        top: -28px; left: 50%;
-        transform: translateX(-50%);
-        background: #198754;
-        color: white;
-        font-size: .7rem;
-        padding: 2px 8px;
-        border-radius: 20px;
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s;
-        font-family: 'Poppins', sans-serif;
-        letter-spacing: 0;
-        font-weight: 500;
-    }
+.cart-badge {
+    position: absolute;
+    top: -6px; right: -6px;
+    background: #dc2626;
+    color: white;
+    border-radius: 50%;
+    width: 22px; height: 22px;
+    font-size: .68rem;
+    font-weight: 700;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(220,38,38,.4);
+}
 
-    .code-box.just-copied .code-copied { opacity: 1; }
+/* Filtros para seleccionar por marca */
+.brand-filter {
+    border-radius: 50px;
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .3rem .9rem;
+    border: 1.5px solid #d1fae5;
+    background: transparent;
+    color: #374151;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+.brand-filter:hover { border-color: #16a34a; color: #16a34a; }
+.brand-filter.active {
+    background: linear-gradient(135deg, #16a34a, #0d9488) !important;
+    color: white !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 12px rgba(22,163,74,.35);
+}
 
-    /* ── Botón flotante del carrito ──────────────────────────── */
-    .cart-fab {
-        position: fixed;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        z-index: 1048;
-        width: 58px;
-        height: 58px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-        border: none;
-        box-shadow: 0 4px 18px rgba(40,167,69,0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.4rem;
-        transition: transform 0.2s;
-    }
+/* Controles de cantidad (sumar/restar) */
+.qty-btn {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem;
+    cursor: pointer;
+    transition: all .2s;
+    line-height: 1;
+    padding: 0;
+}
+.qty-btn:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.4); }
+.qty-btn-cat {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    border: 1.5px solid #d1fae5;
+    background: #f0fdf4;
+    color: #16a34a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: all .2s;
+    padding: 0;
+}
+.qty-btn-cat.plus { background: linear-gradient(135deg,#16a34a,#0d9488); color:#fff; border-color:transparent; }
+.qty-btn-cat:hover { transform: scale(1.1); }
 
-    .cart-fab:hover { transform: scale(1.08); }
+/* Estilos del modal de confirmación de canje */
+.confirm-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .6rem 0;
+    border-bottom: 1px solid #e8f5e9;
+    font-size: .9rem;
+}
+.confirm-item:last-of-type { border-bottom: none; }
 
-    .cart-badge {
-        position: absolute;
-        top: -4px; right: -4px;
-        background: #dc3545;
-        color: white;
-        border-radius: 50%;
-        width: 22px;
-        height: 22px;
-        font-size: .7rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        display: none;
-    }
-
-    /* ── Filtros de marca ────────────────────────────────────── */
-    .brand-filter.active {
-        background: #28a745 !important;
-        color: white !important;
-        border-color: #28a745 !important;
-    }
+@media (max-width: 575.98px) {
+    .cart-drawer { width: 100%; border-radius: 0; }
+    .cart-fab { bottom: 4.5rem; right: 1rem; }
+}
 </style>
 
-<!-- ── Contenido principal ──────────────────────────────────── -->
+<!-- ── Contenido principal de la tienda ─────────────────────────── -->
 <div class="container py-5">
 
-    <!-- Cabecera -->
+    <!-- Cabecera de la tienda con título y saldo del usuario -->
     <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-4">
         <div>
             <h1 class="fw-bold display-6 mb-1">
@@ -234,25 +357,27 @@ include __DIR__ . '/partials/header.php';
         <div class="text-end">
             <div class="fw-bold fs-5 text-success">
                 <i class="bi bi-star-fill text-warning me-1"></i>
-                <span id="saldoDisplay"><?= number_format((int)$_SESSION['usuario_puntos']) ?></span> pts disponibles
+                <span id="saldoDisplay"><?= number_format(
+                    (int) $_SESSION["usuario_puntos"],
+                ) ?></span> pts disponibles
             </div>
             <small class="text-muted">Tu saldo actual</small>
         </div>
     </div>
 
-    <!-- Alerta de feedback -->
+    <!-- Alerta para mensajes de error/feedback al usuario -->
     <div id="tiendaAlert" class="alert d-none mb-4" role="alert"></div>
 
-    <!-- Filtros de marca -->
+    <!-- Filtros para mostrar recompensas por marca -->
     <div class="d-flex flex-wrap gap-2 mb-4" id="brandFilters">
         <button class="btn btn-outline-secondary btn-sm rounded-pill brand-filter active" data-brand="all">
             Todas
         </button>
     </div>
 
-    <!-- Cuadrícula de tarjetas -->
+    <!-- Cuadrícula de tarjetas de recompensa -->
     <div class="row g-4" id="catalogoGrid">
-        <!-- Esqueleto de carga -->
+        <!-- Esqueleto de carga mientras se obtienen los datos -->
         <?php for ($i = 0; $i < 8; $i++): ?>
             <div class="col-6 col-md-4 col-lg-3 placeholder-card">
                 <div class="card border-0 shadow-sm p-3 placeholder-glow" style="border-radius:16px">
@@ -266,48 +391,55 @@ include __DIR__ . '/partials/header.php';
 
 </div>
 
-<!-- ── Overlay del carrito ───────────────────────────────────── -->
+<!-- ── Overlay (fondo oscuro) del carrito lateral ──────────────── -->
 <div class="cart-overlay" id="cartOverlay"></div>
 
-<!-- ── Carrito lateral ──────────────────────────────────────── -->
+<!-- ── Carrito lateral con estilo glass ──────────────────────────── -->
 <div class="cart-drawer" id="cartDrawer">
     <div class="cart-header">
-        <h5 class="fw-bold mb-0"><i class="bi bi-bag-heart text-success me-2"></i>Tu Carrito</h5>
-        <button class="btn btn-sm btn-outline-secondary rounded-pill" id="closeCart">
+        <h5 class="mb-0 d-flex align-items-center gap-2">
+            <i class="bi bi-bag-heart-fill"></i>Tu Carrito
+            <span class="badge ms-1" id="cartCountBadge"
+                  style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+                         font-size:.72rem;border-radius:50px;">0 ítems</span>
+        </h5>
+        <button class="btn" id="closeCart"
+                style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+                       color:#fff;border-radius:10px;padding:.35rem .65rem;">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
     <div class="cart-body" id="cartBody">
-        <p class="text-muted text-center py-4" id="cartEmpty">
-            <i class="bi bi-bag fs-2 d-block mb-2 opacity-25"></i>
-            Tu carrito está vacío
-        </p>
+        <div class="text-center py-5" id="cartEmpty">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;opacity:.35;">🛒</div>
+            <p style="color:rgba(255,255,255,.5);font-size:.88rem;">Tu carrito está vacío</p>
+        </div>
     </div>
     <div class="cart-footer" id="cartFooter" style="display:none!important">
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-muted">Subtotal</span>
-            <span class="fw-bold" id="cartSubtotal">0 pts</span>
+        <div class="d-flex justify-content-between mb-1 cart-total-row">
+            <span>Subtotal</span>
+            <strong id="cartSubtotal">0 pts</strong>
         </div>
-        <div class="d-flex justify-content-between mb-3">
-            <span class="text-muted">Saldo tras canje</span>
-            <span class="fw-semibold" id="cartSaldoTras">— pts</span>
+        <div class="d-flex justify-content-between mb-3 cart-total-row">
+            <span>Saldo tras canje</span>
+            <strong id="cartSaldoTras">— pts</strong>
         </div>
-        <button class="btn btn-success w-100 rounded-pill py-2 fw-bold" id="checkoutBtn">
-            <i class="bi bi-lock-fill me-2"></i>Confirmar Canje
+        <button class="btn-checkout" id="checkoutBtn">
+            <i class="bi bi-lock-fill"></i>Confirmar Canje
         </button>
-        <button class="btn btn-outline-danger w-100 rounded-pill py-2 mt-2 btn-sm" id="clearCartBtn">
-            Vaciar carrito
+        <button class="btn-clear-cart" id="clearCartBtn">
+            <i class="bi bi-trash me-1"></i>Vaciar carrito
         </button>
     </div>
 </div>
 
-<!-- ── Botón flotante del carrito ────────────────────────────── -->
+<!-- ── Botón flotante del carrito (FAB) ─────────────────────────── -->
 <button class="cart-fab" id="cartFab" title="Ver carrito">
     <i class="bi bi-bag-heart-fill"></i>
     <span class="cart-badge" id="cartBadge">0</span>
 </button>
 
-<!-- ── Modal de confirmación ────────────────────────────────── -->
+<!-- ── Modal de confirmación antes de realizar el canje ─────────── -->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
@@ -330,7 +462,9 @@ include __DIR__ . '/partials/header.php';
     </div>
 </div>
 
-<!-- ── Modal de éxito con códigos ───────────────────────────── -->
+<!-- ── Modal de éxito que muestra los códigos generados ─────────── -->
+<!--    data-bs-backdrop="static" + data-bs-keyboard="false" evita
+       que el usuario cierre el modal sin querer y pierda los códigos -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true"
      data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -362,24 +496,30 @@ include __DIR__ . '/partials/header.php';
 </div>
 
 <script>
+// ── Lógica de la tienda: carga el catálogo, gestiona el carrito
+//    en memoria, muestra modales de confirmación y envía el canje
+//    a la API. ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ── Estado ────────────────────────────────────────────────────
+    // ── Estado de la aplicación ───────────────────────────────────
+    //    catalogo: array de recompensas obtenido de la API
+    //    carrito:  array de objetos { recompensa, cantidad }
+    //    saldo:    puntos disponibles del usuario
     let catalogo = [];
-    let carrito  = []; // [{ recompensa, cantidad }]
-    let saldo    = <?= (int)$_SESSION['usuario_puntos'] ?>;
+    let carrito  = [];
+    let saldo    = <?= (int) $_SESSION["usuario_puntos"] ?>;
 
     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
     const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 
-    // ── Escapar HTML ──────────────────────────────────────────────
+    // ── Escapar HTML para prevenir XSS en innerHTML ────────────────
     function esc(str) {
         const d = document.createElement('div');
         d.textContent = str ?? '';
         return d.innerHTML;
     }
 
-    // ── Cargar catálogo ───────────────────────────────────────────
+    // ── Obtener el catálogo de recompensas desde la API ────────────
     fetch('api/recompensas.php?action=list')
         .then(r => r.json())
         .then(json => {
@@ -393,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 '<p class="text-danger col-12"><i class="bi bi-exclamation-triangle me-2"></i>Error al cargar el catálogo.</p>';
         });
 
-    // ── Renderizar filtros de marca ───────────────────────────────
+    // ── Crear botones de filtro dinámicamente según las marcas disponibles ──
     function renderFiltros(data) {
         const marcas = [...new Set(data.map(r => r.marca))];
         const cont   = document.getElementById('brandFilters');
@@ -406,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Filtrar al hacer clic en marca
+    // Filtrar el catálogo al hacer clic en una marca
     document.getElementById('brandFilters').addEventListener('click', function (e) {
         const btn = e.target.closest('.brand-filter');
         if (!btn) return;
@@ -416,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderCatalogo(brand === 'all' ? catalogo : catalogo.filter(r => r.marca === brand));
     });
 
-    // ── Renderizar tarjetas ───────────────────────────────────────
+    // ── Renderizar las tarjetas de recompensa en la cuadrícula ─────
     function renderCatalogo(data) {
         const grid = document.getElementById('catalogoGrid');
 
@@ -466,7 +606,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).join('');
     }
 
-    // ── Gestión del carrito ───────────────────────────────────────
+    // ── Funciones para añadir, modificar cantidad y calcular total del carrito ──
     window.addToCart = function (id) {
         const r = catalogo.find(x => x.id == id);
         if (!r) return;
@@ -486,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function () {
         carrito[idx].cantidad += delta;
         if (carrito[idx].cantidad <= 0) carrito.splice(idx, 1);
         updateCart();
-        // Re-renderizar catálogo para actualizar los controles
+        // Re-renderizar catálogo para reflejar el cambio en los botones ± y "Añadir"
         const activeBrand = document.querySelector('.brand-filter.active')?.dataset.brand || 'all';
         renderCatalogo(activeBrand === 'all' ? catalogo : catalogo.filter(r => r.marca === activeBrand));
     };
@@ -496,26 +636,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCart() {
-        const total   = calcTotal();
-        const items   = carrito.reduce((s, i) => s + i.cantidad, 0);
-        const tras    = saldo - total;
-        const body    = document.getElementById('cartBody');
-        const footer  = document.getElementById('cartFooter');
-        const badge   = document.getElementById('cartBadge');
-        const empty   = document.getElementById('cartEmpty');
+        const total  = calcTotal();
+        const items  = carrito.reduce((s, i) => s + i.cantidad, 0);
+        const tras   = saldo - total;
+        const body   = document.getElementById('cartBody');
+        const footer = document.getElementById('cartFooter');
+        const badge  = document.getElementById('cartBadge');
+        const countBadge = document.getElementById('cartCountBadge');
+        const empty  = document.getElementById('cartEmpty');
 
         // Badge flotante
-        if (items > 0) {
-            badge.style.display = 'flex';
-            badge.textContent   = items > 9 ? '9+' : items;
-        } else {
-            badge.style.display = 'none';
-        }
+        badge.style.display = items > 0 ? 'flex' : 'none';
+        badge.textContent   = items > 9 ? '9+' : items;
+        if (countBadge) countBadge.textContent = items + ' ítem' + (items !== 1 ? 's' : '');
 
         if (carrito.length === 0) {
             if (empty) empty.style.display = '';
             footer.style.setProperty('display', 'none', 'important');
-            // Limpiar ítems
             body.querySelectorAll('.cart-item').forEach(el => el.remove());
             return;
         }
@@ -529,37 +666,34 @@ document.addEventListener('DOMContentLoaded', function () {
             const div = document.createElement('div');
             div.className = 'cart-item';
             div.innerHTML = `
-                ${item.recompensa.imagen_url
-                    ? `<img src="${esc(item.recompensa.imagen_url)}" class="cart-item-img" alt="${esc(item.recompensa.marca)}">`
-                    : `<div class="cart-item-img d-flex align-items-center justify-content-center fw-bold text-success small">${esc(item.recompensa.marca.charAt(0))}</div>`
+                ${
+                    item.recompensa.imagen_url
+                        ? `<img src="${esc(item.recompensa.imagen_url)}" class="cart-item-img" alt="${esc(item.recompensa.marca)}">`
+                        : `<div class="cart-item-img d-flex align-items-center justify-content-center fw-bold" style="color:#22c55e;font-size:1rem;">${esc(item.recompensa.marca.charAt(0))}</div>`
                 }
                 <div class="flex-grow-1 min-w-0">
-                    <div class="fw-semibold small text-truncate">${esc(item.recompensa.nombre)}</div>
-                    <div class="text-muted" style="font-size:.78rem">${esc(item.recompensa.marca)}</div>
-                    <div class="text-success small fw-bold">${item.recompensa.puntos_coste * item.cantidad} pts</div>
+                    <div class="fw-semibold small text-truncate" style="color:#fff;">${esc(item.recompensa.nombre)}</div>
+                    <div style="font-size:.76rem;color:rgba(255,255,255,.5);">${esc(item.recompensa.marca)}</div>
+                    <div style="font-size:.8rem;font-weight:700;color:#22c55e;">${item.recompensa.puntos_coste * item.cantidad} pts</div>
                 </div>
                 <div class="d-flex align-items-center gap-1 flex-shrink-0">
-                    <button class="btn btn-outline-secondary btn-sm rounded-circle"
-                            style="width:26px;height:26px;padding:0;font-size:.75rem"
-                            onclick="changeQty(${item.recompensa.id}, -1)">−</button>
-                    <span class="fw-bold small" style="min-width:16px;text-align:center">${item.cantidad}</span>
-                    <button class="btn btn-success btn-sm rounded-circle"
-                            style="width:26px;height:26px;padding:0;font-size:.75rem"
-                            onclick="changeQty(${item.recompensa.id}, 1)">+</button>
+                    <button class="qty-btn" onclick="changeQty(${item.recompensa.id}, -1)">−</button>
+                    <span style="font-weight:700;font-size:.88rem;min-width:18px;text-align:center;color:#fff;">${item.cantidad}</span>
+                    <button class="qty-btn" onclick="changeQty(${item.recompensa.id}, 1)">+</button>
                 </div>
             `;
-            body.insertBefore(div, document.getElementById('cartEmpty'));
+            body.insertBefore(div, empty);
         });
 
         // Totales
-        document.getElementById('cartSubtotal').textContent = total + ' pts';
+        document.getElementById('cartSubtotal').textContent = total.toLocaleString('es-ES') + ' pts';
         const saldoTrasEl = document.getElementById('cartSaldoTras');
-        saldoTrasEl.textContent = tras + ' pts';
-        saldoTrasEl.className   = 'fw-semibold ' + (tras < 0 ? 'text-danger' : 'text-success');
+        saldoTrasEl.textContent = tras.toLocaleString('es-ES') + ' pts';
+        saldoTrasEl.style.color = tras < 0 ? '#f87171' : '#22c55e';
         document.getElementById('checkoutBtn').disabled = tras < 0;
     }
 
-    // ── Abrir / cerrar carrito ────────────────────────────────────
+    // ── Control de apertura y cierre del carrito lateral ───────────
     function openCart()  {
         document.getElementById('cartDrawer').classList.add('open');
         document.getElementById('cartOverlay').classList.add('open');
@@ -579,26 +713,31 @@ document.addEventListener('DOMContentLoaded', function () {
         renderCatalogo(activeBrand === 'all' ? catalogo : catalogo.filter(r => r.marca === activeBrand));
     });
 
-    // ── Checkout — modal de confirmación ─────────────────────────
+    // ── Checkout: mostrar modal de confirmación con resumen del canje ────
     document.getElementById('checkoutBtn').addEventListener('click', function () {
         const total = calcTotal();
         const tras  = saldo - total;
 
-        let resumen = '<ul class="list-unstyled mb-3">';
+        let resumen = '<div class="mb-3">';
         carrito.forEach(i => {
-            resumen += `<li class="d-flex justify-content-between py-1 border-bottom">
-                <span>${esc(i.recompensa.marca)} — ${esc(i.recompensa.nombre)} × ${i.cantidad}</span>
-                <span class="fw-bold text-success">${i.recompensa.puntos_coste * i.cantidad} pts</span>
-            </li>`;
+            resumen += `
+                <div class="confirm-item">
+                    <span class="text-muted">${esc(i.recompensa.marca)} — ${esc(i.recompensa.nombre)} <span class="badge bg-secondary">×${i.cantidad}</span></span>
+                    <strong class="text-success">${(i.recompensa.puntos_coste * i.cantidad).toLocaleString('es-ES')} pts</strong>
+                </div>`;
         });
-        resumen += `</ul>
-            <div class="d-flex justify-content-between fw-bold fs-5 mt-3">
+        resumen += `</div>
+            <div class="d-flex justify-content-between fw-bold fs-5 py-2 border-top" style="border-color:#e8f5e9!important;">
                 <span>Total a descontar</span>
-                <span class="text-danger">${total} pts</span>
+                <span class="text-danger">${total.toLocaleString('es-ES')} pts</span>
             </div>
-            <div class="d-flex justify-content-between text-muted mt-1">
-                <span>Saldo resultante</span>
-                <span class="fw-semibold ${tras < 0 ? 'text-danger' : 'text-success'}">${tras} pts</span>
+            <div class="d-flex justify-content-between py-1">
+                <span class="text-muted small">Tu saldo actual</span>
+                <span class="small fw-semibold">${saldo.toLocaleString('es-ES')} pts</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+                <span class="text-muted small">Saldo resultante</span>
+                <span class="small fw-bold ${tras < 0 ? 'text-danger' : 'text-success'}">${tras.toLocaleString('es-ES')} pts</span>
             </div>`;
 
         document.getElementById('confirmBody').innerHTML = resumen;
@@ -606,18 +745,33 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmModal.show();
     });
 
-    // ── Checkout — envío a la API ─────────────────────────────────
+    // ── Enviar canje a la API (BUG FIX: esperar hidden.bs.modal) ────────
+    //    Es crucial esperar a que el modal de confirmación se cierre
+    //    completamente (hidden.bs.modal) antes de mostrar el modal de éxito.
+    //    Sin esto, Bootstrap puede dejar el backdrop activo y el éxito no se ve.
     document.getElementById('confirmCheckoutBtn').addEventListener('click', async function () {
         const btn = this;
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Procesando…';
+
+        // Leer CSRF antes de que el modal cambie el DOM
+        const csrfToken = document.querySelector('[name="csrf_token"]')?.value ?? '';
 
         const items = carrito.map(i => ({
             recompensa_id: i.recompensa.id,
             cantidad:      i.cantidad,
         }));
 
-        const csrfToken = document.querySelector('[name="csrf_token"]')?.value ?? '';
+        // Helper para mostrar error en la página
+        function mostrarError(msg) {
+            const alertBox = document.getElementById('tiendaAlert');
+            alertBox.className = 'alert alert-danger alert-dismissible fade show';
+            alertBox.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>${msg}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         try {
             const res  = await fetch('api/recompensas.php?action=checkout', {
@@ -627,26 +781,24 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             const json = await res.json();
 
-            confirmModal.hide();
-
             if (json.success) {
-                // Actualizar saldo
+                // Actualizar saldo en la página
                 saldo = json.puntos_totales;
-                document.getElementById('saldoDisplay').textContent =
-                    saldo.toLocaleString('es-ES');
+                document.getElementById('saldoDisplay').textContent = saldo.toLocaleString('es-ES');
                 const headerBadge = document.querySelector('.badge-points .fw-bold');
-                if (headerBadge) headerBadge.textContent = saldo + ' pts';
+                if (headerBadge) headerBadge.textContent = saldo.toLocaleString('es-ES') + ' pts';
 
-                // Vaciar carrito
+                // Vaciar carrito y refrescar catálogo con nuevo saldo
                 carrito = [];
                 updateCart();
+                renderCatalogo(catalogo);
 
-                // Mostrar códigos
+                // Preparar HTML de códigos
                 let codigoHtml = json.codigos.map(c => `
-                    <div class="mb-3">
+                    <div class="mb-3 p-3" style="background:#f0fdf4;border-radius:12px;border:1px solid #d1fae5;">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fw-semibold">${esc(c.marca)} — ${esc(c.nombre)}</span>
-                            <span class="badge bg-success ms-auto">${esc(String(c.puntos))} pts</span>
+                            <span class="fw-semibold text-dark">${esc(c.marca)} — ${esc(c.nombre)}</span>
+                            <span class="badge ms-auto" style="background:linear-gradient(135deg,#16a34a,#0d9488);">${esc(String(c.puntos))} pts</span>
                         </div>
                         <div class="code-box position-relative" onclick="copiarCodigo(this, '${esc(c.codigo)}')">
                             <span class="code-copied">¡Copiado!</span>
@@ -656,37 +808,41 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 `).join('');
 
-                codigoHtml += `<p class="text-muted small mt-3 mb-0">
+                codigoHtml += `<div class="alert alert-info alert-sm mt-2" style="font-size:.82rem;border-radius:10px;">
                     <i class="bi bi-info-circle me-1"></i>
-                    Haz clic en cada código para copiarlo. También los encontrarás en
-                    <a href="index.php?action=mis_canjes" class="text-success">Mis Canjes</a>.
-                </p>`;
+                    Haz clic en cada código para copiarlo. También están en
+                    <a href="index.php?action=mis_canjes" class="fw-semibold">Mis Canjes</a>.
+                </div>`;
 
                 document.getElementById('successBody').innerHTML = codigoHtml;
-                successModal.show();
 
-                // Re-renderizar catálogo con nuevo saldo
-                renderCatalogo(catalogo);
+                // ⭐ FIX PRINCIPAL: esperar a que el confirmModal termine de cerrarse
+                //    antes de mostrar el successModal. Sin esto, Bootstrap
+                //    puede dejar el backdrop activo y el success modal no se muestra.
+                const confirmEl = document.getElementById('confirmModal');
+                function onConfirmHidden() {
+                    confirmEl.removeEventListener('hidden.bs.modal', onConfirmHidden);
+                    successModal.show();
+                }
+                confirmEl.addEventListener('hidden.bs.modal', onConfirmHidden);
+                confirmModal.hide();
 
             } else {
-                const alertBox = document.getElementById('tiendaAlert');
-                alertBox.className = 'alert alert-danger animate__animated animate__fadeIn';
-                alertBox.innerHTML = `<i class="bi bi-exclamation-triangle-fill me-2"></i>${json.message}`;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // Error: cerrar confirm y mostrar alerta
+                confirmModal.hide();
+                mostrarError(json.message || 'No se pudo completar el canje. Inténtalo más tarde.');
             }
 
-        } catch {
+        } catch (err) {
             confirmModal.hide();
-            const alertBox = document.getElementById('tiendaAlert');
-            alertBox.className = 'alert alert-danger';
-            alertBox.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-2"></i>Error de red. Inténtalo más tarde.';
+            mostrarError('Error de red. Comprueba tu conexión e inténtalo de nuevo.');
         } finally {
             btn.disabled = false;
             btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>Sí, canjear';
         }
     });
 
-    // ── Copiar código al portapapeles ─────────────────────────────
+    // ── Copiar código de recompensa al portapapeles ─────────────────
     window.copiarCodigo = function (el, codigo) {
         navigator.clipboard.writeText(codigo).then(() => {
             el.classList.add('just-copied');
@@ -697,7 +853,12 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <?php
-require_once __DIR__ . '/../helpers/CsrfHelper.php';
-echo '<input type="hidden" name="csrf_token" value="' . htmlspecialchars(CsrfHelper::generateToken()) . '">';
-include __DIR__ . '/partials/footer.php';
+// Token CSRF colocado fuera del formulario (el checkout se hace vía fetch JS).
+// Se lee desde el DOM mediante querySelector en el script de checkout.
+require_once __DIR__ . "/../helpers/CsrfHelper.php";
+echo '<input type="hidden" name="csrf_token" value="' .
+    htmlspecialchars(CsrfHelper::generateToken()) .
+    '">';
+
+include __DIR__ . "/partials/footer.php";
 ?>

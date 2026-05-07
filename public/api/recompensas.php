@@ -66,6 +66,8 @@ function verifyCsrf(array $data): bool {
  * Ejemplo: GP-A3F2-9K1X-B7QZ
  */
 function generarCodigo(): string {
+    // random_int() es criptográficamente seguro (a diferencia de rand())
+    // Se excluyen vocales (E,I,O,U) para evitar formar palabras accidentales
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     $segmento = function () use ($chars): string {
         $s = '';
@@ -97,9 +99,11 @@ try {
             resp(true, 'Catálogo obtenido.', ['data' => $out]);
 
         // ── Checkout del carrito ──────────────────────────────────
+        // El canje descuenta puntos reales del usuario autenticado
         case 'checkout':
             requireAuth();
 
+            // CSRF obligatorio: esta operación modifica datos y descuenta puntos
             if (!verifyCsrf($data)) {
                 resp(false, 'Token CSRF inválido. Recarga la página e inténtalo de nuevo.');
             }
@@ -132,8 +136,9 @@ try {
 
             $puntos_disponibles = (int) $usuario['puntos_totales'];
 
-            // Calcular coste total verificando cada recompensa en BD
-            // (nunca confiamos en el precio enviado desde el cliente)
+            // Calculamos el coste consultando cada recompensa en la BD.
+            // NUNCA confiamos en precios o costes enviados desde el cliente
+            // porque podrían haber sido manipulados en la petición.
             $total_puntos = 0;
             $items_validados = [];
 
@@ -168,7 +173,8 @@ try {
                 ]);
             }
 
-            // Transacción: descontar puntos + insertar canjes
+            // Transacción: garantiza atomicidad — puntos descontados Y canjes insertados,
+            // o no se realiza ninguna operación. Rollback revierte si algo falla.
             $db->begin_transaction();
             try {
                 // Descontar puntos del usuario

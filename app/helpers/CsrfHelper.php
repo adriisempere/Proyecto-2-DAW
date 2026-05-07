@@ -24,6 +24,8 @@ class CsrfHelper
      * Genera un token CSRF y lo almacena en sesión si aún no existe.
      * Si la sesión no está activa la inicia, aunque lo recomendado
      * es iniciarla antes de llamar a este método.
+     * Usamos random_bytes(32) que genera 32 bytes aleatorios
+     * criptográficamente seguros, convertidos a 64 caracteres hexadecimales.
      *
      * @return string Token CSRF en formato hexadecimal (64 chars).
      */
@@ -74,7 +76,9 @@ class CsrfHelper
 
     /**
      * Devuelve un campo input oculto listo para insertar en formularios HTML.
-     * El valor del token se escapa con htmlspecialchars por defensa en profundidad.
+     * El valor del token se escapa con htmlspecialchars por defensa en profundidad,
+     * evitando inyección de HTML aunque el token (teóricamente seguro) pudiera
+     * contener caracteres especiales.
      *
      * @return string Etiqueta <input type="hidden"> con el token CSRF.
      */

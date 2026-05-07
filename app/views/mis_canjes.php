@@ -3,7 +3,7 @@
  * Vista de Mis Canjes — GreenPoints
  * ---------------------------------------------------------------
  * Muestra el historial completo de canjes del usuario autenticado
- * con los códigos generados, listos para copiar.
+ * con los códigos generados, listos para copiar al portapapeles.
  * Los datos se cargan desde api/recompensas.php?action=mis_canjes
  * ---------------------------------------------------------------
  */
@@ -80,12 +80,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const container = document.getElementById('canjesContainer');
 
+    // Escapa HTML para prevenir inyección XSS en datos dinámicos
     function esc(str) {
         const d = document.createElement('div');
         d.textContent = str ?? '';
         return d.innerHTML;
     }
 
+    // Formatea fecha ISO a formato legible en español
     function formatDate(str) {
         const d = new Date(str);
         return isNaN(d) ? str : d.toLocaleDateString('es-ES', {
