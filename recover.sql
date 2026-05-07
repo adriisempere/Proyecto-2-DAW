@@ -1,8 +1,0 @@
--- ====================================================
--- Script de recuperación de recompensas
--- ====================================================
--- Este script reinicia la tabla de recompensas y vuelve a
--- insertar el catálogo inicial. Úsalo si la tabla se ha
--- quedado vacía o con datos inconsistentes.
--- Ejecutar: mysql -u usuario -p base_datos < recover.sql
--- ====================================================

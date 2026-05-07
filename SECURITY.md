@@ -1,58 +1,41 @@
-# Guía de seguridad del proyecto
-
-Este documento detalla las consideraciones de seguridad y mejores prácticas implementadas en el proyecto GreenPoints.
+# Guía de seguridad - GreenPoints
 
 ---
 
-## Medidas de seguridad implementadas
+## Medidas implementadas
 
-### 1. Protección contra CSRF (Cross-Site Request Forgery)
-Implementamos tokens CSRF únicos por sesión para validar las llamadas que modifican datos (registro, login, envío de reciclaje, etc.).
-- Se genera un campo oculto en cada formulario mediante `CsrfHelper`.
-- El token se verifica en los endpoints antes de ejecutar cualquier acción.
+### CSRF
+Tokens únicos por sesión generados con `random_bytes(32)`. Se verifican en todas las peticiones que modifican datos (registro, login, reciclaje, canje). Comparación con `hash_equals()` para evitar ataques de temporización.
 
-### 2. Hashing de Contraseñas
-Las contraseñas no se guardan en texto plano; se aplican hashes mediante la función `password_hash()` de PHP, usando el valor por defecto de algoritmo (actualmente Bcrypt). Durante el acceso se comprueba con `password_verify()`.
+### Contraseñas
+Hash con `password_hash(PASSWORD_DEFAULT)` -> bcrypt. Verificación con `password_verify()`. Nunca se almacenan en texto plano.
 
-### 3. Prevención de Inyección SQL
-Todas las consultas que incluyen datos de usuarios se ejecutan con sentencias preparadas (`prepare()` y `bind_param()`), eliminando la mayor parte del riesgo de inyección SQL.
+### Inyección SQL
+Todas las consultas con datos de usuario usan sentencias preparadas (`prepare()` + `bind_param()`).
 
-### 4. Gestión de Sesiones Seguras
-Las sesiones se inician con `session_start()` y, tras iniciar sesión, se regenera el identificador para dificultar el secuestro de sesiones.
+### Sesiones
+- Cookie configurada con `HttpOnly`, `SameSite=Lax`, `path=/`
+- Regeneración del ID de sesión tras login (`session_regenerate_id()`)
+- La cookie de sesión se limpia explícitamente al cerrar sesión
 
-### 5. Escape de Salida (XSS)
-Se aplica `htmlspecialchars()` en la salida de datos en todas las vistas para evitar inyecciones de código (XSS).
+### XSS
+`htmlspecialchars()` en toda salida de datos en vistas. En JavaScript se usa `textContent` para evitar inyección al insertar contenido dinámico.
 
----
+### Transacciones atómicas
+Las operaciones que modifican múltiples tablas (canje de recompensas, registro de reciclaje, eliminación) se envuelven en transacciones con rollback ante fallos.
 
-## 🏗️ Configuración Segura
-
-### Variables de entorno
-La configuración de la base de datos se puede cargar desde variables de entorno. `config/database.php` utiliza `getenv()` y ofrece valores por defecto para un entorno de desarrollo. En producción se recomienda un `.env` (o manejo similar) fuera del control de versiones.
-
-### Permisos de archivos recomendados
-En servidores Linux conviene mantener permisos restrictivos:
-- Directorios con `755`
-- Archivos con `644`
-- Archivos sensibles (`config/database.php`, etc.) con `600` si es posible.
+### Precios validados en servidor
+En el canje de recompensas, los costes se leen de la base de datos. Nunca se confía en los precios enviados desde el cliente.
 
 ---
 
-## Problemas conocidos y mejoras pendientes
+## Pendiente
 
-A partir de la versión actual se detectan algunas carencias que conviene resolver:
-- Aplicar límites de intentos de acceso para mitigar ataques de fuerza bruta.
-- Ampliar la validación de datos en el servidor, más allá de las comprobaciones locales de JavaScript.
-- Añadir cabeceras de seguridad HTTP (`Content-Security-Policy`, `X-Frame-Options`, etc.).
+- Límite de intentos de acceso (fuerza bruta)
+- Cabeceras HTTP de seguridad (`Content-Security-Policy`, `X-Frame-Options`, etc.)
 
 ---
 
-## 🆘 Reporte de Vulnerabilidades
+## Reporte de vulnerabilidades
 
-Si detectas un fallo de seguridad, por favor repórtalo de manera privada para que podamos solucionarlo antes de que se haga público.
-
-- **Contacto**: [adriisempere@proton.me](mailto:adriisempere@proton.me)
-
----
-
-> **Nota**: Este proyecto es parte de un entorno académico (2º DAW). La seguridad se revisa constantemente como parte del proceso de aprendizaje. 🎓🔒
+**Contacto:** [adriisempere@proton.me](mailto:adriisempere@proton.me)
