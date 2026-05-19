@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const materialContainer = document.getElementById('materialOptions');
     const registroForm = document.getElementById('registroForm');
 
-    // Evitar ejecutar si la vista no contiene los elementos esperados
-    if (!centroSelect || !materialContainer) return;
-
     // Materiales reciclables y sus puntos por kg
     // Cada material tiene un icono de Bootstrap y un valor en puntos
     const materiales = {
@@ -17,8 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
     };
 
     // Cargar centros desde API
-    if (centroSelect) {
-        fetch('api/centros.php?action=list')
+    fetch('api/centros.php?action=list')
         .then(r => r.json())
         .then(json => {
             if (json.success && Array.isArray(json.data)) {
@@ -32,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function(){
         }).catch(()=>{
             centroSelect.innerHTML = '<option value="" disabled>Error cargando centros</option>';
         });
-    }
 
     // Generar botones de selección de material tipo tarjeta visual
     // Usamos input[type="radio"] + label para que Bootstrap los estilice

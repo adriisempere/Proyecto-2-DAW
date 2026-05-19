@@ -534,8 +534,6 @@ html { scroll-behavior: smooth; }
 }
 </style>
 
-<?php if (!isset($_SESSION["usuario_id"])): ?>
-
 <!-- ══════════════════════════════════════════════════════════════
      § 1  HERO — Portada principal
 ═══════════════════════════════════════════════════════════════════ -->
@@ -1461,7 +1459,10 @@ document.addEventListener('DOMContentLoaded', function () {
             setText('heroUserRank', '#' + d.posicion);
         })
         .catch(() => {}); // Error silencioso — no mostrar alerta al usuario
+<?php endif; ?>
 
+});
+<?php else: ?>
 /* Estadísticas personales y actividad */
 const MATERIALES_INFO = {
     'plastico': { label: 'Plástico', color: '#0d6efd', icon: 'bi-cup' },
@@ -1500,8 +1501,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('statRank').textContent = '—';
         });
 
-    // stats_material_global devuelve el desglose global por material
-    fetch('api/ranking.php?action=stats_material_global')
+    fetch('api/ranking.php?action=stats_material')
         .then(r => r.json())
         .then(json => {
             const barsContainer = document.getElementById('materialBars');
@@ -1587,6 +1587,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         });
 });
+<?php endif; ?>
 <?php endif; ?>
 </script>
 

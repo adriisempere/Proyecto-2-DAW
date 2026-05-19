@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS recompensa (
-  id           INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id           INT AUTO_INCREMENT PRIMARY KEY,
   nombre       VARCHAR(150)  NOT NULL,
   marca        VARCHAR(100)  NOT NULL,
   puntos_coste INT           NOT NULL,
@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS recompensa (
   imagen_url   VARCHAR(500)  DEFAULT NULL,
   activa       TINYINT(1)    NOT NULL DEFAULT 1,
   creado_at    TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 CREATE TABLE IF NOT EXISTS canje (
-  id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id            INT AUTO_INCREMENT PRIMARY KEY,
   usuario_id    INT          NOT NULL,
   recompensa_id INT          NOT NULL,
   puntos_gastados INT        NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS canje (
   canjeado_at   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (usuario_id)    REFERENCES usuario(id)     ON DELETE CASCADE,
   FOREIGN KEY (recompensa_id) REFERENCES recompensa(id)  ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
 INSERT INTO recompensa (nombre, marca, puntos_coste, descripcion, imagen_url) VALUES
 ('Tarjeta Regalo 10€',  'Amazon',  500,  'Vale de 10€ para Amazon.es',          'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'),

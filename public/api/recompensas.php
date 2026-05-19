@@ -25,7 +25,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'secure'   => false,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -96,26 +96,14 @@ try {
         // ── Catálogo de recompensas activas ───────────────────────
         case 'list':
             $out = [];
-            $seen = [];
             $q = $db->query(
                 'SELECT id, nombre, marca, puntos_coste, descripcion, imagen_url
                    FROM recompensa
                   WHERE activa = 1
-                  ORDER BY puntos_coste ASC, marca ASC, nombre ASC'
+                  ORDER BY puntos_coste ASC'
             );
             while ($row = $q->fetch_assoc()) {
                 $row['puntos_coste'] = (int) $row['puntos_coste'];
-                $key = md5(
-                    trim($row['nombre']) . '|' .
-                    trim($row['marca']) . '|' .
-                    $row['puntos_coste'] . '|' .
-                    trim($row['descripcion']) . '|' .
-                    trim($row['imagen_url'])
-                );
-                if (isset($seen[$key])) {
-                    continue;
-                }
-                $seen[$key] = true;
                 $out[] = $row;
             }
             resp(true, 'Catálogo obtenido.', ['data' => $out]);

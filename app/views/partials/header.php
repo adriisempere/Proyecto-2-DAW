@@ -424,11 +424,6 @@
                         <i class="bi bi-geo-alt"></i><span>Centros</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="gp-nav-link" href="index.php?action=ayuda">
-                        <i class="bi bi-question-circle"></i><span>Ayuda</span>
-                    </a>
-                </li>
                 <?php if (isset($_SESSION["usuario_id"])): ?>
                 <li class="nav-item">
                     <a class="gp-nav-link" href="index.php?action=tienda">

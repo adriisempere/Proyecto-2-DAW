@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 --  puntos_totales se actualiza con cada registro de reciclaje.
 -- ====================================================
 CREATE TABLE usuario (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(150) NOT NULL,
   email VARCHAR(150) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE admin (
 --  Cada centro especifica qué materiales acepta y su horario.
 -- ====================================================
 CREATE TABLE centro_reciclaje (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(200) NOT NULL,
   direccion TEXT NOT NULL,
   tipos_residuos VARCHAR(255) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE centro_reciclaje (
 --  puntos_ganados se calcula según tipo_material × cantidad.
 -- ====================================================
 CREATE TABLE registro_reciclaje (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   usuario_id INT NOT NULL,
   centro_id INT NULL,
   fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -78,7 +78,7 @@ CREATE TABLE registro_reciclaje (
 --  Instantáneas históricas del ranking en una fecha concreta.
 -- ====================================================
 CREATE TABLE ranking (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   fecha DATE NOT NULL,
   descripcion VARCHAR(255),
   creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -90,7 +90,7 @@ CREATE TABLE ranking (
 --  y su posición en ese momento.
 -- ====================================================
 CREATE TABLE detalle_ranking (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   ranking_id INT NOT NULL,
   usuario_id INT NOT NULL,
   posicion INT NOT NULL,
@@ -127,7 +127,7 @@ VALUES
 
 -- Catálogo de tarjetas regalo disponibles para canje
 CREATE TABLE recompensa (
-  id           INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id           INT AUTO_INCREMENT PRIMARY KEY,
   nombre       VARCHAR(150)  NOT NULL,
   marca        VARCHAR(100)  NOT NULL,
   puntos_coste INT           NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE recompensa (
 -- Historial de canjes: un registro por tarjeta regalo generada
 -- El código es ficticio con formato GP-XXXX-XXXX-XXXX y se genera en el servidor
 CREATE TABLE canje (
-  id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id            INT AUTO_INCREMENT PRIMARY KEY,
   usuario_id    INT          NOT NULL,
   recompensa_id INT          NOT NULL,
   puntos_gastados INT        NOT NULL,

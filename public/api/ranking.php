@@ -112,7 +112,7 @@ try {
 
         // ── Estadísticas por tipo de material ────────────────────
         // Devuelve kg y nº de registros agrupados por tipo_material
-        case 'stats_material_global':
+        case 'stats_material':
             $res = $db->query(
                 "SELECT
                     r.tipo_material,
