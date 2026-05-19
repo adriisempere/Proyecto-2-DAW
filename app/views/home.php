@@ -1145,18 +1145,18 @@ html { scroll-behavior: smooth; }
         <div class="row align-items-center">
             <div class="col-auto">
                 <div class="welcome-avatar">
-                    <?= htmlspecialchars($inicial) ?>
+                    <?= htmlspecialchars($inicial ?? '?') ?>
                 </div>
             </div>
             <div class="col">
                 <h1 class="display-6 fw-bold text-white mb-1">
-                    ¡Hola, <?= htmlspecialchars($nombre) ?>!
+                    ¡Hola, <?= htmlspecialchars($nombre ?? 'Invitado') ?>!
                 </h1>
                 <p class="mb-0 text-white-50">
-                    Nivel: <span class="badge bg-warning text-dark fw-bold"><?= htmlspecialchars($nivel) ?></span>
+                    Nivel: <span class="badge bg-warning text-dark fw-bold"><?= htmlspecialchars($nivel ?? '—') ?></span>
                     &nbsp;·&nbsp;
                     <i class="bi bi-star-fill text-warning"></i>
-                    <span id="userPointsHeader"><?= number_format($puntos) ?> puntos</span>
+                    <span id="userPointsHeader"><?= number_format($puntos ?? 0) ?> puntos</span>
                 </p>
             </div>
             <div class="col-auto d-none d-md-block">
@@ -1177,7 +1177,7 @@ html { scroll-behavior: smooth; }
             <div class="col-6 col-md-3 scroll-reveal">
                 <div class="stat-card text-center p-4">
                     <div class="stat-icon"><i class="bi bi-star-fill"></i></div>
-                    <div class="stat-value counter" id="statPuntos"><?= $puntos ?></div>
+                    <div class="stat-value counter" id="statPuntos"><?= (int)($puntos ?? 0) ?></div>
                     <div class="stat-label">Puntos Totales</div>
                 </div>
             </div>
@@ -1442,21 +1442,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
 <?php if (isset($_SESSION["usuario_id"])): ?>
-    /* ────────────────────────────────────────────────────────────
-       3. MINI-ESTADÍSTICAS DEL HÉROE (solo si hay sesión activa)
-       Fuente: api/ranking.php?action=me
-       Datos: total reciclajes del usuario y su posición en el ranking
-    ──────────────────────────────────────────────────────────── */
-    fetch('api/ranking.php?action=me')
-        .then(r => r.json())
-        .then(json => {
-            if (!json.success) return;
-            const d = json.data;
-            setText('heroUserRecyclings', fmtNum(d.total_reciclajes));
-            setText('heroUserRank', '#' + d.posicion);
-        })
-        .catch(() => {}); // Error silencioso — no mostrar alerta al usuario
-<?php else: ?>
 /* Estadísticas personales y actividad */
 const MATERIALES_INFO = {
     'plastico': { label: 'Plástico', color: '#0d6efd', icon: 'bi-cup' },
@@ -1487,7 +1472,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('statRank').textContent = '#' + d.posicion;
 
             document.getElementById('userPointsHeader').textContent =
-                (parseInt(d.puntos_totales) || <?= $puntos ?>).toLocaleString('es-ES') + ' puntos';
+                (parseInt(d.puntos_totales) || <?= (int)($puntos ?? 0) ?>).toLocaleString('es-ES') + ' puntos';
         })
         .catch(() => {
             document.getElementById('statKg').textContent  = '—';
