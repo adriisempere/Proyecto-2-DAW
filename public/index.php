@@ -1,4 +1,12 @@
 <?php
+// Modo debug temporal: mostrar y registrar errores para diagnosticar HTTP 500
+// QUITA O COMENTA ESTAS LÍNEAS EN PRODUCCIÓN una vez resuelto el error.
+@ini_set('display_errors', '1');
+@ini_set('display_startup_errors', '1');
+@error_reporting(E_ALL);
+@ini_set('log_errors', '1');
+@ini_set('error_log', __DIR__ . '/php-error.log');
+
 // Sesión con path común para compartirla entre todas las páginas del proyecto
 if (session_status() === PHP_SESSION_NONE) {
     session_name('GREENPOINTS_SESSID');
