@@ -26,3 +26,6 @@ logs/
 # Cache
 cache/
 tmp/
+
+# Archivos temporales y backups
+*.zip

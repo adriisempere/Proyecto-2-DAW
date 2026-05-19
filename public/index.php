@@ -13,8 +13,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'domain'   => '',
-        'secure'   => false,
+        // 'domain' se omite para evitar problemas en hosting compartido
+        'secure'   => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);

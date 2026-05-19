@@ -1073,15 +1073,12 @@ html { scroll-behavior: smooth; }
             ): ?>
             <div class="col-sm-6 col-lg" id="mat-col-<?= $k ?>">
                 <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.1rem;text-align:center;">
-                    <div style="font-size:1.4rem;margin-bottom:.4rem;"><?= match (
-                        $k
-                    ) {
-                        "plastico" => "👛",
-                        "papel" => "📄",
-                        "vidrio" => "🦠",
-                        "metal" => "⚙️",
-                        "organico" => "🌿",
-                    } ?></div>
+                    <div style="font-size:1.4rem;margin-bottom:.4rem;"><?= 
+                        $k === "plastico" ? "👛" : 
+                        ($k === "papel" ? "📄" : 
+                        ($k === "vidrio" ? "🦠" : 
+                        ($k === "metal" ? "⚙️" : "🌿"))) 
+                    ?></div>
                     <div style="font-size:1.1rem;font-weight:700;color:#fff;" id="mat-kg-<?= $k ?>">—</div>
                     <div style="font-size:.7rem;color:rgba(255,255,255,.55);margin-top:.2rem;"><?= $label ?></div>
                     <div style="height:4px;background:rgba(255,255,255,.1);border-radius:4px;margin-top:.6rem;overflow:hidden;">
