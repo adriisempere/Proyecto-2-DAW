@@ -74,11 +74,11 @@
             <div class="col-lg-2 col-md-3 col-6">
                 <h6 class="gp-footer-heading">Soporte</h6>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Ayuda</a></li>
-                    <li class="mb-2"><a href="#" class="gp-footer-link"><i class="bi bi-chevron-right"></i>FAQ</a></li>
-                    <li class="mb-2"><a href="#" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Privacidad</a></li>
-                    <li class="mb-2"><a href="#" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Términos</a></li>
-                    <li class="mb-2"><a href="#" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Contacto</a></li>
+                    <li class="mb-2"><a href="index.php?action=ayuda" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Ayuda</a></li>
+                    <li class="mb-2"><a href="index.php?action=faq" class="gp-footer-link"><i class="bi bi-chevron-right"></i>FAQ</a></li>
+                    <li class="mb-2"><a href="index.php?action=privacidad" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Privacidad</a></li>
+                    <li class="mb-2"><a href="index.php?action=terminos" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Términos</a></li>
+                    <li class="mb-2"><a href="index.php?action=contacto" class="gp-footer-link"><i class="bi bi-chevron-right"></i>Contacto</a></li>
                 </ul>
             </div>
 

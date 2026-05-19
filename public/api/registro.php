@@ -27,7 +27,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => false,
+        // Activar Secure solo si la petición es HTTPS
+        'secure'   => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);

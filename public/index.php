@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
         'lifetime' => 0,
         'path'     => '/',
         'domain'   => '',
-        'secure'   => false,
+        'secure'   => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -52,11 +52,26 @@ switch ($action) {
     case 'perfil':
         include __DIR__ . '/../app/views/perfil.php';
         break;
-    case 'tienda':      
+    case 'tienda':
         include __DIR__ . '/../app/views/tienda.php';
         break;
-    case 'mis_canjes':  
+    case 'mis_canjes':
         include __DIR__ . '/../app/views/mis_canjes.php';
+        break;
+    case 'ayuda':
+        include __DIR__ . '/../app/views/ayuda.php';
+        break;
+    case 'faq':
+        include __DIR__ . '/../app/views/faq.php';
+        break;
+    case 'terminos':
+        include __DIR__ . '/../app/views/terminos.php';
+        break;
+    case 'contacto':
+        include __DIR__ . '/../app/views/contacto.php';
+        break;
+    case 'privacidad':
+        include __DIR__ . '/../app/views/privacidad.php';
         break;
     default:
         http_response_code(404);
