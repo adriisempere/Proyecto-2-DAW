@@ -1133,7 +1133,7 @@ html { scroll-behavior: smooth; }
     </div>
 </section>
 
-<?php else: ?>
+<?php if (isset($_SESSION["usuario_id"])): ?>
 
 <!-- ════════════════════════════════════════════════════════════
      HOME PERSONALIZADO (usuario logueado)
@@ -1456,9 +1456,6 @@ document.addEventListener('DOMContentLoaded', function () {
             setText('heroUserRank', '#' + d.posicion);
         })
         .catch(() => {}); // Error silencioso — no mostrar alerta al usuario
-<?php endif; ?>
-
-});
 <?php else: ?>
 /* Estadísticas personales y actividad */
 const MATERIALES_INFO = {
@@ -1584,7 +1581,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>`;
         });
 });
-<?php endif; ?>
 <?php endif; ?>
 </script>
 
